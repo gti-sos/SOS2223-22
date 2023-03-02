@@ -98,7 +98,7 @@ app.get("/samples/ACB",(req,res)=>{
        });
     
        var mensaje =  (`La media de empleo temporal en el  2008  fue: ${r/datos.length}`);
-       // res.send(cool());
+       
        console.log(mensaje);
        res.send(mensaje.toString());
   
