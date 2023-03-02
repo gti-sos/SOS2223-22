@@ -76,5 +76,7 @@ var datos = [
    datos.forEach(function(a){
        res += a.temporary_employment;
    });
-   
-   console.log("La media de empleo temporal en el  2008  fue", res/datos.length);
+
+   var mensaje =  ("La media de empleo temporal en el  2008  fue", res/datos.length);
+
+   console.log(mensaje);
