@@ -131,10 +131,11 @@ app.get("/samples/CGM",(req,res)=>{
     var valores_wt = [];
     valores.forEach(valor => {valores_wt.push(valor.wholesale_trade)});
     
-    //calcular media
+    // Calcular media
     suma_total = 0;
     valores_wt.forEach(num => {suma_total+= num});
     media = Math.round((suma_total/valores_wt.length) * 1000) / 1000;
     
-    res.send("La media de del comercio al por mayor en España es de: "+media.toString());
+    // Mensaje por pantalla
+    res.send("La media del comercio al por mayor en España es de: "+media.toString());
 });
