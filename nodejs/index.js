@@ -249,7 +249,7 @@ app.get("/samples/TTG",(req,res)=>{
     res.send("La media de los viajeros en Alemania es de: "+media.toString());
 });
 
-app.get("/samples/TTG",(req,res)=>{
+app.get("/samples/RGA",(req,res)=>{
     var datos = [
         { territory: "andalucia", year: 2008, telecommunication: 2328527, computer_program_edition: 19.662, programming_and_others: 455372 },
         { territory: "andalucia", year: 2009, telecommunication: 2208025, computer_program_edition: 16803, programming_and_others: 555635 },
