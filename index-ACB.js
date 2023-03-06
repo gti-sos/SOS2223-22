@@ -1,4 +1,4 @@
-var datos = [
+var datos_acb = [
     {
      territory: "andalucia",
      year: 2008,
@@ -70,16 +70,25 @@ var datos = [
      temporary_employment: 0
     }
    ];
+
+   function media_ue (datos){
+
+        var r = 0.0;
+        var contador = 0.0;
+    
+        datos_acb.forEach(function(a){
+            if(a.territory=="union europea 15" || a.territory=="union europea 28"){
+                contador++;
+                r += a.jobs_industry;
+            }           
+        }
+    );
+ 
+    var mensaje =  ("Los trabajos en industria en europa alcanzan la cifra de: "+ r/contador + " puestos");
+ 
+    return mensaje;
+   }
    
-   var res = 0.0;
-   var contador = 0;
 
-   datos.forEach(function(a){
-        if(a.territory=="union europea 15" || a.territory=="union europea 28")
-            res += a.jobs_industry;
-            contador++;
-   });
-
-   var mensaje =  ("Los trabajos en industria en europa alcanzan la cifra de: "+ res/contador + " puestos");
-
-   console.log(mensaje);
+   module.exports.datos_ACB = datos_acb;
+   module.exports.media_ue = media_ue;
