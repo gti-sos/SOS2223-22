@@ -94,7 +94,7 @@ app.get("/samples/ACB",(req,res)=>{
        
         
         var r = 0.0;
-        var contador;
+        var contador=0;
 
         datos.forEach(function(a){
                 if(a.territory=="union europea 15" || a.territory=="union europea 28")
