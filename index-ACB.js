@@ -74,9 +74,10 @@ var datos = [
    var res = 0.0;
 
    datos.forEach(function(a){
-       res += a.temporary_employment;
+        if(a.territory=="union europea 15" || a.territory=="union europea 28")
+            res += a.jobs_industry;
    });
 
-   var mensaje =  ("La media de empleo temporal en el  2008  fue", res/datos.length);
+   var mensaje =  ("Los trabajos en industria en europa alcanzan la cifra de: "+ res + " puestos");
 
    console.log(mensaje);

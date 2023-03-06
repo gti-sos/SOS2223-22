@@ -92,16 +92,18 @@ app.get("/samples/ACB",(req,res)=>{
         }
        ];
        
-       var r = 0.0;
-    
-       datos.forEach(function(a){
-           r += a.temporary_employment;
-       });
-    
-       var mensaje =  (`La media de empleo temporal en el  2008  fue: ${r/datos.length}`);
-       
-       console.log(mensaje);
-       res.send(mensaje.toString());
+        
+        var r = 0.0;
+
+        datos.forEach(function(a){
+                if(a.territory=="union europea 15" || a.territory=="union europea 28")
+                    r += a.jobs_industry;
+        });
+
+        var mensaje =  ("Los trabajos en industria en europa alcanzan la cifra de: "+ r + " puestos");
+
+        console.log(mensaje);
+    res.send(mensaje.toString());
   
 
    
