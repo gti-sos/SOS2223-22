@@ -82,10 +82,14 @@ var datos = [
 
 ]
 
-var res = 0.0;
+// Datos de país de alemania
+var valores = datos.filter(territorio => territorio.country == "alemania");
 
-datos.forEach(function(a){
-    res += a.traveler;
-});
+// Valores de traveler
+var traveler_data = [];
+valores.forEach(valor => {traveler_data.push(valor.traveler)});
 
-console.log("La media de viajeros en los años 2008 y 2009 fue", res/datos.length);
+//calcular media
+suma = 0;
+traveler_data.forEach(num => {suma+= num});
+console.log(suma/traveler_data.length);
