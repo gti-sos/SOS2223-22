@@ -72,10 +72,12 @@ var datos = [
    ];
    
    var res = 0.0;
+   var contador = 0;
 
    datos.forEach(function(a){
         if(a.territory=="union europea 15" || a.territory=="union europea 28")
             res += a.jobs_industry;
+            contador++;
    });
 
    var mensaje =  ("Los trabajos en industria en europa alcanzan la cifra de: "+ res + " puestos");

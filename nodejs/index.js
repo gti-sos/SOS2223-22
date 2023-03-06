@@ -94,13 +94,15 @@ app.get("/samples/ACB",(req,res)=>{
        
         
         var r = 0.0;
+        var contador;
 
         datos.forEach(function(a){
                 if(a.territory=="union europea 15" || a.territory=="union europea 28")
                     r += a.jobs_industry;
+                    contador++;
         });
 
-        var mensaje =  ("Los trabajos en industria en europa alcanzan la cifra de: "+ r + " puestos");
+        var mensaje =  ("La media de trabajos en industria en europa alcanzan la cifra de: "+ r/contador + " puestos");
 
         console.log(mensaje);
     res.send(mensaje.toString());
