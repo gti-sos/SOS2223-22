@@ -250,8 +250,8 @@ app.get("/samples/TTG",(req,res)=>{
 });
 
 app.get("/samples/TTG",(req,res)=>{
-    ar datos = [
-        { territory: "andalucia", year: 2008, telecommunication: 2328527, computer_program_edition: 19.662 programming_and_others: 455372 },
+    var datos = [
+        { territory: "andalucia", year: 2008, telecommunication: 2328527, computer_program_edition: 19.662, programming_and_others: 455372 },
         { territory: "andalucia", year: 2009, telecommunication: 2208025, computer_program_edition: 16803, programming_and_others: 555635 },
         { territory: "andalucia", year: 2010, telecommunication: 2043994, computer_program_edition: 16404, programming_and_others: 576863 },
         { territory: "andalucia", year: 2011, telecommunication: 1922890, computer_program_edition: 15181, programming_and_others: 571181 },

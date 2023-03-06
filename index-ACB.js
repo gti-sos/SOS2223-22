@@ -80,6 +80,6 @@ var datos = [
             contador++;
    });
 
-   var mensaje =  ("Los trabajos en industria en europa alcanzan la cifra de: "+ res + " puestos");
+   var mensaje =  ("Los trabajos en industria en europa alcanzan la cifra de: "+ res/contador + " puestos");
 
    console.log(mensaje);
