@@ -11,7 +11,7 @@ var datos = [
     { territory: "spain", year: 2017, ICT_manufacturing_industry: 0.07, wholesale_trade: 0.30, edition_of_computer_program: 0.05 }
 ];
 
-// Datos de territorio de spain
+// Datos de territorio de España
 var valores = datos.filter(territorio => territorio.territory == "spain");
 
 // Valores de wholesale_trade
