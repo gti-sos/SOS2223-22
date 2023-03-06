@@ -15,10 +15,10 @@ var datos = [
 var valores = datos.filter(territorio => territorio.territory == "spain");
 
 // Valores de telecommunication
-var valores_wt = [];
-valores.forEach(valor => {valores_wt.push(valor.telecommunication)});
+var valores_telecommunication = [];
+valores.forEach(valor => {valores_telecommunication.push(valor.telecommunication)});
 
 //calcular media
 suma_total = 0;
-valores_wt.forEach(num => {suma_total+= num});
-console.log(suma_total/valores_wt.length);
+valores_telecommunication.forEach(num => {suma_total+= num});
+console.log(suma_total/valores_telecommunication.length);
