@@ -1,26 +1,125 @@
 var express = require('express');
 var cool = require('cool-ascii-faces');
 var acb = require("../index-ACB");
-
-
+var bodyParser = require("body-parser");
 var app = express();
 var port = process.env.PORT || 12345;
+const BASE_API_URL = "/api/v1";
+var dataACB = [];
 
+app.use(bodyParser.json()); //PARSEA a JSON DIRECTAMENTE
 app.get("/cool",(req,res)=>{
     
     res.send(cool());
     console.log("New request");
 });
 
+
 app.listen(port,()=>{
     console.log(`Listening in port ${port}`);
 });
 
-// DATOS ANTONIO CARRANZA BARROSO
+
+// DATOS y PETICIONES ANTONIO CARRANZA BARROSO
 app.get("/samples/ACB",(req,res)=>{
     res.send(acb.media_ue(acb.datos_ACB));
     console.log("New request");
 });
+//GET de todos los elementos
+app.get(BASE_API_URL+"/jobs-companies-innovation-stats",(req,res)=>{
+    res.json(dataACB);
+    console.log("New GET request /jobs-companies-innovation-stats");
+});
+//GET loadInitial Data
+app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res)=>{
+    dataACB = acb.datos_ACB;
+    res.json(dataACB);
+    console.log("New GET request /jobs-companies-innovation-stats/loadInitialData");
+});
+
+//POST exitoso /*
+app.post(BASE_API_URL + "/jobs-companies-innovation-stats", (request, response) => {
+    const newStat = request.body;
+    const conflictIndex = dataACB.findIndex(stat => stat.territory === newStat.territory && stat.year === newStat.year && stat.jobs_industry === newStat.jobs_industry
+        && stat.companies_with_innovations === newStat.companies_with_innovations && stat.temporary_eployment === newStat.temporary_eployment) ;
+  
+    if (conflictIndex !== -1) {
+      response.status(409).send({ error: "Ya existe un elemento con los mismos datos" });
+    } else {
+      dataACB.push(newStat);
+      response.sendStatus(201); // Creado correctamente
+      console.log("Nuevo post /jobs-companies-innovation-stats");
+    }
+  });
+  
+//POST FALLIDO
+app.post(BASE_API_URL+"/jobs-companies-innovation-stats/:year",(req,res)=>{
+    res.sendStatus(405, "Method not allowed");
+    console.log("New post /jobs-companies-innovation-stats/:year");
+});
+
+
+//DELETE  del array de recursos 
+app.delete(BASE_API_URL+"/jobs-companies-innovation-stats", (request, response) => {
+    if (!request.body || Object.keys(request.body).length === 0) {
+        dataACB = [];
+        response.status(200).send("Los datos se han borrado correctamente");
+    }else{
+        if (dataACB.length == 0) { // Si el objeto no se encuentra devuelve 404    
+            response.status(404).send("El objeto no existe");
+        }
+    }
+    console.log("Se ha borrado /jobs-companies-innovation-stats");
+});
+
+//DELETE  DE UN RECURSO
+app.delete(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, response) => {
+    const territory = request.params.territory;
+    const index = dataACB.findIndex(item => item.territory === territory); // Encontrar el índice del elemento a eliminar
+    if (index !== -1) { // Comprobar si se encontró el elemento
+      dataACB.splice(index, 1); // Eliminar el elemento en el índice encontrado
+      response.status(204).send("Se ha eliminado correctamente"); // Enviar una respuesta vacía con el código 204 (No Content) para indicar éxito sin contenido
+    } else {
+      response.status(404).send({ error: "No se encontró el elemento con el territorio especificado" }); // Enviar una respuesta con el código 404 (Not Found) si el elemento no se encontró
+    }
+  });
+
+//PUT a un Recurso
+app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, response) => {
+    const newData = request.body; // Obtener los datos actualizados de la solicitud
+    const territory = request.params.territory; // Obtener el territorio de la solicitud
+  
+    // Buscar el elemento a actualizar según el territorio especificado
+    const index = dataACB.findIndex(item => item.territory === territory);
+  
+    if (index !== -1) { // Comprobar si se encontró el elemento
+      dataACB[index] = { ...dataACB[index], ...newData }; // Fusionar los datos actualizados con los existentes
+      response.status(200).send(dataACB[index]); // Enviar el elemento actualizado en la respuesta con el código 200 (OK)
+    } else {
+      response.status(404).send({ error: "No se encontró el elemento con el territorio especificado" }); // Enviar una respuesta con el código 404 (Not Found) si el elemento no se encontró
+    }
+  });
+  //PUT a lista de recursos
+  app.put(BASE_API_URL + "/jobs-companies-innovation-stats",(request,response)=>{
+    response.sendStatus(405, "Method not allowed");
+});
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
 
 
 // DATOS CARLOS GATA MASERO
