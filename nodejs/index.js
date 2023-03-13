@@ -36,6 +36,17 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res
     res.json(dataACB);
     console.log("New GET request /jobs-companies-innovation-stats/loadInitialData");
 });
+//GET recurso especifico
+app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory",(req,res)=>{
+    const territory = req.params.territory; // Obtener el parámetro de territorio de la URL
+    const resource = dataACB.find(resource => resource.territory === territory); // Buscar el recurso por territorio
+
+    if (resource) {
+        res.json(resource); // Devolver el recurso con una respuesta HTTP 200
+    } else {
+        res.status(404).json({error: "Recurso no encontrado"}); // Devolver un error HTTP 404 si no se encuentra el recurso
+    }
+});
 
 //POST exitoso /*
 app.post(BASE_API_URL + "/jobs-companies-innovation-stats", (request, response) => {
