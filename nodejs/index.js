@@ -99,28 +99,28 @@ app.delete(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (reques
       response.status(404).send({ error: "No se encontró el elemento con el territorio especificado" }); // Enviar una respuesta con el código 404 (Not Found) si el elemento no se encontró
     }
   });
-
-//PUT a un Recurso
+// PUT actualizar recurso existente
 app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, response) => {
-    const newData = request.body; // Obtener los datos actualizados de la solicitud
-    const territory = request.params.territory; // Obtener el territorio de la solicitud
-  
-    // Buscar el elemento a actualizar según el territorio especificado
-    const index = dataACB.findIndex(item => item.territory === territory);
-  
-    if (index !== -1) { // Comprobar si se encontró el elemento
-      // Comprobar si el id del recurso en la solicitud PUT coincide con el id del recurso en la URL
-      if (newData.territory === territory) {
-        dataACB[index] = { ...dataACB[index], ...newData }; // Fusionar los datos actualizados con los existentes
-        response.status(200).send(dataACB[index]); // Enviar el elemento actualizado en la respuesta con el código 200 (OK)
-      } else {
-        response.status(400).send({ error: "El id del recurso en la solicitud PUT no coincide con el id del recurso en la URL" }); // Enviar una respuesta con el código 400 (Bad Request) si los ids no coinciden
-      }
-    } else {
-      response.status(404).send({ error: "No se encontró el elemento con el territorio especificado" }); // Enviar una respuesta con el código 404 (Not Found) si el elemento no se encontró
+    const territory = request.params.territory; // Obtener el territorio de la URL
+    const updatedStat = request.body; // Obtener los nuevos datos del cuerpo de la solicitud
+    if (!updatedStat.hasOwnProperty("territory")) { // Comprobar si el cuerpo de la solicitud contiene el campo "territory"
+        response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" });
+        return;
     }
-  });
-  
+    if (territory !== updatedStat.territory) { // Comprobar si el "territory" de la URL es igual al "territory" del cuerpo de la solicitud
+        response.status(400).send({ error: "El ID del recurso no coincide con el ID de la URL" });
+        return;
+    }
+    const index = dataACB.findIndex(stat => stat.territory === territory); // Encontrar el índice del recurso a actualizar
+    if (index !== -1) {
+        dataACB[index] = updatedStat; // Actualizar el recurso en la posición encontrada
+        response.sendStatus(204); // Enviar una respuesta vacía con código de estado 204 (Actualización exitosa)
+        console.log("Recurso actualizado: " + territory);
+    } else {
+        response.status(404).send({ error: "Recurso no encontrado" }); // Si no se encuentra el recurso, devolver un código de estado 404
+    }
+});
+
   //PUT a lista de recursos
   app.put(BASE_API_URL + "/jobs-companies-innovation-stats",(request,response)=>{
     response.sendStatus(405, "Method not allowed");
