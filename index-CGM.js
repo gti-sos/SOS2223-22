@@ -1,4 +1,4 @@
-var datos = [
+var datos_cgm = [
     { territory: "spain", year: 2008, ICT_manufacturing_industry: 0.05, wholesale_trade: 0.18, edition_of_computer_program: 0.01 },
     { territory: "spain", year: 2009, ICT_manufacturing_industry: 0.04, wholesale_trade: 0.14, edition_of_computer_program: 0.01 },
     { territory: "spain", year: 2010, ICT_manufacturing_industry: 0.03, wholesale_trade: 0.12, edition_of_computer_program: 0.01 },
@@ -11,14 +11,16 @@ var datos = [
     { territory: "spain", year: 2017, ICT_manufacturing_industry: 0.07, wholesale_trade: 0.30, edition_of_computer_program: 0.05 }
 ];
 
-// Datos de territorio de España
-var valores = datos.filter(territorio => territorio.territory == "spain");
+function media_sp(datos){
+    // Datos de territorio de España
+    var valores = datos.filter(territorio => territorio.territory == "spain");
 
-// Valores de wholesale_trade
-var valores_wt = [];
-valores.forEach(valor => {valores_wt.push(valor.wholesale_trade)});
+    // Valores de wholesale_trade
+    var valores_wt = [];
+    valores.forEach(valor => {valores_wt.push(valor.wholesale_trade)});
 
-//calcular media
-suma_total = 0;
-valores_wt.forEach(num => {suma_total+= num});
-console.log(suma_total/valores_wt.length);
+    //calcular media
+    suma_total = 0;
+    valores_wt.forEach(num => {suma_total+= num});
+    console.log(suma_total/valores_wt.length);
+}
