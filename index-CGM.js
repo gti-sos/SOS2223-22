@@ -22,5 +22,9 @@ function media_sp(datos){
     //calcular media
     suma_total = 0;
     valores_wt.forEach(num => {suma_total+= num});
-    console.log(suma_total/valores_wt.length);
+    var res = "La media de valores es: "+suma_total/valores_wt.length;
+    return res;
 }
+
+module.exports.datos_cgm = datos_cgm;
+module.exports.media_sp = media_sp;
