@@ -51,6 +51,11 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory",(req,res)=>{
 //POST exitoso /*
 app.post(BASE_API_URL + "/jobs-companies-innovation-stats", (request, response) => {
     const newStat = request.body;
+     // Comprobar que el objeto JSON tiene los campos esperados
+  if (!newStat.hasOwnProperty("territory") || !newStat.hasOwnProperty("year") || !newStat.hasOwnProperty("jobs_industry") || !newStat.hasOwnProperty("companies_with_innovations") || !newStat.hasOwnProperty("temporary_eployment")) {
+    response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" }); // Enviar una respuesta con el código 400 (Bad Request) si el objeto JSON no tiene los campos esperados
+    return;
+  }
     const conflictIndex = dataACB.findIndex(stat => stat.territory === newStat.territory && stat.year === newStat.year && stat.jobs_industry === newStat.jobs_industry
         && stat.companies_with_innovations === newStat.companies_with_innovations && stat.temporary_eployment === newStat.temporary_eployment) ;
   
