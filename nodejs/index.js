@@ -104,12 +104,18 @@ app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, 
     const index = dataACB.findIndex(item => item.territory === territory);
   
     if (index !== -1) { // Comprobar si se encontró el elemento
-      dataACB[index] = { ...dataACB[index], ...newData }; // Fusionar los datos actualizados con los existentes
-      response.status(200).send(dataACB[index]); // Enviar el elemento actualizado en la respuesta con el código 200 (OK)
+      // Comprobar si el id del recurso en la solicitud PUT coincide con el id del recurso en la URL
+      if (newData.territory === territory) {
+        dataACB[index] = { ...dataACB[index], ...newData }; // Fusionar los datos actualizados con los existentes
+        response.status(200).send(dataACB[index]); // Enviar el elemento actualizado en la respuesta con el código 200 (OK)
+      } else {
+        response.status(400).send({ error: "El id del recurso en la solicitud PUT no coincide con el id del recurso en la URL" }); // Enviar una respuesta con el código 400 (Bad Request) si los ids no coinciden
+      }
     } else {
       response.status(404).send({ error: "No se encontró el elemento con el territorio especificado" }); // Enviar una respuesta con el código 404 (Not Found) si el elemento no se encontró
     }
   });
+  
   //PUT a lista de recursos
   app.put(BASE_API_URL + "/jobs-companies-innovation-stats",(request,response)=>{
     response.sendStatus(405, "Method not allowed");
