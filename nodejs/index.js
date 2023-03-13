@@ -190,7 +190,7 @@ app.get("/samples/TTG",(req,res)=>{
             year: 2008,
             traveler: 44106.8,
             overnight_stay: 155695.33,
-            average_stay: 35299620466685400n
+            average_stay: 35299620466685400
     
         },
         {
@@ -206,7 +206,7 @@ app.get("/samples/TTG",(req,res)=>{
             year: 2008,
             traveler: 494854.35,
             overnight_stay: 1742019.58,
-            average_stay: 35202672867279000n
+            average_stay: 35202672867279000
     
         },
         {
@@ -230,7 +230,7 @@ app.get("/samples/TTG",(req,res)=>{
             year: 2009,
             traveler: 35623.35,
             overnight_stay: 134287.3,
-            average_stay: 37696426641514600n
+            average_stay: 37696426641514600
     
         },
         {
