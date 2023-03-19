@@ -8,55 +8,92 @@ var app = express();
 var port = process.env.PORT || 12345;
 const BASE_API_URL = "/api/v1";
 var dataACB = [];
-
+var dataStore = require("nedb");
+var dbAcb = new dataStore();
+dbAcb.insert(dataACB);
 
 module.exports = (app) =>{
     // /////////////////////////////////////////////////////////                                             ///////////////////////////////////////////////////////// 
 // ///////////////////////////////////////////////////////// DATOS Y PETICIONES ANTONIO CARRANZA BARROSO /////////////////////////////////////////////////////////
-// /////////////////////////////////////////////////////////                                             /////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////             
+app.use(bodyParser.json());                                /////////////////////////////////////////////////////////
 
 //GET de todos los elementos
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats",(req,res)=>{
-    res.json(dataACB);
     console.log("New GET request /jobs-companies-innovation-stats");
+    dbAcb.find({},(err,jobs)=>{
+        if(err){
+            console.log(`Error getting /jobs: ${err}`);
+            res.sendStatus(500);
+        }else{
+            res.json(jobs.map((j)=>{
+                delete j._id;
+                return j;
+            }));
+        
+        }
+    })   
 });
+
 //GET loadInitial Data
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res)=>{
-    dataACB = acb.datos_ACB;
-    res.json(dataACB);
-    console.log("New GET request /jobs-companies-innovation-stats/loadInitialData");
+    dbAcb.insert(acb.datos_ACB, (err, data) => {
+        if (err) {
+            console.log(`Error inserting data: ${err}`);
+            res.sendStatus(500);
+        } else {
+            data.forEach((d) => delete d._id);
+            res.json(data);
+            console.log("New GET request /jobs-companies-innovation-stats/loadInitialData");
+        }
+    });
 });
-//GET recurso especifico
+
+
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory",(req,res)=>{
-    const territory = req.params.territory; // Obtener el parámetro de territorio de la URL
-    const resource = dataACB.find(resource => resource.territory === territory); // Buscar el recurso por territorio
-
-    if (resource) {
-        res.json(resource); // Devolver el recurso con una respuesta HTTP 200
-    } else {
-        res.status(404).json({error: "Recurso no encontrado"}); // Devolver un error HTTP 404 si no se encuentra el recurso
-    }
+    const territory = req.params.territory;
+    dbAcb.findOne({territory: territory}, (err, resource) => {
+        if (err) {
+            console.log(`Error getting resource ${territory}: ${err}`);
+            res.sendStatus(500);
+        } else if (resource) {
+            delete resource._id;
+            res.json(resource);
+            console.log(`New GET request /jobs-companies-innovation-stats/${territory}`);
+        } else {
+            res.status(404).json({error: "Recurso no encontrado"});
+        }
+    });
 });
 
-//POST exitoso /*
 app.post(BASE_API_URL + "/jobs-companies-innovation-stats", (request, response) => {
     const newStat = request.body;
-     // Comprobar que el objeto JSON tiene los campos esperados
-  if (!newStat.hasOwnProperty("territory") || !newStat.hasOwnProperty("year") || !newStat.hasOwnProperty("jobs_industry") || !newStat.hasOwnProperty("companies_with_innovations") || !newStat.hasOwnProperty("temporary_employment")) {
-    response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" }); // Enviar una respuesta con el código 400 (Bad Request) si el objeto JSON no tiene los campos esperados
-    return;
-  }
-    const conflictIndex = dataACB.findIndex(stat => stat.territory === newStat.territory && stat.year === newStat.year && stat.jobs_industry === newStat.jobs_industry
-        && stat.companies_with_innovations === newStat.companies_with_innovations && stat.temporary_eployment === newStat.temporary_eployment) ;
-  
-    if (conflictIndex !== -1) {
-      response.status(409).send({ error: "Ya existe un elemento con los mismos datos" });
-    } else {
-      dataACB.push(newStat);
-      response.sendStatus(201); // Creado correctamente
-      console.log("Nuevo post /jobs-companies-innovation-stats");
+    // Check that the JSON object has the expected fields
+    if (!newStat.hasOwnProperty("territory") || !newStat.hasOwnProperty("year") || !newStat.hasOwnProperty("jobs_industry") || !newStat.hasOwnProperty("companies_with_innovations") || !newStat.hasOwnProperty("temporary_employment")) {
+        response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" });
+        return;
     }
-  });
+    // Check if the same resource already exists in the database
+    dbAcb.findOne({ territory: newStat.territory, year: newStat.year, jobs_industry: newStat.jobs_industry, companies_with_innovations: newStat.companies_with_innovations, temporary_employment: newStat.temporary_employment }, (err, resource) => {
+        if (err) {
+            console.log(`Error getting resource ${newStat.territory}: ${err}`);
+            response.sendStatus(500);
+        } else if (resource) {
+            response.status(409).send({ error: "Ya existe un elemento con los mismos datos" });
+        } else {
+            dbAcb.insert(newStat, (err, data) => {
+                if (err) {
+                    console.log(`Error inserting data: ${err}`);
+                    response.sendStatus(500);
+                } else {
+                    response.sendStatus(201);
+                    console.log("Nuevo post /jobs-companies-innovation-stats");
+                }
+            });
+        }
+    });
+});
+
   
 //POST FALLIDO
 app.post(BASE_API_URL+"/jobs-companies-innovation-stats/:year",(req,res)=>{
@@ -65,56 +102,80 @@ app.post(BASE_API_URL+"/jobs-companies-innovation-stats/:year",(req,res)=>{
 });
 
 
-//DELETE  del array de recursos 
 app.delete(BASE_API_URL+"/jobs-companies-innovation-stats", (request, response) => {
-    if (!request.body || Object.keys(request.body).length === 0) {
-        dataACB = [];
-        response.status(200).send("Los datos se han borrado correctamente");
-    }else{
-        if (dataACB.length == 0) { // Si el objeto no se encuentra devuelve 404    
-            response.status(404).send("El objeto no existe");
+    dbAcb.remove({}, { multi: true }, (err, numRemoved) => {
+        if (err) {
+            console.log(`Error removing data: ${err}`);
+            response.sendStatus(500);
+        } else {
+            response.status(200).send(`Se han borrado ${numRemoved} registros correctamente`);
+            console.log("Se ha borrado /jobs-companies-innovation-stats");
         }
-    }
-    console.log("Se ha borrado /jobs-companies-innovation-stats");
+    });
+});
+app.delete(BASE_API_URL+"/jobs-companies-innovation-stats", (request, response) => {
+    dbAcb.remove({}, { multi: true }, (err, numRemoved) => {
+        if (err) {
+            console.log(`Error removing data: ${err}`);
+            response.sendStatus(500);
+        } else {
+            response.status(200).send(`Se han borrado ${numRemoved} registros correctamente`);
+            console.log("Se ha borrado /jobs-companies-innovation-stats");
+        }
+    });
 });
 
-//DELETE  DE UN RECURSO
+// DELETE DE UN RECURSO
 app.delete(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, response) => {
     const territory = request.params.territory;
-    const index = dataACB.findIndex(item => item.territory === territory); // Encontrar el índice del elemento a eliminar
-    if (index !== -1) { // Comprobar si se encontró el elemento
-      dataACB.splice(index, 1); // Eliminar el elemento en el índice encontrado
-      response.status(204).send("Se ha eliminado correctamente"); // Enviar una respuesta vacía con el código 204 (No Content) para indicar éxito sin contenido
-    } else {
-      response.status(404).send({ error: "No se encontró el elemento con el territorio especificado" }); // Enviar una respuesta con el código 404 (Not Found) si el elemento no se encontró
-    }
-  });
+    dbAcb.remove({ territory: territory }, {}, (err, numRemoved) => {
+        if (err) {
+            console.log(`Error removing data: ${err}`);
+            response.sendStatus(500);
+        } else if (numRemoved === 0) {
+            response.status(404).send({ error: "No se encontró el elemento con el territorio especificado" });
+        } else {
+            response.status(204).send(`El recurso con territorio ${territory} ha sido eliminado correctamente`);
+            console.log(`Se ha eliminado el recurso con territorio: ${territory}`);
+        }
+    });
+});
+
+
+
 // PUT actualizar recurso existente
 app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, response) => {
     const territory = request.params.territory; // Obtener el territorio de la URL
     const updatedStat = request.body; // Obtener los nuevos datos del cuerpo de la solicitud
-    if (!updatedStat.hasOwnProperty("territory")) { // Comprobar si el cuerpo de la solicitud contiene el campo "territory"
+
+    // Comprobar si el cuerpo de la solicitud contiene todos los campos requeridos
+    if (!updatedStat.hasOwnProperty("territory") || !updatedStat.hasOwnProperty("year") || !updatedStat.hasOwnProperty("jobs_industry") || !updatedStat.hasOwnProperty("companies_with_innovations") || !updatedStat.hasOwnProperty("temporary_employment")) {
         response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" });
         return;
     }
+
     if (territory !== updatedStat.territory) { // Comprobar si el "territory" de la URL es igual al "territory" del cuerpo de la solicitud
         response.status(400).send({ error: "El ID del recurso no coincide con el ID de la URL" });
         return;
     }
-    const index = dataACB.findIndex(stat => stat.territory === territory); // Encontrar el índice del recurso a actualizar
-    if (index !== -1) {
-        dataACB[index] = updatedStat; // Actualizar el recurso en la posición encontrada
-        response.sendStatus(204); // Enviar una respuesta vacía con código de estado 204 (Actualización exitosa)
-        console.log("Recurso actualizado: " + territory);
-    } else {
-        response.status(404).send({ error: "Recurso no encontrado" }); // Si no se encuentra el recurso, devolver un código de estado 404
-    }
+
+    dbAcb.update({ territory: territory }, updatedStat, {}, (err, numReplaced) => {
+        if (err) {
+            console.log(`Error updating resource ${territory}: ${err}`);
+            response.sendStatus(500);
+        } else if (numReplaced === 0) {
+            response.status(404).send({ error: "Recurso no encontrado" });
+        } else {
+            response.sendStatus(204);
+            console.log("Recurso actualizado: " + territory);
+        }
+    });
 });
+
 
   //PUT a lista de recursos
   app.put(BASE_API_URL + "/jobs-companies-innovation-stats",(request,response)=>{
     response.sendStatus(405, "Method not allowed");
 });
-
 
 }

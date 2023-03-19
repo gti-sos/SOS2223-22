@@ -10,6 +10,7 @@ var dataACB = [];
 var dataCGM = [];
 
 
+
 app.use("/",express.static("./public"));
 
 app.use(bodyParser.json()); //PARSEA a JSON DIRECTAMENTE
