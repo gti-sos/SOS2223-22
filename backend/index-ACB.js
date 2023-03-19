@@ -71,24 +71,5 @@ var datos_acb = [
     }
    ];
 
-   function media_ue (datos){
-
-        var r = 0.0;
-        var contador = 0.0;
-    
-        datos_acb.forEach(function(a){
-            if(a.territory=="union europea 15" || a.territory=="union europea 28"){
-                contador++;
-                r += a.jobs_industry;
-            }           
-        }
-    );
- 
-    var mensaje =  ("Los trabajos en industria en europa alcanzan la cifra de: "+ r/contador + " puestos");
- 
-    return mensaje;
-   }
-   
 
    module.exports.datos_ACB = datos_acb;
-   module.exports.media_ue = media_ue;
