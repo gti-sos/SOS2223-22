@@ -20,20 +20,27 @@ module.exports = (app) =>{
 app.use(bodyParser.json());                                /////////////////////////////////////////////////////////
 
 //GET de todos los elementos
-app.get(BASE_API_URL+"/jobs-companies-innovation-stats",(req,res)=>{
+app.get(BASE_API_URL+"/jobs-companies-innovation-stats", (req, res) => {
     console.log("New GET request /jobs-companies-innovation-stats");
-    dbAcb.find({},(err,jobs)=>{
-        if(err){
-            console.log(`Error getting /jobs: ${err}`);
-            res.sendStatus(500);
-        }else{
-            res.json(jobs.map((j)=>{
-                delete j._id;
-                return j;
-            }));
-        
-        }
-    })   
+
+    // Obtener offset y limit de los parámetros de la consulta, si están presentes
+    const offset = parseInt(req.query.offset) || 0;
+    const limit = parseInt(req.query.limit) || 10;
+
+    dbAcb.find({})
+         .skip(offset)
+         .limit(limit)
+         .exec((err, jobs) => {
+            if (err) {
+                console.log(`Error getting /jobs: ${err}`);
+                res.sendStatus(500);
+            } else {
+                res.json(jobs.map((j) => {
+                    delete j._id;
+                    return j;
+                }));
+            }
+        });
 });
 
 //GET loadInitial Data
@@ -50,6 +57,7 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res
     });
 });
 
+/*
 
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory",(req,res)=>{
     const territory = req.params.territory;
@@ -65,7 +73,7 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory",(req,res)=>{
             res.status(404).json({error: "Recurso no encontrado"});
         }
     });
-});
+});*/
 
 app.post(BASE_API_URL + "/jobs-companies-innovation-stats", (request, response) => {
     const newStat = request.body;
@@ -180,11 +188,46 @@ app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, 
 });
 
 
+app.get(BASE_API_URL + "/jobs-companies-innovation-stats/search", (req, res) => {
+    console.log("New GET request to /jobs-companies-innovation-stats/search");
+
+    const query = req.query;
+    const searchQuery = {};
+
+    for (const key in query) {
+        if (query.hasOwnProperty(key)) {
+            if (key === "year") {
+                searchQuery[key] = parseInt(query[key]);
+            } else if (key === "jobs_industry") {
+                searchQuery[key] = parseInt(query[key]);
+            } else if (key === "companies_with_innovations" || key === "temporary_employment") {
+                searchQuery[key] = parseFloat(query[key]);
+            } else {
+                searchQuery[key] = new RegExp(query[key], "i");
+            }
+        }
+    }
+
+    dbAcb.find(searchQuery, (err, jobs) => {
+        if (err) {
+            console.log(`Error getting /jobs: ${err}`);
+            res.sendStatus(500);
+        } else {
+            res.json(jobs.map((j) => {
+                delete j._id;
+                return j;
+            }));
+        }
+    });
+});
+
+
+  
+
 
 // /////////////////////////////////////////////////////////                                       //////////////////////////////////////////////////////////
 // ///////////////////////////////////////////////////////// DATOS Y PETICIONES CARLOS GATA MASERO //////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////                                       //////////////////////////////////////////////////////////
-
 
 app.get("/samples/CGM",(req,res)=>{
     res.send(cgm.media_sp(cgm.datos_cgm));
