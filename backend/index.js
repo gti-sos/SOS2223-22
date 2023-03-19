@@ -224,6 +224,10 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/search", (req, res) => 
         }
     });
 });
+app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
+    console.log("New GET request to /jobs-companies-innovation-stats/docs");
+    res.redirect("https://documenter.getpostman.com/view/14969056/2s93JzN1Yu");
+});
 
   
 
