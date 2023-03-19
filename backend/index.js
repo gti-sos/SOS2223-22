@@ -213,14 +213,17 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/search", (req, res) => 
             console.log(`Error getting /jobs: ${err}`);
             res.sendStatus(500);
         } else {
-            res.json(jobs.map((j) => {
-                delete j._id;
-                return j;
-            }));
+            if (jobs.length === 0) {
+                res.status(404).json({error: "No se encontraron resultados para la búsqueda"});
+            } else {
+                res.json(jobs.map((j) => {
+                    delete j._id;
+                    return j;
+                }));
+            }
         }
     });
 });
-
 
   
 
