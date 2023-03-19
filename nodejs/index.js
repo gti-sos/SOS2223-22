@@ -1,6 +1,6 @@
 var express = require('express');
 var cool = require('cool-ascii-faces');
-var cgm = require("../index-CGM");
+//var cgm = require("../index-CGM");
 var bodyParser = require("body-parser");
 const backend = require('../backend');
 var app = express();
