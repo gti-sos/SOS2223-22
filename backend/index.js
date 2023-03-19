@@ -1,6 +1,5 @@
 var express = require('express');
 var acb = require("../backend/index-ACB");
-var cool = require('cool-ascii-faces');
 var cgm = require("../backend/index-CGM");
 var bodyParser = require("body-parser");
 const backend = require('../backend');
