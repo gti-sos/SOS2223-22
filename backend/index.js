@@ -8,14 +8,10 @@ var app = express();
 var port = process.env.PORT || 12345;
 const BASE_API_URL = "/api/v1";
 var dataACB = [];
-<<<<<<< HEAD
 var dataCGM = [];
-
-=======
-var dataStore = require("nedb");
-var dbAcb = new dataStore();
+var DataStore = require("nedb");
+var dbAcb = new DataStore();
 dbAcb.insert(dataACB);
->>>>>>> dc259c6e1bd540a327e0e465a1e87a2c5ba89210
 
 module.exports = (app) =>{
     // /////////////////////////////////////////////////////////                                             ///////////////////////////////////////////////////////// 
@@ -183,7 +179,6 @@ app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, 
     response.sendStatus(405, "Method not allowed");
 });
 
-<<<<<<< HEAD
 
 // /////////////////////////////////////////////////////////                                       //////////////////////////////////////////////////////////
 // ///////////////////////////////////////////////////////// DATOS Y PETICIONES CARLOS GATA MASERO //////////////////////////////////////////////////////////
@@ -312,6 +307,4 @@ app.put(BASE_API_URL + "/ICT-promotion-strategy-stats/:id", (request, response) 
 
 
 }
-=======
-}
->>>>>>> dc259c6e1bd540a327e0e465a1e87a2c5ba89210
+
