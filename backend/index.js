@@ -348,10 +348,11 @@ app.delete(BASE_API_URL+"/ICT-promotion-strategy-stats", (request, response) => 
 app.delete(BASE_API_URL + "/ICT-promotion-strategy-stats/:id", (request, response) => {
     const id = parseInt(request.params.id);
     dbCgm.remove({ id: id }, {}, (err, numRemoved) => {
+        console.log(numRemoved);
         if (err) {
             console.log(`Error removing data: ${err}`);
             response.sendStatus(500);
-        } else if (numRemoved === 0) {
+        } else if (numRemoved == 0) {
             response.status(404).send({ error: "No se encontró el elemento con la ID especificada" });
         } else {
             response.status(204).send(`El recurso con ID ${id} ha sido eliminado correctamente`);
@@ -381,10 +382,11 @@ app.put(BASE_API_URL + "/ICT-promotion-strategy-stats/:id", (request, response) 
     }
 
     dbCgm.update({ id: id }, updatedStat, {}, (err, numReplaced) => {
+        console.log(numReplaced);
         if (err) {
             console.log(`Error updating resource ${id}: ${err}`);
             response.sendStatus(500);
-        } else if (numReplaced === 0) {
+        } else if (numReplaced == 0) {
             response.status(404).send({ error: "Recurso no encontrado" });
         } else {
             response.sendStatus(204);
