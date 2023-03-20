@@ -406,5 +406,45 @@ app.get(BASE_API_URL + "/ICT-promotion-strategy-stats/docs", (req, res) => {
     res.redirect("https://documenter.getpostman.com/view/26062709/2s93JzN1rf");
 });
 
+//Buscar por x recusrso
+app.get(BASE_API_URL + "/ICT-promotion-strategy-stats/search", (req, res) => {
+    console.log("New GET request to /ICT-promotion-strategy-stats/search");
+
+    const query = req.query;
+    const searchQuery = {};
+
+    for (const key in query) {
+        if (query.hasOwnProperty(key)) {
+            if (key === "territory") {
+                searchQuery[key] = query[key];
+            }
+            if (key === "year" || key === "id") {
+                searchQuery[key] = parseInt(query[key]);
+            } 
+            else if (key === "ICT_manufacturing_industry" || key === "wholesale_trade" || key === "edition_of_computer_program") {
+                searchQuery[key] = parseFloat(query[key]);
+            } 
+            else {
+                searchQuery[key] = new RegExp(query[key], "i");
+            }
+        }
+    }
+
+    dbCgm.find(searchQuery, (err, jobs) => {
+        if (err) {
+            console.log(`Error getting /jobs: ${err}`);
+            res.sendStatus(500);
+        } else {
+            if (jobs.length === 0) {
+                res.status(404).json({error: "No se encontraron resultados para la búsqueda"});
+            } else {
+                res.json(jobs.map((j) => {
+                    delete j._id;
+                    return j;
+                }));
+            }
+        }
+    });
+});
 
 }
