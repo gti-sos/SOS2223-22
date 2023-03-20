@@ -1,6 +1,5 @@
 var express = require('express');
 var acb = require("../backend/index-ACB");
-var cool = require('cool-ascii-faces');
 var cgm = require("../backend/index-CGM");
 var bodyParser = require("body-parser");
 const backend = require('../backend');
@@ -114,17 +113,7 @@ app.post(BASE_API_URL+"/jobs-companies-innovation-stats/:year",(req,res)=>{
 });
 
 
-app.delete(BASE_API_URL+"/jobs-companies-innovation-stats", (request, response) => {
-    dbAcb.remove({}, { multi: true }, (err, numRemoved) => {
-        if (err) {
-            console.log(`Error removing data: ${err}`);
-            response.sendStatus(500);
-        } else {
-            response.status(200).send(`Se han borrado ${numRemoved} registros correctamente`);
-            console.log("Se ha borrado /jobs-companies-innovation-stats");
-        }
-    });
-});
+
 app.delete(BASE_API_URL+"/jobs-companies-innovation-stats", (request, response) => {
     dbAcb.remove({}, { multi: true }, (err, numRemoved) => {
         if (err) {
