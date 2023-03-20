@@ -401,5 +401,10 @@ app.put(BASE_API_URL + "/ICT-promotion-strategy-stats/:id", (request, response) 
     response.sendStatus(405, "Method not allowed");
 });
 
+app.get(BASE_API_URL + "/ICT-promotion-strategy-stats/docs", (req, res) => {
+    console.log("New GET request to /ICT-promotion-strategy-stats/docs");
+    res.redirect("https://documenter.getpostman.com/view/26062709/2s93JzN1rf");
+});
+
 
 }
