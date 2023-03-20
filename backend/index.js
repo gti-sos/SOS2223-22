@@ -230,57 +230,91 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
 
 //GET de todos los elementos
 app.get(BASE_API_URL+"/ICT-promotion-strategy-stats",(req,res)=>{
-    res.json(dataCGM);
     console.log("New GET request /ICT-promotion-strategy-stats");
+
+    //PRUEBA: http://localhost:12345/api/v1/ICT-promotion-strategy-stats?offset=0&limit=5
+
+    // Obtener offset y limit de los parámetros de la consulta, si están presentes
+    const offset = parseInt(req.query.offset) || 0;
+    const limit = parseInt(req.query.limit) || 1000;
+
+    dbCgm.find({})
+    .sort({id: 1}) // ordenar por id en orden ascendente
+    .skip(offset)
+    .limit(limit)
+    .exec((err, jobs) => {
+        if (err) {
+            console.log(`Error getting /jobs: ${err}`);
+            res.sendStatus(500);
+        } else {
+            res.json(jobs.map((j) => {
+                delete j._id;
+                return j;
+            }));
+        }
+    });
 });
 
-//GET loadInitialData
+//GET loadInitial Data
 app.get(BASE_API_URL+"/ICT-promotion-strategy-stats/loadInitialData",(req,res)=>{
-    dataCGM = cgm.datos_cgm;
-    res.json(dataCGM);
-    console.log(cgm.datos_cgm);
-    console.log("New GET request /ICT-promotion-strategy-stats/loadInitialData");
+    dbCgm.insert(cgm.datos_cgm, (err, data) => {
+        if (err) {
+            console.log(`Error inserting data: ${err}`);
+            res.sendStatus(500);
+        } else {
+            data.forEach((d) => delete d._id);
+            res.json(data);
+            console.log("New GET request /ICT-promotion-strategy-stats/loadInitialData");
+        }
+    });
 });
 
-//GET recurso especifico
-app.get(BASE_API_URL+"/ICT-promotion-strategy-stats/:id",(req,res)=>{
-    const id = req.params.id; // URL: parámetro de id
-    console.log(id);
-    const resource = dataCGM.find(r => r.id == id); // busca el recurso por id
-    console.log(resource);
-    if (resource) {
-        res.json(resource); // Devolver recurso (respuesta HTTP 200)
-    } else {
-        res.status(404).json({error: "Recurso no encontrado"}); // Devolver error HTTP 404 si no encuentra recurso
-    }
-});
+// //GET recurso especifico
+// app.get(BASE_API_URL+"/ICT-promotion-strategy-stats/:id",(req,res)=>{
+//     const id = req.params.id; // URL: parámetro de id
+//     console.log(id);
+//     const resource = dataCGM.find(r => r.id == id); // busca el recurso por id
+//     console.log(resource);
+//     if (resource) {
+//         res.json(resource); // Devolver recurso (respuesta HTTP 200)
+//     } else {
+//         res.status(404).json({error: "Recurso no encontrado"}); // Devolver error HTTP 404 si no encuentra recurso
+//     }
+// });
 
-//POST ok
+//POST añadir datos
 app.post(BASE_API_URL + "/ICT-promotion-strategy-stats", (request, response) => {
     const ns = request.body;
-   // response.sendStatus(201); // Objeto creado ok
-     // Comprueba que el JSON tiene los campos correctos
-  if (!ns.hasOwnProperty("id") || !ns.hasOwnProperty("territory") || !ns.hasOwnProperty("year") || !ns.hasOwnProperty("ICT_manufacturing_industry") || !ns.hasOwnProperty("wholesale_trade") || !ns.hasOwnProperty("edition_of_computer_program")) 
-  {
-    response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" }); // Enviar una respuesta con el código 400 (Bad Request) si el objeto JSON no tiene los campos esperados
-    return;
-  }
-    const conflictIndex = dataCGM.findIndex(stat => stat.id == ns.id 
-                                                 && stat.territory === ns.territory 
-                                                 && stat.year === ns.year 
-                                                 && stat.ICT_manufacturing_industry === ns.ICT_manufacturing_industry
-                                                 && stat.wholesale_trade === ns.wholesale_trade 
-                                                 && stat.edition_of_computer_program === ns.edition_of_computer_program) ;
-  
-    if (conflictIndex !== -1) {
-      response.status(409).send({ error: "Ya existe un elemento con los mismos datos" }); // ERROR, ya existe un objeto con esos datos
-      console.log("Error: Ya existe un elemento con los mismos datos");
-    } else {
-      dataCGM.push(ns);
-      response.sendStatus(201); // Objeto creado ok
-      console.log("Nuevo post /ICT-promotion-strategy-stats");
+    // Check that the JSON object has the expected fields
+    if (!ns.hasOwnProperty("id") || !ns.hasOwnProperty("territory") || !ns.hasOwnProperty("year") || !ns.hasOwnProperty("ICT_manufacturing_industry") || !ns.hasOwnProperty("wholesale_trade") || !ns.hasOwnProperty("edition_of_computer_program")) 
+    {
+      response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" }); // Enviar una respuesta con el código 400 (Bad Request) si el objeto JSON no tiene los campos esperados
+      return;
     }
-  });
+    // Check if the same resource already exists in the database
+    dbCgm.findOne({ id: ns.id, territory: ns.territory, year: ns.year, 
+    ICT_manufacturing_industry: ns.ICT_manufacturing_industry, 
+    wholesale_trade: ns.wholesale_trade, 
+    edition_of_computer_program: ns.edition_of_computer_program }, (err, resource) => {
+        
+        if (err) {
+            console.log(`Error getting resource ${newStat.id}: ${err}`);
+            response.sendStatus(500);
+        } else if (resource) {
+            response.status(409).send({ error: "Ya existe un elemento con los mismos datos" });
+        } else {
+            dbCgm.insert(ns, (err, data) => {
+                if (err) {
+                    console.log(`Error inserting data: ${err}`);
+                    response.sendStatus(500);
+                } else {
+                    response.sendStatus(201);
+                    console.log("Nuevo post /ICT-promotion-strategy-stats");
+                }
+            });
+        }
+    });
+});
 
 //POST fallo
 app.post(BASE_API_URL+"/ICT-promotion-strategy-stats/:year",(req,res)=>{
@@ -288,56 +322,77 @@ app.post(BASE_API_URL+"/ICT-promotion-strategy-stats/:year",(req,res)=>{
     console.log("New post /ICT-promotion-strategy-stats/:year");
 });
 
-//DELETE  array completo
+// DELETE array completo
 app.delete(BASE_API_URL+"/ICT-promotion-strategy-stats", (request, response) => {
-    if (!request.body || Object.keys(request.body).length === 0) {
-        dataCGM = [];
-        response.status(200).send("Los datos se han borrado correctamente");
-    }else{
-        if (dataCGM.length == 0) { // si no encuentra el Objeto -> error 404 ya que el objeto no existe  
-            response.status(404).send("El objeto no existe");
+    dbCgm.find({}, (err, docs) => {
+        if (err) {
+            console.log(`Error finding data: ${err}`);
+            response.sendStatus(500);
+        } else if (docs.length === 0) { // Comprobar si el array está vacío
+            response.status(404).send("No se encontraron registros para borrar");
+        } else {
+            dbCgm.remove({}, { multi: true }, (err, numRemoved) => {
+                if (err) {
+                    console.log(`Error removing data: ${err}`);
+                    response.sendStatus(500);
+                } else {
+                    response.status(200).send(`Se han borrado ${numRemoved} registros correctamente`);
+                    console.log("Se ha borrado /jobs-companies-innovation-stats");
+                }
+            });
         }
-    }
-    console.log("Se ha borrado /ICT-promotion-strategy-stats");
+    });
 });
 
-//DELETE  DE UN RECURSO
+// DELETE DE UN RECURSO
 app.delete(BASE_API_URL + "/ICT-promotion-strategy-stats/:id", (request, response) => {
-    const id = request.params.id;
-    const indice = dataCGM.findIndex(i => i.id == id); // Encontrar el índice del elemento a eliminar
-    if (indice !== -1) { // Si encuentra el elemento segun el indice, lo elimina y envia una respuesta + 204 (No Content)
-      dataCGM.splice(indice, 1);
-      response.status(204).send("Se ha eliminado correctamente el objeto con id= "+id);
-      console.log(id+" eliminado correctamente");
-    } else { // respuesta + código 404 (Not Found) si no encuentra el elemento
-      response.status(404).send({ error: "No se encontró el elemento con el territorio especificado" });
-    }
-  });
+    const id = parseInt(request.params.id);
+    dbCgm.remove({ id: id }, {}, (err, numRemoved) => {
+        if (err) {
+            console.log(`Error removing data: ${err}`);
+            response.sendStatus(500);
+        } else if (numRemoved === 0) {
+            response.status(404).send({ error: "No se encontró el elemento con la ID especificada" });
+        } else {
+            response.status(204).send(`El recurso con ID ${id} ha sido eliminado correctamente`);
+            console.log(`Se ha eliminado el recurso con ID: ${id}`);
+        }
+    });
+});
 
 // PUT actualizar recurso existente
 app.put(BASE_API_URL + "/ICT-promotion-strategy-stats/:id", (request, response) => {
     const id = parseInt(request.params.id);
-    const upd_s = request.body;
-    
-    if (!upd_s.hasOwnProperty("id")) { // Comprobar si el cuerpo de la solicitud contiene el campo "id"
+    const updatedStat = request.body;
+    console.log("tamos aki");
+
+    // Comprobar si no tiene todos los campos requeridos
+    if (!updatedStat.hasOwnProperty("id") || !updatedStat.hasOwnProperty("territory") || !updatedStat.hasOwnProperty("year") 
+    || !updatedStat.hasOwnProperty("ICT_manufacturing_industry") || !updatedStat.hasOwnProperty("wholesale_trade") 
+    || !updatedStat.hasOwnProperty("edition_of_computer_program"))
+    {
         response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" });
         return;
     }
-    console.log(upd_s);
-    if (id !== upd_s.id) { // Comprobar si el "id" de la URL es igual al "id" de la solicitud
+
+    if (id !== updatedStat.id) { // Comprobar si el "id" de la URL es igual al "id" del cuerpo de la solicitud
         response.status(400).send({ error: "El ID del recurso no coincide con el ID de la URL" });
         return;
     }
-    const indice = dataCGM.findIndex(stat => stat.id == id); // Encontrar el índice del recurso a actualizar
-    console.log(indice);
-    if (indice != -1) {
-        dataCGM[indice] = upd_s; // Actualizar recurso
-        response.sendStatus(204); // Enviar respuesta actualización exitosa
-        console.log("Recurso actualizado: " + id);
-    } else {
-        response.status(404).send({ error: "Recurso no encontrado" }); // Si no se encuentra el recurso, devolver un código de estado 404
-    }
+
+    dbCgm.update({ id: id }, updatedStat, {}, (err, numReplaced) => {
+        if (err) {
+            console.log(`Error updating resource ${id}: ${err}`);
+            response.sendStatus(500);
+        } else if (numReplaced === 0) {
+            response.status(404).send({ error: "Recurso no encontrado" });
+        } else {
+            response.sendStatus(204);
+            console.log("Recurso actualizado: " + id);
+        }
+    });
 });
+
 
   //PUT a lista de recursos
   app.put(BASE_API_URL + "/ICT-promotion-strategy-stats",(request,response)=>{
