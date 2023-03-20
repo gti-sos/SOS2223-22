@@ -229,10 +229,10 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
 // /////////////////////////////////////////////////////////                                       //////////////////////////////////////////////////////////
 
 //GET de todos los elementos
-app.get(BASE_API_URL+"/ICT-promotion-strategy-stats",(req,res)=>{
-    console.log("New GET request /ICT-promotion-strategy-stats");
+app.get(BASE_API_URL+"/ict-promotion-strategy-stats",(req,res)=>{
+    console.log("New GET request /ict-promotion-strategy-stats");
 
-    //PRUEBA: http://localhost:12345/api/v1/ICT-promotion-strategy-stats?offset=0&limit=5
+    //PRUEBA: http://localhost:12345/api/v1/ict-promotion-strategy-stats?offset=0&limit=5
 
     // Obtener offset y limit de los parámetros de la consulta, si están presentes
     const offset = parseInt(req.query.offset) || 0;
@@ -256,7 +256,7 @@ app.get(BASE_API_URL+"/ICT-promotion-strategy-stats",(req,res)=>{
 });
 
 //GET loadInitial Data
-app.get(BASE_API_URL+"/ICT-promotion-strategy-stats/loadInitialData",(req,res)=>{
+app.get(BASE_API_URL+"/ict-promotion-strategy-stats/loadInitialData",(req,res)=>{
     dbCgm.insert(cgm.datos_cgm, (err, data) => {
         if (err) {
             console.log(`Error inserting data: ${err}`);
@@ -264,13 +264,13 @@ app.get(BASE_API_URL+"/ICT-promotion-strategy-stats/loadInitialData",(req,res)=>
         } else {
             data.forEach((d) => delete d._id);
             res.json(data);
-            console.log("New GET request /ICT-promotion-strategy-stats/loadInitialData");
+            console.log("New GET request /ict-promotion-strategy-stats/loadInitialData");
         }
     });
 });
 
 // //GET recurso especifico
-// app.get(BASE_API_URL+"/ICT-promotion-strategy-stats/:id",(req,res)=>{
+// app.get(BASE_API_URL+"/ict-promotion-strategy-stats/:id",(req,res)=>{
 //     const id = req.params.id; // URL: parámetro de id
 //     console.log(id);
 //     const resource = dataCGM.find(r => r.id == id); // busca el recurso por id
@@ -283,17 +283,17 @@ app.get(BASE_API_URL+"/ICT-promotion-strategy-stats/loadInitialData",(req,res)=>
 // });
 
 //POST añadir datos
-app.post(BASE_API_URL + "/ICT-promotion-strategy-stats", (request, response) => {
+app.post(BASE_API_URL + "/ict-promotion-strategy-stats", (request, response) => {
     const ns = request.body;
     // Check that the JSON object has the expected fields
-    if (!ns.hasOwnProperty("territory") || !ns.hasOwnProperty("year") || !ns.hasOwnProperty("ICT_manufacturing_industry") || !ns.hasOwnProperty("wholesale_trade") || !ns.hasOwnProperty("edition_of_computer_program")) 
+    if (!ns.hasOwnProperty("territory") || !ns.hasOwnProperty("year") || !ns.hasOwnProperty("ict_manufacturing_industry") || !ns.hasOwnProperty("wholesale_trade") || !ns.hasOwnProperty("edition_of_computer_program")) 
     {
       response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" }); // Enviar una respuesta con el código 400 (Bad Request) si el objeto JSON no tiene los campos esperados
       return;
     }
     // Check if the same resource already exists in the database
     dbCgm.findOne({territory: ns.territory, year: ns.year, 
-    ICT_manufacturing_industry: ns.ICT_manufacturing_industry, 
+    ict_manufacturing_industry: ns.ict_manufacturing_industry, 
     wholesale_trade: ns.wholesale_trade, 
     edition_of_computer_program: ns.edition_of_computer_program }, (err, resource) => {
         
@@ -309,7 +309,7 @@ app.post(BASE_API_URL + "/ICT-promotion-strategy-stats", (request, response) => 
                     response.sendStatus(500);
                 } else {
                     response.sendStatus(201);
-                    console.log("Nuevo post /ICT-promotion-strategy-stats");
+                    console.log("Nuevo post /ict-promotion-strategy-stats");
                 }
             });
         }
@@ -317,13 +317,13 @@ app.post(BASE_API_URL + "/ICT-promotion-strategy-stats", (request, response) => 
 });
 
 //POST fallo
-app.post(BASE_API_URL+"/ICT-promotion-strategy-stats/:territory",(req,res)=>{
+app.post(BASE_API_URL+"/ict-promotion-strategy-stats/:territory",(req,res)=>{
     res.sendStatus(405, "Method not allowed"); // respuesta ERROR 405
-    console.log("New post /ICT-promotion-strategy-stats/:territory");
+    console.log("New post /ict-promotion-strategy-stats/:territory");
 });
 
 // DELETE array completo
-app.delete(BASE_API_URL+"/ICT-promotion-strategy-stats", (request, response) => {
+app.delete(BASE_API_URL+"/ict-promotion-strategy-stats", (request, response) => {
     dbCgm.find({}, (err, docs) => {
         if (err) {
             console.log(`Error finding data: ${err}`);
@@ -345,7 +345,7 @@ app.delete(BASE_API_URL+"/ICT-promotion-strategy-stats", (request, response) => 
 });
 
 // DELETE DE UN RECURSO
-app.delete(BASE_API_URL + "/ICT-promotion-strategy-stats/:year", (request, response) => {
+app.delete(BASE_API_URL + "/ict-promotion-strategy-stats/:year", (request, response) => {
     const year = parseInt(request.params.year);
     dbCgm.remove({ year: year }, {}, (err, numRemoved) => {
         console.log(numRemoved);
@@ -362,14 +362,14 @@ app.delete(BASE_API_URL + "/ICT-promotion-strategy-stats/:year", (request, respo
 });
 
 // PUT actualizar recurso existente
-app.put(BASE_API_URL + "/ICT-promotion-strategy-stats/:year", (request, response) => {
+app.put(BASE_API_URL + "/ict-promotion-strategy-stats/:year", (request, response) => {
     const year = parseInt(request.params.year);
     const updatedStat = request.body;
     console.log("tamos aki");
 
     // Comprobar si no tiene todos los campos requeridos
     if (!updatedStat.hasOwnProperty("territory") || !updatedStat.hasOwnProperty("year") 
-    || !updatedStat.hasOwnProperty("ICT_manufacturing_industry") || !updatedStat.hasOwnProperty("wholesale_trade") 
+    || !updatedStat.hasOwnProperty("ict_manufacturing_industry") || !updatedStat.hasOwnProperty("wholesale_trade") 
     || !updatedStat.hasOwnProperty("edition_of_computer_program"))
     {
         response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" });
@@ -397,18 +397,18 @@ app.put(BASE_API_URL + "/ICT-promotion-strategy-stats/:year", (request, response
 
 
   //PUT a lista de recursos
-  app.put(BASE_API_URL + "/ICT-promotion-strategy-stats",(request,response)=>{
+  app.put(BASE_API_URL + "/ict-promotion-strategy-stats",(request,response)=>{
     response.sendStatus(405, "Method not allowed");
 });
 
-app.get(BASE_API_URL + "/ICT-promotion-strategy-stats/docs", (req, res) => {
-    console.log("New GET request to /ICT-promotion-strategy-stats/docs");
+app.get(BASE_API_URL + "/ict-promotion-strategy-stats/docs", (req, res) => {
+    console.log("New GET request to /ict-promotion-strategy-stats/docs");
     res.redirect("https://documenter.getpostman.com/view/26062709/2s93JzN1rf");
 });
 
 //Buscar por x recusrso
-app.get(BASE_API_URL + "/ICT-promotion-strategy-stats/search", (req, res) => {
-    console.log("New GET request to /ICT-promotion-strategy-stats/search");
+app.get(BASE_API_URL + "/ict-promotion-strategy-stats/search", (req, res) => {
+    console.log("New GET request to /ict-promotion-strategy-stats/search");
 
     const query = req.query;
     const searchQuery = {};
@@ -421,7 +421,7 @@ app.get(BASE_API_URL + "/ICT-promotion-strategy-stats/search", (req, res) => {
             if (key === "year" || key === "id") {
                 searchQuery[key] = parseInt(query[key]);
             } 
-            else if (key === "ICT_manufacturing_industry" || key === "wholesale_trade" || key === "edition_of_computer_program") {
+            else if (key === "ict_manufacturing_industry" || key === "wholesale_trade" || key === "edition_of_computer_program") {
                 searchQuery[key] = parseFloat(query[key]);
             } 
             else {
