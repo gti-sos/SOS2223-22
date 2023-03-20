@@ -8,10 +8,13 @@ var app = express();
 var port = process.env.PORT || 12345;
 const BASE_API_URL = "/api/v1";
 var dataACB = [];
-var dataCGM = [];
 var dataStore = require("nedb");
 var dbAcb = new dataStore();
 dbAcb.insert(dataACB);
+
+var dataCGM = [];
+var dbCgm = new dataStore();
+dbCgm.insert(dataCGM);
 
 module.exports = (app) =>{
     // /////////////////////////////////////////////////////////                                             ///////////////////////////////////////////////////////// 
@@ -236,11 +239,6 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
 // ///////////////////////////////////////////////////////// DATOS Y PETICIONES CARLOS GATA MASERO //////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////                                       //////////////////////////////////////////////////////////
 
-app.get("/samples/CGM",(req,res)=>{
-    res.send(cgm.media_sp(cgm.datos_cgm));
-    console.log("New request");
-});
-
 //GET de todos los elementos
 app.get(BASE_API_URL+"/ICT-promotion-strategy-stats",(req,res)=>{
     res.json(dataCGM);
@@ -329,8 +327,9 @@ app.delete(BASE_API_URL + "/ICT-promotion-strategy-stats/:id", (request, respons
 
 // PUT actualizar recurso existente
 app.put(BASE_API_URL + "/ICT-promotion-strategy-stats/:id", (request, response) => {
-    const id = request.params.id; 
+    const id = parseInt(request.params.id);
     const upd_s = request.body;
+    
     if (!upd_s.hasOwnProperty("id")) { // Comprobar si el cuerpo de la solicitud contiene el campo "id"
         response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" });
         return;
