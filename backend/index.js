@@ -322,10 +322,15 @@ app.get('/api/v1/ICT-promotion-strategy-stats/:value/:value2?', (req, res) => {
           } else {
             return true;
           }
+        } else if (typeof this[value] === 'string' && typeof parseInt(value2) === 'number' && Number.isInteger(parseInt(value2))) {
+          if (this[value] === value && parseInt(this[value2]) === parseInt(value2)) {
+            return true;
+          }
         }
       }
       return false;
     }};
+  
     cgm.find(query, (err, cgm) => {
       if (err) {
         console.log(`Error getting /cgm: ${err}`);
@@ -334,15 +339,30 @@ app.get('/api/v1/ICT-promotion-strategy-stats/:value/:value2?', (req, res) => {
         res.status(404).json({ error: 'cgm not found.' });
       } else {
         console.log(`cgm returned = ${cgm.length}`)
-        res.json(cgm.map((j) => {
+        
+        if (typeof value === 'string' && typeof parseInt(value2) === 'number' && Number.isInteger(parseInt(value2))) {
+          if (cgm.length === 1) { // Si solo se proporciona un año y existe solo un objeto, devolver el objeto
+            delete cgm[0]._id;
+            res.json(cgm[0]);
+          } else { // De lo contrario, devolver el array de objetos
+            res.json(cgm.map((j) => {
+              delete j._id;
+              return j;
+            }));
+          }
+        } else if (!value2 && cgm.length === 1) { // Si solo se proporciona un año y existe solo un objeto, devolver el objeto
+          delete cgm[0]._id;
+          res.json(cgm[0]);
+        } else { // De lo contrario, devolver el array de objetos
+          res.json(cgm.map((j) => {
             delete j._id;
             return j;
-        }));
+          }));
+        }
       }
     });
   });
   
-      
 //POST añadir datos
 app.post(BASE_API_URL + "/ict-promotion-strategy-stats", (req, res) => {
     const ns = req.body;
