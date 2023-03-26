@@ -228,6 +228,13 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
 // ///////////////////////////////////////////////////////// DATOS Y PETICIONES CARLOS GATA MASERO //////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////                                       //////////////////////////////////////////////////////////
 
+// Redirect
+app.get(BASE_API_URL + "/ict-promotion-strategy-stats/docs", (req, res) => {
+    console.log("New GET request to /ict-promotion-strategy-stats/docs");
+    res.redirect("https://documenter.getpostman.com/view/26062709/2s93RNzFC5");
+});
+
+
 //GET loadInitial Data
 app.get(BASE_API_URL+"/ict-promotion-strategy-stats/loadInitialData",(req,res)=>{
     cgm.find({}, (err, docs) => {
@@ -297,43 +304,22 @@ app.get(BASE_API_URL+"/ict-promotion-strategy-stats",(req,res)=>{
 
 // GET busqueda por values
 
-/*
-podemos filtrar por: 
-value: cualquier valor
-value: territorio y value2: year
-value: year y value2: float
-*/
 app.get('/api/v1/ICT-promotion-strategy-stats/:value/:value2?', (req, res) => {
     const { value, value2 } = req.params;
+    console.log(value);
     const query = { $where: function() {
       const keys = Object.keys(this);
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
         if (typeof this[key] === 'number' && parseFloat(value) === this[key]) {
-          if (value2) {
-            const nextKey = keys[i + 1];
-            if (nextKey && typeof this[nextKey] === 'string' && this[nextKey].toLowerCase().includes(value2.toLowerCase())) {
-              return true;
-            } else if (nextKey && typeof this[nextKey] === 'number' && parseFloat(value2) == this[nextKey]) {
-              return true;
-            }
-          } else {
-            return true;
-          }
+          return true;
         } else if (typeof this[key] === 'string' && this[key].toLowerCase().includes(value.toLowerCase())) {
           if (value2) {
             const nextKey = keys[i + 1];
-            if (nextKey && typeof this[nextKey] === 'number' && parseFloat(value2) == this[nextKey]) {
-              return true;
-            } else if (nextKey && typeof this[nextKey] === 'string' && this[nextKey].toLowerCase().includes(value2.toLowerCase())) {
+            if (nextKey && typeof this[nextKey] === 'number' && parseInt(value2) === this[nextKey]) {
               return true;
             }
           } else {
-            return true;
-          }
-        } else if (typeof this[key] === 'number' && key === value+'_min' && parseFloat(value2) >= this[key]) {
-          const maxKey = value+'_max';
-          if (maxKey && typeof this[maxKey] === 'number' && parseFloat(value2) < this[maxKey]) {
             return true;
           }
         }
@@ -355,6 +341,7 @@ app.get('/api/v1/ICT-promotion-strategy-stats/:value/:value2?', (req, res) => {
       }
     });
   });
+  
       
 //POST añadir datos
 app.post(BASE_API_URL + "/ict-promotion-strategy-stats", (req, res) => {
@@ -440,11 +427,6 @@ app.put(BASE_API_URL + "/ict-promotion-strategy-stats/:year",(req,res)=>{
     }
     return res.status(200).send({ message: 'Blood donations updated successfully' });
     });
-});
-
-app.get(BASE_API_URL + "/ict-promotion-strategy-stats/docs", (req, res) => {
-    console.log("New GET request to /ict-promotion-strategy-stats/docs");
-    res.redirect("https://documenter.getpostman.com/view/26062709/2s93JzN1rf");
 });
 
 }

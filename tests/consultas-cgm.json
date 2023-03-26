@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "562eb19d-ca6f-4fe9-b318-62890ffc67c9",
-		"name": "Consultas Appspot",
+		"_postman_id": "788e9436-ded1-48ee-9cc9-92282bb0be40",
+		"name": "Consultas-gcloud",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "26062709"
 	},
@@ -43,7 +43,20 @@
 			"response": []
 		},
 		{
-			"name": "Busqueda de valores",
+			"name": "Mostrar todos los datos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -60,6 +73,79 @@
 						"v1",
 						"ICT-promotion-strategy-stats",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busqueda territory/year",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/spain/2017",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ICT-promotion-strategy-stats",
+						"spain",
+						"2017"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busqueda dato no encontrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/2017",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ICT-promotion-strategy-stats",
+						"2017"
 					]
 				}
 			},
@@ -192,6 +278,42 @@
 			"response": []
 		},
 		{
+			"name": "Busqueda recurso actualizado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/2017",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ICT-promotion-strategy-stats",
+						"2017"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Borrar recurso concreto",
 			"event": [
 				{
@@ -210,7 +332,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2008",
+					"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2017",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -221,7 +343,43 @@
 						"api",
 						"v1",
 						"ict-promotion-strategy-stats",
-						"2008"
+						"2017"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busqueda recurso borrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/2017",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ICT-promotion-strategy-stats",
+						"2017"
 					]
 				}
 			},
@@ -283,7 +441,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"territory\": \"spain\",\r\n        \"year\": 2028,\r\n        \"ict_manufacturing_industry\": 0.05,\r\n        \"wholesale_trade\": 0.18,\r\n        \"edition_of_computer_program\": 0.01\r\n    }",
+					"raw": "{\r\n        \"territory\": \"spain\",\r\n        \"year\": 2020,\r\n        \"ict_manufacturing_industry\": 0.05,\r\n        \"wholesale_trade\": 0.18,\r\n        \"edition_of_computer_program\": 0.01\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -302,6 +460,42 @@
 						"api",
 						"v1",
 						"ict-promotion-strategy-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busqueda recurso creado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/2020",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ICT-promotion-strategy-stats",
+						"2020"
 					]
 				}
 			},
@@ -377,6 +571,12 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "URL_BASE",
+			"value": "https://sos2223-22.appspot.com"
 		}
 	]
 }
