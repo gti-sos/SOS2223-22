@@ -273,13 +273,13 @@ app.get(BASE_API_URL+"/ict-promotion-strategy-stats",(req,res)=>{
         query.territory = { $regex: new RegExp(territory, 'i') };   
     }
     if (ict_manufacturing_industry) {
-        query.ict_manufacturing_industry = parseInt(ict_manufacturing_industry);
+        query.ict_manufacturing_industry = parseFloat(ict_manufacturing_industry);
     }
     if (wholesale_trade) {
-        query.wholesale_trade = parseInt(wholesale_trade);
+        query.wholesale_trade = parseFloat(wholesale_trade);
     }
     if (edition_of_computer_program) {
-        query.edition_of_computer_program = parseInt(edition_of_computer_program);
+        query.edition_of_computer_program = parseFloat(edition_of_computer_program);
     }
     const limitValue = parseInt(limit);
     const offsetValue = parseInt(offset);
