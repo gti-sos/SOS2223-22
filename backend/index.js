@@ -244,7 +244,7 @@ app.get(BASE_API_URL+"/ict-promotion-strategy-stats/loadInitialData",(req,res)=>
         } else if (docs.length === 0) {
           const fs = require('fs');
           const cgmData = JSON.parse(fs.readFileSync(cgmFilePath));
-          const initialcgm = cgmData.slice(0, 15);
+          const initialcgm = cgmData;
           cgm.insert(initialcgm, (err, newDocs) => {
             if (err) {
               console.log(`Error inserting initial data into ict-promotion-strategy-stats: ${err}`);
@@ -263,7 +263,7 @@ app.get(BASE_API_URL+"/ict-promotion-strategy-stats/loadInitialData",(req,res)=>
 
 //GET recurso especifico
 app.get(BASE_API_URL+"/ict-promotion-strategy-stats",(req,res)=>{
-    const { year, territory, ict_manufacturing_industry, wholesale_trade, edition_of_computer_program, limit = 10, offset = 0 } = req.query;
+    const { year, territory, ict_manufacturing_industry, wholesale_trade, edition_of_computer_program, limit = 10000, offset = 0 } = req.query;
     const query = {};
 
     if (year) {
@@ -423,9 +423,9 @@ app.put(BASE_API_URL + "/ict-promotion-strategy-stats/:year",(req,res)=>{
         return res.status(500).send({ error: 'Internal server error' });
     }
     if (numReplaced === 0) {
-        return res.status(400).send({ error: 'Bad request: blood donations ID not found' });
+        return res.status(400).send({ error: 'Bad request: ict stats ID not found' });
     }
-    return res.status(200).send({ message: 'Blood donations updated successfully' });
+    return res.status(200).send({ message: 'ict stats updated successfully' });
     });
 });
 
