@@ -15,7 +15,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/docs",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -25,7 +25,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats",
+								"ict-promotion-strategy-stats",
 								"docs"
 							]
 						}
@@ -56,7 +56,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/loadInitialData",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/loadInitialData",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -66,7 +66,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats",
+								"ict-promotion-strategy-stats",
 								"loadInitialData"
 							]
 						}
@@ -82,6 +82,10 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Devuelve un objeto\",function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -92,7 +96,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/spain/2008",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/spain/2008",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -102,8 +106,48 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats",
+								"ict-promotion-strategy-stats",
 								"spain",
+								"2008"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Devuelve un objeto\",function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2008",
+							"protocol": "https",
+							"host": [
+								"sos2223-22",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"ict-promotion-strategy-stats",
 								"2008"
 							]
 						}
@@ -119,6 +163,11 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"La respuesta es un array\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -129,7 +178,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/spain",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/spain",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -139,7 +188,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats",
+								"ict-promotion-strategy-stats",
 								"spain"
 							]
 						}
@@ -165,7 +214,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/spain/20188",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/spain/20188",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -175,7 +224,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats",
+								"ict-promotion-strategy-stats",
 								"spain",
 								"20188"
 							]
@@ -206,7 +255,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -216,7 +265,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats",
+								"ict-promotion-strategy-stats",
 								""
 							]
 						}
@@ -407,6 +456,14 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es un objeto\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Objeto creado correctamente\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -417,7 +474,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/2020",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2020",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -427,7 +484,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats",
+								"ict-promotion-strategy-stats",
 								"2020"
 							]
 						}
@@ -574,6 +631,11 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Objeto actualizado\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -584,7 +646,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/2017",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2017",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -594,7 +656,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats",
+								"ict-promotion-strategy-stats",
 								"2017"
 							]
 						}
@@ -651,6 +713,10 @@
 								"exec": [
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Objeto borrado correctamente\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -661,7 +727,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats/2020",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2020",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -671,7 +737,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats",
+								"ict-promotion-strategy-stats",
 								"2020"
 							]
 						}
@@ -728,6 +794,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es un array\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El array contiene 5 objetos\",function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.lengthOf.above(2);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -738,7 +813,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats?offset=3",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats?offset=5",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -748,12 +823,12 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats"
+								"ict-promotion-strategy-stats"
 							],
 							"query": [
 								{
 									"key": "offset",
-									"value": "3"
+									"value": "5"
 								}
 							]
 						}
@@ -769,6 +844,16 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"La respuesta es un array\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El array contiene 5 objetos, desde el inicio\",function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.lengthOf.above(2);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -779,7 +864,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats?limit=5",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats?limit=5",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -789,7 +874,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats"
+								"ict-promotion-strategy-stats"
 							],
 							"query": [
 								{
@@ -810,6 +895,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es un array\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El array contiene 3 objetos, obviando los 5 primeros\",function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.lengthOf.above(2);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -820,7 +914,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats?offset=2&limit=4",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats?offset=5&limit=3",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -830,16 +924,16 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats"
+								"ict-promotion-strategy-stats"
 							],
 							"query": [
 								{
 									"key": "offset",
-									"value": "2"
+									"value": "5"
 								},
 								{
 									"key": "limit",
-									"value": "4"
+									"value": "3"
 								}
 							]
 						}
@@ -855,6 +949,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es un array\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El array contiene todos los objetos de territory spain\",function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.lengthOf.above(2);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -865,7 +968,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats?territory=spain",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats?territory=spain",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -875,110 +978,12 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats"
+								"ict-promotion-strategy-stats"
 							],
 							"query": [
 								{
 									"key": "territory",
 									"value": "spain"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Busqueda por year",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats?year=2017",
-							"protocol": "https",
-							"host": [
-								"sos2223-22",
-								"appspot",
-								"com"
-							],
-							"path": [
-								"api",
-								"v1",
-								"ICT-promotion-strategy-stats"
-							],
-							"query": [
-								{
-									"key": "year",
-									"value": "2017"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Busqueda por territory & year & los demas campos",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats?territory=spain&year=2009&ict_manufacturing_industry=0.04&wholesale_trade=0.14&edition_of_computer_program=0.01",
-							"protocol": "https",
-							"host": [
-								"sos2223-22",
-								"appspot",
-								"com"
-							],
-							"path": [
-								"api",
-								"v1",
-								"ICT-promotion-strategy-stats"
-							],
-							"query": [
-								{
-									"key": "territory",
-									"value": "spain"
-								},
-								{
-									"key": "year",
-									"value": "2009"
-								},
-								{
-									"key": "ict_manufacturing_industry",
-									"value": "0.04"
-								},
-								{
-									"key": "wholesale_trade",
-									"value": "0.14"
-								},
-								{
-									"key": "edition_of_computer_program",
-									"value": "0.01"
 								}
 							]
 						}
@@ -994,6 +999,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es un array\", function(){\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El array contiene 4 objetos, obviando los 2 primeros ademas de territory=spain\",function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.lengthOf.above(2);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1004,7 +1018,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ICT-promotion-strategy-stats?territory=spain&offset=2&limit=4",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats?territory=spain&offset=2&limit=4",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -1014,7 +1028,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ICT-promotion-strategy-stats"
+								"ict-promotion-strategy-stats"
 							],
 							"query": [
 								{
