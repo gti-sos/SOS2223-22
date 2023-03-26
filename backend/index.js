@@ -21,6 +21,10 @@ module.exports = (app) =>{
 // /////////////////////////////////////////////////////////             
 app.use(bodyParser.json());                                /////////////////////////////////////////////////////////
 
+app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
+    console.log("New GET request to /jobs-companies-innovation-stats/docs");
+    res.redirect("https://documenter.getpostman.com/view/14969056/2s93JzN1Yu");
+});
 //GET de todos los elementos
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats", (req, res) => {
     console.log("New GET request /jobs-companies-innovation-stats");
@@ -58,8 +62,7 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res
         }
     });
 });
-// Función para manejar el resultado de las consultas a la base de datos
-function handleDbResponse(err, jobs, res) {
+function handleDbResponseArray(err, jobs, res) {
     if (err) {
         console.log(`Error getting filtered /jobs: ${err}`);
         res.sendStatus(500);
@@ -74,6 +77,22 @@ function handleDbResponse(err, jobs, res) {
         }
     }
 }
+// Función para manejar el resultado de las consultas a la base de datos
+function handleDbResponse(err, jobs, res) {
+    if (err) {
+        console.log(`Error getting filtered /jobs: ${err}`);
+        res.sendStatus(500);
+    } else {
+        if (jobs.length === 0) {
+            res.sendStatus(404);
+        } else {
+            const job = jobs[0];
+            delete job._id;
+            res.json(job);
+        }
+    }
+}
+
 
 //GET de elementos filtrados por territorio
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory", (req, res) => {
@@ -84,7 +103,7 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory", (req, res) =
     if (territory) filter.territory = territory;
 
     dbAcb.find(filter, (err, jobs) => {
-        handleDbResponse(err, jobs, res);
+        handleDbResponseArray(err, jobs, res);
     });
 });
 
@@ -127,7 +146,6 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_in
     });
 });
 
-//GET de elementos filtrados por territorio, año, empleos en la industria y empresas con innovaciones
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_industry/:companies_with_innovations", (req, res) => {
     console.log("New GET request /jobs-companies-innovation-stats with filter territory, year, jobs_industry and companies_with_innovations");
 
@@ -136,15 +154,27 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_in
     const jobs_industry = parseInt(req.params.jobs_industry);
     const companies_with_innovations = parseInt(req.params.companies_with_innovations);
 
+    console.log(`Filter parameters: territory=${territory}, year=${year}, jobs_industry=${jobs_industry}, companies_with_innovations=${companies_with_innovations}`);
+
     const filter = {};
     if (territory) filter.territory = territory;
     if (year) filter.year = year;
     if (jobs_industry) filter.jobs_industry = jobs_industry;
     if (companies_with_innovations) filter.companies_with_innovations = companies_with_innovations;
+    
+    console.log(`Filter object: ${JSON.stringify(filter)}`);
+
     dbAcb.find(filter, (err, jobs) => {
-        handleDbResponse(err, jobs, res);
+        if (err) {
+            console.log(`Error getting filtered /jobs: ${err}`);
+            res.sendStatus(500);
+        } else {
+            console.log(`Number of jobs found: ${jobs.length}`);
+            handleDbResponse(err, jobs, res);
+        }
     });
-});    
+});
+
     
     
     //GET de elementos filtrados por territorio, año, empleos en la industria, empresas con innovaciones y empleos temporales
@@ -313,10 +343,7 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
         }
     });
 });
-app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
-    console.log("New GET request to /jobs-companies-innovation-stats/docs");
-    res.redirect("https://documenter.getpostman.com/view/14969056/2s93JzN1Yu");
-});
+
 
   
 

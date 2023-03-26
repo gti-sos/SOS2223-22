@@ -146,24 +146,21 @@
 			"response": []
 		},
 		{
-			"name": "GET a recurso concreto",
+			"name": "GET busqueda por un campo",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Verificar que la respuesta es un código HTTP 200\", function() {\r",
+							"pm.test(\"La respuesta debe ser 200 Ok\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"\r",
-							"pm.test(\"Verificar que la respuesta es un array con un solo objeto\", function() {\r",
-							"    var responseData = pm.response.json();\r",
-							"    pm.expect(responseData).to.be.an(\"array\");\r",
-							"    pm.expect(responseData).to.have.lengthOf(1);\r",
-							"    pm.expect(responseData[0]).to.be.an(\"object\");\r",
+							"pm.test(\"La respuesta debe ser un array de un objeto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('array').that.has.lengthOf(1);\r",
+							"    pm.expect(jsonData[0]).to.be.an('object');\r",
 							"});\r",
-							"\r",
 							""
 						],
 						"type": "text/javascript"
@@ -174,7 +171,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/search?territory=andalucia&year=2008",
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -185,17 +182,185 @@
 						"api",
 						"v1",
 						"jobs-companies-innovation-stats",
-						"search"
+						"andalucia"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET busqueda por dos campos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"La respuesta debe ser 200 Ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta debe ser  un objeto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('object');\r",
+							"  \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia/2008",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
 					],
-					"query": [
-						{
-							"key": "territory",
-							"value": "andalucia"
-						},
-						{
-							"key": "year",
-							"value": "2008"
-						}
+					"path": [
+						"api",
+						"v1",
+						"jobs-companies-innovation-stats",
+						"andalucia",
+						"2008"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET busqueda por tres campos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"La respuesta debe ser 200 Ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta debe ser un array de un objeto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('object');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia/2008/345542",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobs-companies-innovation-stats",
+						"andalucia",
+						"2008",
+						"345542"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET busqueda por cuatro campos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"La respuesta debe ser 200 Ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta debe ser un array de un objeto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('object');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia/2008/345542/95",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobs-companies-innovation-stats",
+						"andalucia",
+						"2008",
+						"345542",
+						"95"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET busqueda por Todos los campos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"La respuesta debe ser 200 Ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta debe ser un array de un objeto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('object');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia/2008/345542/95/41.1",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"jobs-companies-innovation-stats",
+						"andalucia",
+						"2008",
+						"345542",
+						"95",
+						"41.1"
 					]
 				}
 			},
@@ -221,7 +386,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/search?territory=jaeeen",
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/jaeeen",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -232,13 +397,7 @@
 						"api",
 						"v1",
 						"jobs-companies-innovation-stats",
-						"search"
-					],
-					"query": [
-						{
-							"key": "territory",
-							"value": "jaeeen"
-						}
+						"jaeeen"
 					]
 				}
 			},
