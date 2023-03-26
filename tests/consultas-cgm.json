@@ -710,7 +710,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2020",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2009",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -721,7 +721,7 @@
 								"api",
 								"v1",
 								"ict-promotion-strategy-stats",
-								"2020"
+								"2009"
 							]
 						}
 					},
@@ -750,7 +750,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2020",
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/2009",
 							"protocol": "https",
 							"host": [
 								"sos2223-22",
@@ -761,7 +761,7 @@
 								"api",
 								"v1",
 								"ict-promotion-strategy-stats",
-								"2020"
+								"2009"
 							]
 						}
 					},
