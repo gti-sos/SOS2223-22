@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node nodejs/index",
-    "test": "npx newman run ./tests/backend.json",
-    "test-cgm": "npx newman run ./tests/consultas-cgm.json"
+    "test-acb": "npx newman run ./tests/backend.json",
+    "test-cgm": "npx newman run ./tests/consultas-cgm.json",
+    "test": "npx newman run ./tests/backend.json && npx newman run ./tests/consultas-cgm.json"
   },
   "repository": {
     "type": "git",
