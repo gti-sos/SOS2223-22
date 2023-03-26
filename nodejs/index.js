@@ -1,12 +1,12 @@
 var express = require('express');
-var cool = require('cool-ascii-faces');
 var bodyParser = require("body-parser");
-const backend = require('../backend');
+const backend = require('../backend/routeCGM');// GET,PUT,DELETE,POST Carlos Gata Masero
+const metodosACB = require("../backend/routeACB");// GET,PUT,DELETE,POST Antonio Carranza Barroso
 var app = express();
 var port = process.env.PORT || 12345;
 const BASE_API_URL = "/api/v1";
-var dataACB = [];
-var dataCGM = [];
+
+
 
 app.use("/",express.static("./public"));
 
@@ -15,7 +15,9 @@ app.use(bodyParser.json()); //PARSEA a JSON DIRECTAMENTE
 app.listen(port,()=>{
     console.log(`Listening in port ${port}`);
 });
+
 backend(app);
+metodosACB(app);
 
 
 
