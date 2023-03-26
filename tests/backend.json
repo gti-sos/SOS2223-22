@@ -50,6 +50,29 @@
 		},
 		{
 			"name": "GET a lista de recursos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar respuesta de /jobs-companies-innovation-stats\", function() {\r",
+							"        // Si se devuelven datos, no se espera que la respuesta sea un array vacío\r",
+							"        \r",
+							"        pm.test(\"Si no se encuentran datos, se devuelve un array vacío\", function() {\r",
+							"            var data = pm.response.json();\r",
+							"            pm.expect(data).to.eql([]);\r",
+							"        });\r",
+							"      \r",
+							"        // Si la respuesta no es 200, se considera que la prueba ha fallado y se omite el resto de las pruebas\r",
+							"        pm.expect(pm.response.code).to.equal(200);\r",
+							"    \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -72,6 +95,35 @@
 		},
 		{
 			"name": "loadInitialData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que la solicitud devuelve una respuesta HTTP 200\", function() {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar que la respuesta tiene todos los campos requeridos\", function() {\r",
+							"    var responseData = pm.response.json();\r",
+							"    pm.expect(responseData).to.be.an(\"array\");\r",
+							"    pm.expect(responseData).to.have.length.above(0);\r",
+							"    responseData.forEach(function(obj) {\r",
+							"        pm.expect(obj).to.have.property(\"territory\");\r",
+							"        pm.expect(obj).to.have.property(\"year\");\r",
+							"        pm.expect(obj).to.have.property(\"jobs_industry\");\r",
+							"        pm.expect(obj).to.have.property(\"companies_with_innovations\");\r",
+							"        pm.expect(obj).to.have.property(\"temporary_employment\");\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -95,6 +147,29 @@
 		},
 		{
 			"name": "GET a recurso concreto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que la respuesta es un código HTTP 200\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verificar que la respuesta es un array con un solo objeto\", function() {\r",
+							"    var responseData = pm.response.json();\r",
+							"    pm.expect(responseData).to.be.an(\"array\");\r",
+							"    pm.expect(responseData).to.have.lengthOf(1);\r",
+							"    pm.expect(responseData[0]).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -128,6 +203,20 @@
 		},
 		{
 			"name": "GET a recurso concreto (Error 404)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que se devuelve un error 404\", function() {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -157,6 +246,23 @@
 		},
 		{
 			"name": "Paginacion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que la respuesta es 200 OK y que se devuelven solo 3 objetos\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var responseData = pm.response.json();\r",
+							"    pm.expect(responseData).to.be.an(\"array\");\r",
+							"    pm.expect(responseData).to.have.lengthOf(3);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -189,37 +295,20 @@
 		},
 		{
 			"name": "POST a la lista de recursos",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "  {\r\n    \"territory\": \"JAEN\",\r\n    \"year\": 2008,\r\n    \"jobs_industry\": 345542,\r\n    \"companies_with_innovations\": 95,\r\n    \"temporary_employment\": 41.1\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que el POST fue exitoso\", function() {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
 					}
-				},
-				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats",
-					"protocol": "https",
-					"host": [
-						"sos2223-22",
-						"appspot",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"jobs-companies-innovation-stats"
-					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST a la lista de recursos Copy",
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -251,6 +340,22 @@
 		},
 		{
 			"name": "POST a la lista de recursos (Sin campos esperados ERROR 400)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que se devuelve un error 400 cuando el objeto JSON no tiene los campos esperados\", function() {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    var responseData = pm.response.json();\r",
+							"    pm.expect(responseData.error).to.eql(\"El objeto JSON no tiene los campos esperados\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -324,6 +429,35 @@
 		},
 		{
 			"name": "loadInitialData Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que la solicitud devuelve una respuesta HTTP 200\", function() {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar que la respuesta tiene todos los campos requeridos\", function() {\r",
+							"    var responseData = pm.response.json();\r",
+							"    pm.expect(responseData).to.be.an(\"array\");\r",
+							"    pm.expect(responseData).to.have.length.above(0);\r",
+							"    responseData.forEach(function(obj) {\r",
+							"        pm.expect(obj).to.have.property(\"territory\");\r",
+							"        pm.expect(obj).to.have.property(\"year\");\r",
+							"        pm.expect(obj).to.have.property(\"jobs_industry\");\r",
+							"        pm.expect(obj).to.have.property(\"companies_with_innovations\");\r",
+							"        pm.expect(obj).to.have.property(\"temporary_employment\");\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -387,6 +521,20 @@
 		},
 		{
 			"name": "PUT a recurso especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que el PUT fue exitoso\", function() {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -419,6 +567,22 @@
 		},
 		{
 			"name": "PUT a recurso especifico (Error 400)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que se devuelve un error 400 cuando el objeto JSON no tiene los campos esperados\", function() {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    var responseData = pm.response.json();\r",
+							"    pm.expect(responseData.error).to.eql(\"El objeto JSON no tiene los campos esperados\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -446,6 +610,21 @@
 		},
 		{
 			"name": "PUT a lista de recursos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que se devuelve un error 405 cuando se hace PUT a una lista de recursos\", function() {\r",
+							"    pm.response.to.have.status(405);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Method Not Allowed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -468,6 +647,21 @@
 		},
 		{
 			"name": "POST a un recurso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que se devuelve un error 405 cuando se hace POST a un recurso\", function() {\r",
+							"    pm.response.to.have.status(405);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Method Not Allowed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -491,12 +685,26 @@
 		},
 		{
 			"name": "POST de  recurso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que el POST fue exitoso\", function() {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "  {\r\n        \"territory\": \"españa\",\r\n        \"year\": 2008,\r\n        \"jobs_industry\": 3067500,\r\n        \"companies_with_innovations\": \"1.605\",\r\n        \"temporary_employment\": 25.1322\r\n    }",
+					"raw": "  {\r\n    \"territory\": \"Cordoba\",\r\n    \"year\": 2008,\r\n    \"jobs_industry\": 345542,\r\n    \"companies_with_innovations\": 95,\r\n    \"temporary_employment\": 41.1\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -522,12 +730,28 @@
 		},
 		{
 			"name": "POST de  recurso existente Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que se devuelve un error 409 cuando ya existe un recurso con los mismos datos\", function() {\r",
+							"    pm.response.to.have.status(409);\r",
+							"    var responseData = pm.response.json();\r",
+							"    pm.expect(responseData.error).to.eql(\"Ya existe un elemento con los mismos datos\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "  {\r\n        \"territory\": \"españa\",\r\n        \"year\": 2008,\r\n        \"jobs_industry\": 3067500,\r\n        \"companies_with_innovations\": \"1.605\",\r\n        \"temporary_employment\": 25.1322\r\n    }",
+					"raw": "  {\r\n    \"territory\": \"Cordoba\",\r\n    \"year\": 2008,\r\n    \"jobs_industry\": 345542,\r\n    \"companies_with_innovations\": 95,\r\n    \"temporary_employment\": 41.1\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
