@@ -38,6 +38,29 @@
 			"name": "Carga de datos y filtrar por datos",
 			"item": [
 				{
+					"name": "Borrar antes de empezar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/",
+							"protocol": "https",
+							"host": [
+								"sos2223-22",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"ict-promotion-strategy-stats",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Cargar recursos",
 					"event": [
 						{
