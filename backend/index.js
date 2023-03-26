@@ -469,7 +469,7 @@ app.get('/api/v1/ICT-promotion-strategy-stats/:value/:value2?', (req, res) => {
       }
       return false;
     }};
-  
+    //CAMBIOS REALIZADOS PARA OBJETOS
     cgm.find(query, (err, cgm) => {
       if (err) {
         console.log(`Error getting /cgm: ${err}`);
