@@ -58,90 +58,72 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res
         }
     });
 });
-//GET de elementos filtrados por territorio
-app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory", (req, res) => {
-    console.log("New GET request /jobs-companies-innovation-stats with filter territory");
-
-    // Obtener el parámetro de la consulta
-    const territory = req.params.territory;
-
-    // Construir el objeto de filtro
-    const filter = {};
-    if (territory) filter.territory = territory;
-
-    // Realizar la consulta a la base de datos
-    dbAcb.find(filter, (err, jobs) => {
-        if (err) {
-            console.log(`Error getting filtered /jobs: ${err}`);
-            res.sendStatus(500);
+// Función para manejar el resultado de las consultas a la base de datos
+function handleDbResponse(err, jobs, res) {
+    if (err) {
+        console.log(`Error getting filtered /jobs: ${err}`);
+        res.sendStatus(500);
+    } else {
+        if (jobs.length === 0) {
+            res.sendStatus(404);
         } else {
             res.json(jobs.map((j) => {
                 delete j._id;
                 return j;
             }));
         }
+    }
+}
+
+//GET de elementos filtrados por territorio
+app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory", (req, res) => {
+    console.log("New GET request /jobs-companies-innovation-stats with filter territory");
+
+    const territory = req.params.territory;
+    const filter = {};
+    if (territory) filter.territory = territory;
+
+    dbAcb.find(filter, (err, jobs) => {
+        handleDbResponse(err, jobs, res);
     });
 });
+
 //GET de elementos filtrados por territorio y año
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year", (req, res) => {
     console.log("New GET request /jobs-companies-innovation-stats with filter territory and year");
 
-    // Obtener los parámetros de la consulta
     const territory = req.params.territory;
     const year = parseInt(req.params.year);
 
-    // Validar que el valor de year sea un número entero válido
     if (isNaN(year)) {
         res.status(400).json({ error: "El valor de year no es válido" });
         return;
     }
 
-    // Construir el objeto de filtro
     const filter = {};
     if (territory) filter.territory = territory;
     filter.year = year;
 
-    // Realizar la consulta a la base de datos
     dbAcb.find(filter, (err, jobs) => {
-        if (err) {
-            console.log(`Error getting filtered /jobs: ${err}`);
-            res.sendStatus(500);
-        } else {
-            res.json(jobs.map((j) => {
-                delete j._id;
-                return j;
-            }));
-        }
+        handleDbResponse(err, jobs, res);
     });
 });
 
 //GET de elementos filtrados por territorio, año y empleos en la industria
-
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_industry", (req, res) => {
     console.log("New GET request /jobs-companies-innovation-stats with filter territory, year and jobs_industry");
 
-    // Obtener los parámetros de la consulta
     const territory = req.params.territory;
     const year = parseInt(req.params.year);
     const jobs_industry = parseInt(req.params.jobs_industry);
 
-    // Construir el objeto de filtro
     const filter = {};
     if (territory) filter.territory = territory;
     if (year) filter.year = year;
     if (jobs_industry) filter.jobs_industry = jobs_industry;
 
-    // Realizar la consulta a la base de datos
     dbAcb.find(filter, (err, jobs) => {
-        if (err) {
-            console.log(`Error getting filtered /jobs: ${err}`);
-            res.sendStatus(500);
-        } else {
-            res.json(jobs.map((j) => {
-                delete j._id;
-                return j;
-            }));
-        }
+        handleDbResponse(err, jobs, res);
     });
 });
 
@@ -149,70 +131,46 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_in
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_industry/:companies_with_innovations", (req, res) => {
     console.log("New GET request /jobs-companies-innovation-stats with filter territory, year, jobs_industry and companies_with_innovations");
 
-    // Obtener los parámetros de la consulta
     const territory = req.params.territory;
     const year = parseInt(req.params.year);
     const jobs_industry = parseInt(req.params.jobs_industry);
     const companies_with_innovations = parseInt(req.params.companies_with_innovations);
 
-    // Construir el objeto de filtro
     const filter = {};
     if (territory) filter.territory = territory;
     if (year) filter.year = year;
     if (jobs_industry) filter.jobs_industry = jobs_industry;
     if (companies_with_innovations) filter.companies_with_innovations = companies_with_innovations;
-
-    // Realizar la consulta a la base de datos
     dbAcb.find(filter, (err, jobs) => {
-        if (err) {
-            console.log(`Error getting filtered /jobs: ${err}`);
-            res.sendStatus(500);
-        } else {
-            res.json(jobs.map((j) => {
-                delete j._id;
-                return j;
-            }));
-        }
+        handleDbResponse(err, jobs, res);
     });
-});
-
-//GET de elementos filtrados por territorio, año, empleos en la industria, empresas con innovaciones y empleos temporales
+});    
+    
+    
+    //GET de elementos filtrados por territorio, año, empleos en la industria, empresas con innovaciones y empleos temporales
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_industry/:companies_with_innovations/:temporary_employment", (req, res) => {
-    console.log("New GET request /jobs-companies-innovation-stats with filter territory, year, jobs_industry, companies_with_innovations and temporary_employment");
+console.log("New GET request /jobs-companies-innovation-stats with filter territory, year, jobs_industry, companies_with_innovations and temporary_employment");
+const territory = req.params.territory;
+const year = parseInt(req.params.year);
+const jobsIndustry = parseInt(req.params.jobs_industry);
+const companiesWithInnovations = parseInt(req.params.companies_with_innovations);
+const temporaryEmployment = parseFloat(req.params.temporary_employment);
 
-    // Obtener los parámetros de la consulta
-    const territory = req.params.territory;
-    const year = parseInt(req.params.year);
-    const jobsIndustry = parseInt(req.params.jobs_industry);
-    const companiesWithInnovations = parseInt(req.params.companies_with_innovations);
-    const temporaryEmployment = parseFloat(req.params.temporary_employment);
+if (isNaN(year) || isNaN(jobsIndustry) || isNaN(companiesWithInnovations) || isNaN(temporaryEmployment)) {
+    res.status(400).json({ error: "Uno o más valores no son válidos" });
+    return;
+}
 
-    // Validar que los valores recibidos sean números válidos
-    if (isNaN(year) || isNaN(jobsIndustry) || isNaN(companiesWithInnovations) || isNaN(temporaryEmployment)) {
-        res.status(400).json({ error: "Uno o más valores no son válidos" });
-        return;
-    }
+const filter = {};
+if (territory) filter.territory = territory;
+filter.year = year;
+filter.jobs_industry = jobsIndustry;
+filter.companies_with_innovations = companiesWithInnovations;
+filter.temporary_employment = temporaryEmployment;
 
-    // Construir el objeto de filtro
-    const filter = {};
-    if (territory) filter.territory = territory;
-    filter.year = year;
-    filter.jobs_industry = jobsIndustry;
-    filter.companies_with_innovations = companiesWithInnovations;
-    filter.temporary_employment = temporaryEmployment;
-
-    // Realizar la consulta a la base de datos
-    dbAcb.find(filter, (err, jobs) => {
-        if (err) {
-            console.log(`Error getting filtered /jobs: ${err}`);
-            res.sendStatus(500);
-        } else {
-            res.json(jobs.map((j) => {
-                delete j._id;
-                return j;
-            }));
-        }
-    });
+dbAcb.find(filter, (err, jobs) => {
+    handleDbResponse(err, jobs, res);
+});
 });
 
 
