@@ -202,7 +202,7 @@
 							"pm.test(\"La respuesta debe ser  un objeto\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.be.an('object');\r",
-							"  \r",
+							"});\r",
 							""
 						],
 						"type": "text/javascript"
