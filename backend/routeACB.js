@@ -341,9 +341,6 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
 });
 
 
-<<<<<<< HEAD:backend/routeACB.js
-}
-=======
   
 
 
@@ -573,4 +570,3 @@ app.put(BASE_API_URL + "/ict-promotion-strategy-stats/:year",(req,res)=>{
 });
 
 }
->>>>>>> 5262377a20aeb6f1f53239efd2be1ca4884f5247:backend/index.js
