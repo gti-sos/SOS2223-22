@@ -82,7 +82,7 @@ app.get(BASE_API_URL+"/ict-promotion-strategy-stats",(req,res)=>{
     const offsetValue = parseInt(offset);
     cgm
         .find(query)
-        .sort({year: 1}) // ordenar por id en orden ascendente
+        .sort({year: 1}) // ordenar por id en orden ascendentee
         .limit(limitValue)
         .skip(offsetValue)
         .exec((err, cgm) => {
