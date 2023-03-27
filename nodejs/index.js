@@ -10,12 +10,11 @@ const BASE_API_URL = "/api/v1";
 
 app.use("/",express.static("./public"));
 
-
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.listen(port,()=>{
     console.log(`Listening in port ${port}`);
 });
+
 
 backend(app);
 metodosACB(app);
