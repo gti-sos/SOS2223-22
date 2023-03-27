@@ -133,7 +133,7 @@ app.get('/api/v1/ICT-promotion-strategy-stats/:value/:value2?', (req, res) => {
         console.log(`Error getting /cgm: ${err}`);
         res.sendStatus(500);
       } else if (cgm.length === 0) {
-        res.status(404).json({ error: 'cgm not found.' });
+        res.sendStatus(404);
       } else {
         console.log(`cgm returned = ${cgm.length}`)
         
@@ -165,7 +165,7 @@ app.post(BASE_API_URL + "/ict-promotion-strategy-stats", (req, res) => {
     const ns = req.body;
 
     if (!ns.year || !ns.territory || !ns.ict_manufacturing_industry || !ns.wholesale_trade || !ns.edition_of_computer_program) {
-      return res.status(400).json({ error: 'Faltan datos en el JSON' });
+      return res.sendStatus(400);
     }
     // Check if the same resource already exists in the database
     cgm.findOne({territory: ns.territory, year: ns.year, 
@@ -177,7 +177,7 @@ app.post(BASE_API_URL + "/ict-promotion-strategy-stats", (req, res) => {
             console.log(`Error getting resource ${ns.year}: ${err}`);
             res.sendStatus(500);
         } else if (resource) {
-            res.status(409);
+            res.sendStatus(409);
         } else {
             cgm.insert(ns, (err, data) => {
                 if (err) {
@@ -202,9 +202,9 @@ app.delete(BASE_API_URL+"/ict-promotion-strategy-stats", (req, res) => {
     cgm.remove({}, { multi: true }, (err, numRemoved) => {
       if (err) {
           console.error(err);
-          return res.status(500);
+          return res.sendStatus(500);
       }
-      return res.status(200);
+      return res.sendStatus(200);
   });
   });
   
@@ -214,12 +214,12 @@ app.delete(BASE_API_URL+"/ict-promotion-strategy-stats", (req, res) => {
   cgm.remove({ year: bd_year }, {}, (err, numRemoved) => {
       if (err) {
           console.error(err);
-          return res.status(500);
+          return res.sendStatus(500);
       }
       if (numRemoved === 0) {
-          return res.status(400);
+          return res.sendStatus(400);
       }
-      return res.status(200);
+      return res.sendStatus(200);
   });
 });
 
@@ -237,12 +237,12 @@ app.put(BASE_API_URL + "/ict-promotion-strategy-stats/:year",(req,res)=>{
     cgm.update({ year: bd_year }, { $set: updatedBd }, {}, (err, numReplaced) => {
     if (err) {
         console.error(err);
-        return res.status(500);
+        return res.sendStatus(500);
     }
     if (numReplaced === 0) {
-        return res.status(400);
+        return res.sendStatus(400);
     }
-    return res.status(200);
+    return res.sendStatus(200);
     });
 });
 
