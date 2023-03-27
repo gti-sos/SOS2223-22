@@ -22,29 +22,7 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
     console.log("New GET request to /jobs-companies-innovation-stats/docs");
     res.redirect("https://documenter.getpostman.com/view/14969056/2s93JzN1Yu");
 });
-//GET de todos los elementos
-app.get(BASE_API_URL+"/jobs-companies-innovation-stats", (req, res) => {
-    console.log("New GET request /jobs-companies-innovation-stats");
 
-    // Obtener offset y limit de los parámetros de la consulta, si están presentes
-    const offset = parseInt(req.query.offset) || 0;
-    const limit = parseInt(req.query.limit) || 10;
-
-    dbAcb.find({})
-         .skip(offset)
-         .limit(limit)
-         .exec((err, jobs) => {
-            if (err) {
-                console.log(`Error getting /jobs: ${err}`);
-                res.sendStatus(500);
-            } else {
-                res.json(jobs.map((j) => {
-                    delete j._id;
-                    return j;
-                }));
-            }
-        });
-});
 
 //GET loadInitial Data
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res)=>{
@@ -91,114 +69,14 @@ function handleDbResponse(err, jobs, res) {
 }
 
 
-//GET de elementos filtrados por territorio
-app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory", (req, res) => {
-    console.log("New GET request /jobs-companies-innovation-stats with filter territory");
 
-    const territory = req.params.territory;
-    const filter = {};
-    if (territory) filter.territory = territory;
 
-    dbAcb.find(filter, (err, jobs) => {
-        handleDbResponseArray(err, jobs, res);
-    });
-});
 
-//GET de elementos filtrados por territorio y año
-app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year", (req, res) => {
-    console.log("New GET request /jobs-companies-innovation-stats with filter territory and year");
 
-    const territory = req.params.territory;
-    const year = parseInt(req.params.year);
 
-    if (isNaN(year)) {
-        res.status(400).json({ error: "El valor de year no es válido" });
-        return;
-    }
-
-    const filter = {};
-    if (territory) filter.territory = territory;
-    filter.year = year;
-
-    dbAcb.find(filter, (err, jobs) => {
-        handleDbResponse(err, jobs, res);
-    });
-});
-
-//GET de elementos filtrados por territorio, año y empleos en la industria
-app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_industry", (req, res) => {
-    console.log("New GET request /jobs-companies-innovation-stats with filter territory, year and jobs_industry");
-
-    const territory = req.params.territory;
-    const year = parseInt(req.params.year);
-    const jobs_industry = parseInt(req.params.jobs_industry);
-
-    const filter = {};
-    if (territory) filter.territory = territory;
-    if (year) filter.year = year;
-    if (jobs_industry) filter.jobs_industry = jobs_industry;
-
-    dbAcb.find(filter, (err, jobs) => {
-        handleDbResponse(err, jobs, res);
-    });
-});
-
-app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_industry/:companies_with_innovations", (req, res) => {
-    console.log("New GET request /jobs-companies-innovation-stats with filter territory, year, jobs_industry and companies_with_innovations");
-
-    const territory = req.params.territory;
-    const year = parseInt(req.params.year);
-    const jobs_industry = parseInt(req.params.jobs_industry);
-    const companies_with_innovations = parseInt(req.params.companies_with_innovations);
-
-    console.log(`Filter parameters: territory=${territory}, year=${year}, jobs_industry=${jobs_industry}, companies_with_innovations=${companies_with_innovations}`);
-
-    const filter = {};
-    if (territory) filter.territory = territory;
-    if (year) filter.year = year;
-    if (jobs_industry) filter.jobs_industry = jobs_industry;
-    if (companies_with_innovations) filter.companies_with_innovations = companies_with_innovations;
-    
-    console.log(`Filter object: ${JSON.stringify(filter)}`);
-
-    dbAcb.find(filter, (err, jobs) => {
-        if (err) {
-            console.log(`Error getting filtered /jobs: ${err}`);
-            res.sendStatus(500);
-        } else {
-            console.log(`Number of jobs found: ${jobs.length}`);
-            handleDbResponse(err, jobs, res);
-        }
-    });
-});
 
     
-    
-    //GET de elementos filtrados por territorio, año, empleos en la industria, empresas con innovaciones y empleos temporales
-app.get(BASE_API_URL+"/jobs-companies-innovation-stats/:territory/:year/:jobs_industry/:companies_with_innovations/:temporary_employment", (req, res) => {
-console.log("New GET request /jobs-companies-innovation-stats with filter territory, year, jobs_industry, companies_with_innovations and temporary_employment");
-const territory = req.params.territory;
-const year = parseInt(req.params.year);
-const jobsIndustry = parseInt(req.params.jobs_industry);
-const companiesWithInnovations = parseInt(req.params.companies_with_innovations);
-const temporaryEmployment = parseFloat(req.params.temporary_employment);
 
-if (isNaN(year) || isNaN(jobsIndustry) || isNaN(companiesWithInnovations) || isNaN(temporaryEmployment)) {
-    res.status(400).json({ error: "Uno o más valores no son válidos" });
-    return;
-}
-
-const filter = {};
-if (territory) filter.territory = territory;
-filter.year = year;
-filter.jobs_industry = jobsIndustry;
-filter.companies_with_innovations = companiesWithInnovations;
-filter.temporary_employment = temporaryEmployment;
-
-dbAcb.find(filter, (err, jobs) => {
-    handleDbResponse(err, jobs, res);
-});
-});
 
 
 app.post(BASE_API_URL + "/jobs-companies-innovation-stats", (request, response) => {
@@ -302,28 +180,35 @@ app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, 
     response.sendStatus(405, "Method not allowed");
 });
 
-
 app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
     console.log("New GET request to /jobs-companies-innovation-stats/search");
 
     const query = req.query;
     const searchQuery = {};
 
+    // Pagination
+    const page = parseInt(query.page) || 1;
+    const limit = parseInt(query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    let queryCount = 0;
+
     for (const key in query) {
         if (query.hasOwnProperty(key)) {
+            queryCount++;
             if (key === "year") {
                 searchQuery[key] = parseInt(query[key]);
             } else if (key === "jobs_industry") {
                 searchQuery[key] = parseInt(query[key]);
             } else if (key === "companies_with_innovations" || key === "temporary_employment") {
                 searchQuery[key] = parseFloat(query[key]);
-            } else {
+            } else if (key === "territory") {
                 searchQuery[key] = new RegExp(query[key], "i");
             }
         }
     }
 
-    dbAcb.find(searchQuery, (err, jobs) => {
+    dbAcb.find(searchQuery).skip(skip).limit(limit).exec((err, jobs) => {
         if (err) {
             console.log(`Error getting /jobs: ${err}`);
             res.sendStatus(500);
@@ -331,242 +216,25 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
             if (jobs.length === 0) {
                 res.status(404).json({error: "No se encontraron resultados para la búsqueda"});
             } else {
-                res.json(jobs.map((j) => {
-                    delete j._id;
-                    return j;
-                }));
-            }
-        }
-    });
-});
-
-
-  
-
-
-// /////////////////////////////////////////////////////////                                       //////////////////////////////////////////////////////////
-// ///////////////////////////////////////////////////////// DATOS Y PETICIONES CARLOS GATA MASERO //////////////////////////////////////////////////////////
-// ////////////////////////////////////////////////////////                                       //////////////////////////////////////////////////////////
-
-// Redirect
-app.get(BASE_API_URL + "/ict-promotion-strategy-stats/docs", (req, res) => {
-    console.log("New GET request to /ict-promotion-strategy-stats/docs");
-    res.redirect("https://documenter.getpostman.com/view/26062709/2s93RNzFC5");
-});
-
-
-//GET loadInitial Data
-app.get(BASE_API_URL+"/ict-promotion-strategy-stats/loadInitialData",(req,res)=>{
-    cgm.find({}, (err, docs) => {
-        if (err) {
-          console.log(`Error getting /ict-promotion-strategy-stats: ${err}`);
-          res.sendStatus(500);
-        } else if (docs.length === 0) {
-          const fs = require('fs');
-          const cgmData = JSON.parse(fs.readFileSync(cgmFilePath));
-          const initialcgm = cgmData;
-          cgm.insert(initialcgm, (err, newDocs) => {
-            if (err) {
-              console.log(`Error inserting initial data into ict-promotion-strategy-stats: ${err}`);
-              res.sendStatus(500);
-            } else {
-              console.log(`Inserted ${newDocs.length} initial ict-promotion-strategy-stats`);
-              res.sendStatus(200);
-            }
-          });
-        } else {
-          console.log(`cgm collection already has ${docs.length} documents`);
-          res.sendStatus(200);
-        }
-      });
-});
-
-//GET recurso especifico
-app.get(BASE_API_URL+"/ict-promotion-strategy-stats",(req,res)=>{
-    const { year, territory, ict_manufacturing_industry, wholesale_trade, edition_of_computer_program, limit = 10000, offset = 0 } = req.query;
-    const query = {};
-
-    if (year) {
-        query.year = parseInt(year);
-    }
-    if (territory) {
-        query.territory = { $regex: new RegExp(territory, 'i') };   
-    }
-    if (ict_manufacturing_industry) {
-        query.ict_manufacturing_industry = parseFloat(ict_manufacturing_industry);
-    }
-    if (wholesale_trade) {
-        query.wholesale_trade = parseFloat(wholesale_trade);
-    }
-    if (edition_of_computer_program) {
-        query.edition_of_computer_program = parseFloat(edition_of_computer_program);
-    }
-    const limitValue = parseInt(limit);
-    const offsetValue = parseInt(offset);
-    cgm
-        .find(query)
-        .sort({year: 1}) // ordenar por id en orden ascendente
-        .limit(limitValue)
-        .skip(offsetValue)
-        .exec((err, cgm) => {
-        if (err) {
-            console.log(`No cgm found: ${err}`);
-            res.sendStatus(404);
-        } else {
-            console.log(`cgm returned = ${cgm.length}`);
-            res.json(cgm.map((j) => {
-                delete j._id;
-                return j;
-            }));
-        }
-    });
-});
-
-// GET busqueda por values
-
-app.get('/api/v1/ICT-promotion-strategy-stats/:value/:value2?', (req, res) => {
-    const { value, value2 } = req.params;
-    console.log(value);
-    const query = { $where: function() {
-      const keys = Object.keys(this);
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        if (typeof this[key] === 'number' && parseFloat(value) === this[key]) {
-          return true;
-        } else if (typeof this[key] === 'string' && this[key].toLowerCase().includes(value.toLowerCase())) {
-          if (value2) {
-            const nextKey = keys[i + 1];
-            if (nextKey && typeof this[nextKey] === 'number' && parseInt(value2) === this[nextKey]) {
-              return true;
-            }
-          } else {
-            return true;
-          }
-        } else if (typeof this[value] === 'string' && typeof parseInt(value2) === 'number' && Number.isInteger(parseInt(value2))) {
-          if (this[value] === value && parseInt(this[value2]) === parseInt(value2)) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }};
-    //CAMBIOS REALIZADOS PARA OBJETOS
-    cgm.find(query, (err, cgm) => {
-      if (err) {
-        console.log(`Error getting /cgm: ${err}`);
-        res.sendStatus(500);
-      } else if (cgm.length === 0) {
-        res.status(404).json({ error: 'cgm not found.' });
-      } else {
-        console.log(`cgm returned = ${cgm.length}`)
-        
-        if (typeof value === 'string' && typeof parseInt(value2) === 'number' && Number.isInteger(parseInt(value2))) {
-          if (cgm.length === 1) { // Si solo se proporciona un año y existe solo un objeto, devolver el objeto
-            delete cgm[0]._id;
-            res.json(cgm[0]);
-          } else { // De lo contrario, devolver el array de objetos
-            res.json(cgm.map((j) => {
-              delete j._id;
-              return j;
-            }));
-          }
-        } else if (!value2 && cgm.length === 1) { // Si solo se proporciona un año y existe solo un objeto, devolver el objeto
-          delete cgm[0]._id;
-          res.json(cgm[0]);
-        } else { // De lo contrario, devolver el array de objetos
-          res.json(cgm.map((j) => {
-            delete j._id;
-            return j;
-          }));
-        }
-      }
-    });
-  });
-  
-//POST añadir datos
-app.post(BASE_API_URL + "/ict-promotion-strategy-stats", (req, res) => {
-    const ns = req.body;
-
-    if (!ns.year || !ns.territory || !ns.ict_manufacturing_industry || !ns.wholesale_trade || !ns.edition_of_computer_program) {
-      return res.status(400).json({ error: 'Faltan datos en el JSON' });
-    }
-    // Check if the same resource already exists in the database
-    cgm.findOne({territory: ns.territory, year: ns.year, 
-    ict_manufacturing_industry: ns.ict_manufacturing_industry, 
-    wholesale_trade: ns.wholesale_trade, 
-    edition_of_computer_program: ns.edition_of_computer_program }, (err, resource) => {
-        
-        if (err) {
-            console.log(`Error getting resource ${ns.year}: ${err}`);
-            res.sendStatus(500);
-        } else if (resource) {
-            res.status(409).send({ error: "Ya existe un elemento con los mismos datos" });
-        } else {
-            cgm.insert(ns, (err, data) => {
-                if (err) {
-                    console.log(`Error inserting data: ${err}`);
-                    res.sendStatus(500);
+                if (queryCount >= 2 && jobs.length === 1) {
+                    const job = jobs[0];
+                    delete job._id;
+                    res.json(job);
                 } else {
-                    res.sendStatus(201);
-                    console.log("Nuevo post /ict-promotion-strategy-stats");
+                    res.json(jobs.map((j) => {
+                        delete j._id;
+                        return j;
+                    }));
                 }
-            });
+            }
         }
     });
 });
 
-//POST fallo
-app.post(BASE_API_URL+"/ict-promotion-strategy-stats/*",(req,res)=>{
-    res.sendStatus(405, "Method not allowed"); // respuesta ERROR 405
-});
 
-//DELETE  array completo
-app.delete(BASE_API_URL+"/ict-promotion-strategy-stats", (req, res) => {
-    cgm.remove({}, { multi: true }, (err, numRemoved) => {
-      if (err) {
-          console.error(err);
-          return res.status(500).send({ error: 'Internal server error' });
-      }
-      return res.status(200).send({ message: `Deleted ${numRemoved} itc stats` });
-  });
-  });
-  
-  //DELETE  DE UN RECURSO
-  app.delete(BASE_API_URL + "/ict-promotion-strategy-stats/:year", (req, res) => {
-    const bd_year = Number(req.params.year);
-  cgm.remove({ year: bd_year }, {}, (err, numRemoved) => {
-      if (err) {
-          console.error(err);
-          return res.status(500).send({ error: 'Internal server error' });
-      }
-      if (numRemoved === 0) {
-          return res.status(400).send({ error: 'Bad request: Blood donation parameter not found' });
-      }
-      return res.status(200).send({ message: 'Blood donation deleted successfully' });
-  });
-});
 
-// PUT fallido
-app.put(BASE_API_URL + "/ict-promotion-strategy-stats", (req, res) => {
-    res.sendStatus(405);
-});
-  
-//PUT a lista de recursos
-app.put(BASE_API_URL + "/ict-promotion-strategy-stats/:year",(req,res)=>{
-    const bd_year = Number(req.params.year); // Obtener el ID de la URL
-    const updatedBd = req.body; // Obtener ict actualizado desde cuerpo 
 
-    // Actualizar el objeto ict en la base de datos
-    cgm.update({ year: bd_year }, { $set: updatedBd }, {}, (err, numReplaced) => {
-    if (err) {
-        console.error(err);
-        return res.status(500).send({ error: 'Internal server error' });
-    }
-    if (numReplaced === 0) {
-        return res.status(400).send({ error: 'Bad request: ict stats ID not found' });
-    }
-    return res.status(200).send({ message: 'ict stats updated successfully' });
-    });
-});
+
+
 
 }
