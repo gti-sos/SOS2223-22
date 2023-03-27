@@ -177,7 +177,7 @@ app.post(BASE_API_URL + "/ict-promotion-strategy-stats", (req, res) => {
             console.log(`Error getting resource ${ns.year}: ${err}`);
             res.sendStatus(500);
         } else if (resource) {
-            res.status(409).send({ error: "Ya existe un elemento con los mismos datos" });
+            res.status(409);
         } else {
             cgm.insert(ns, (err, data) => {
                 if (err) {
@@ -202,9 +202,9 @@ app.delete(BASE_API_URL+"/ict-promotion-strategy-stats", (req, res) => {
     cgm.remove({}, { multi: true }, (err, numRemoved) => {
       if (err) {
           console.error(err);
-          return res.status(500).send({ error: 'Internal server error' });
+          return res.status(500);
       }
-      return res.status(200).send({ message: `Deleted ${numRemoved} itc stats` });
+      return res.status(200);
   });
   });
   
@@ -214,12 +214,12 @@ app.delete(BASE_API_URL+"/ict-promotion-strategy-stats", (req, res) => {
   cgm.remove({ year: bd_year }, {}, (err, numRemoved) => {
       if (err) {
           console.error(err);
-          return res.status(500).send({ error: 'Internal server error' });
+          return res.status(500);
       }
       if (numRemoved === 0) {
-          return res.status(400).send({ error: 'Bad request: Blood donation parameter not found' });
+          return res.status(400);
       }
-      return res.status(200).send({ message: 'Blood donation deleted successfully' });
+      return res.status(200);
   });
 });
 
@@ -237,12 +237,12 @@ app.put(BASE_API_URL + "/ict-promotion-strategy-stats/:year",(req,res)=>{
     cgm.update({ year: bd_year }, { $set: updatedBd }, {}, (err, numReplaced) => {
     if (err) {
         console.error(err);
-        return res.status(500).send({ error: 'Internal server error' });
+        return res.status(500);
     }
     if (numReplaced === 0) {
-        return res.status(400).send({ error: 'Bad request: ict stats ID not found' });
+        return res.status(400);
     }
-    return res.status(200).send({ message: 'ict stats updated successfully' });
+    return res.status(200);
     });
 });
 
