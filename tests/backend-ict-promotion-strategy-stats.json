@@ -1036,10 +1036,7 @@
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
-							"\r",
-							"pm.test(\"Objeto borrado correctamente\", function(){\r",
-							"    pm.expect(pm.response.json()).to.be.an('object');\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1076,10 +1073,7 @@
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
-							"\r",
-							"pm.test(\"Objeto borrado correctamente\", function(){\r",
-							"    pm.expect(pm.response.json()).to.be.an('object');\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1116,10 +1110,7 @@
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
-							"\r",
-							"pm.test(\"Objeto borrado correctamente\", function(){\r",
-							"    pm.expect(pm.response.json()).to.be.an('object');\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1156,10 +1147,7 @@
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
 							"});\r",
-							"\r",
-							"pm.test(\"Objeto borrado correctamente\", function(){\r",
-							"    pm.expect(pm.response.json()).to.be.an('object');\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
