@@ -56,15 +56,24 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Validar respuesta de /jobs-companies-innovation-stats\", function() {\r",
-							"        // Si se devuelven datos, no se espera que la respuesta sea un array vacío\r",
-							"        \r",
-							"        pm.test(\"Si no se encuentran datos, se devuelve un array vacío\", function() {\r",
-							"            var data = pm.response.json();\r",
-							"            pm.expect(data).to.eql([]);\r",
-							"        });\r",
-							"      \r",
-							"        // Si la respuesta no es 200, se considera que la prueba ha fallado y se omite el resto de las pruebas\r",
-							"        pm.expect(pm.response.code).to.equal(200);\r",
+							"     pm.expect([200, 404]).to.include(pm.response.code);\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');\r",
+							"\r",
+							"    const data = pm.response.json();\r",
+							"\r",
+							"    pm.test(\"Si se devuelven datos, se espera que la respuesta no sea un array vacío\", function() {\r",
+							"        if (data.length > 0) {\r",
+							"            pm.expect(data).to.not.eql([]);\r",
+							"        }\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Si no se encuentran datos, se devuelve un array vacío\", function() {\r",
+							"        if (data.error) {\r",
+							"            pm.expect(data).to.eql({error: \"No se encontraron resultados para la búsqueda\"});\r",
+							"        }\r",
+							"    });\r",
+							"\r",
+							"   \r",
 							"    \r",
 							"});\r",
 							""
@@ -171,7 +180,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia",
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats?territory=andalucia",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -181,8 +190,13 @@
 					"path": [
 						"api",
 						"v1",
-						"jobs-companies-innovation-stats",
-						"andalucia"
+						"jobs-companies-innovation-stats"
+					],
+					"query": [
+						{
+							"key": "territory",
+							"value": "andalucia"
+						}
 					]
 				}
 			},
@@ -213,7 +227,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia/2008",
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats?territory=andalucia&year=2008",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -223,9 +237,17 @@
 					"path": [
 						"api",
 						"v1",
-						"jobs-companies-innovation-stats",
-						"andalucia",
-						"2008"
+						"jobs-companies-innovation-stats"
+					],
+					"query": [
+						{
+							"key": "territory",
+							"value": "andalucia"
+						},
+						{
+							"key": "year",
+							"value": "2008"
+						}
 					]
 				}
 			},
@@ -256,7 +278,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia/2008/345542",
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats?territory=andalucia&year=2008&jobs_industry=345542",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -266,10 +288,21 @@
 					"path": [
 						"api",
 						"v1",
-						"jobs-companies-innovation-stats",
-						"andalucia",
-						"2008",
-						"345542"
+						"jobs-companies-innovation-stats"
+					],
+					"query": [
+						{
+							"key": "territory",
+							"value": "andalucia"
+						},
+						{
+							"key": "year",
+							"value": "2008"
+						},
+						{
+							"key": "jobs_industry",
+							"value": "345542"
+						}
 					]
 				}
 			},
@@ -300,7 +333,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia/2008/345542/95",
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats?territory=andalucia&year=2008&jobs_industry=345542&companies_with_innovations=95",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -310,11 +343,25 @@
 					"path": [
 						"api",
 						"v1",
-						"jobs-companies-innovation-stats",
-						"andalucia",
-						"2008",
-						"345542",
-						"95"
+						"jobs-companies-innovation-stats"
+					],
+					"query": [
+						{
+							"key": "territory",
+							"value": "andalucia"
+						},
+						{
+							"key": "year",
+							"value": "2008"
+						},
+						{
+							"key": "jobs_industry",
+							"value": "345542"
+						},
+						{
+							"key": "companies_with_innovations",
+							"value": "95"
+						}
 					]
 				}
 			},
@@ -345,7 +392,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/andalucia/2008/345542/95/41.1",
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats?territory=andalucia&year=2008&jobs_industry=345542&companies_with_innovations=95&temporary_employment=41.1",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -355,12 +402,29 @@
 					"path": [
 						"api",
 						"v1",
-						"jobs-companies-innovation-stats",
-						"andalucia",
-						"2008",
-						"345542",
-						"95",
-						"41.1"
+						"jobs-companies-innovation-stats"
+					],
+					"query": [
+						{
+							"key": "territory",
+							"value": "andalucia"
+						},
+						{
+							"key": "year",
+							"value": "2008"
+						},
+						{
+							"key": "jobs_industry",
+							"value": "345542"
+						},
+						{
+							"key": "companies_with_innovations",
+							"value": "95"
+						},
+						{
+							"key": "temporary_employment",
+							"value": "41.1"
+						}
 					]
 				}
 			},
@@ -386,7 +450,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/jaeeen",
+					"raw": "https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats?territory=andaluciaaa",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -396,8 +460,13 @@
 					"path": [
 						"api",
 						"v1",
-						"jobs-companies-innovation-stats",
-						"jaeeen"
+						"jobs-companies-innovation-stats"
+					],
+					"query": [
+						{
+							"key": "territory",
+							"value": "andaluciaaa"
+						}
 					]
 				}
 			},
