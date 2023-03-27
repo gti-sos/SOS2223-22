@@ -233,7 +233,7 @@ app.put(BASE_API_URL + "/ict-promotion-strategy-stats/:year",(req,res)=>{
     const bd_year = Number(req.params.year); // Obtener el ID de la URL
     const updatedBd = req.body; // Obtener ict actualizado desde cuerpo o
 
-    // Actualizar el objeto ict en la base de datoss
+    // Actualizar el objeto ict en la base de datos
     cgm.update({ year: bd_year }, { $set: updatedBd }, {}, (err, numReplaced) => {
     if (err) {
         console.error(err);
