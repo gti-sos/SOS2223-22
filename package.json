@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node nodejs/index",
     "test-jobs-companies-innovation-stats": "npx newman run ./tests/backend.json",
-    "test-ict-promotion-strategy-stats": "npx newman run ./tests/consultas-cgm.json",
-    "test": "npx newman run ./tests/backend.json && npx newman run ./tests/consultas-cgm.json"
+    "test-ict-promotion-strategy-stats": "npx newman run ./tests/backend-ict-promotion-strategy-stats.json",
+    "test": "npx newman run ./tests/backend.json && npx newman run ./tests/backend-ict-promotion-strategy-stats.json"
   },
   "repository": {
     "type": "git",
