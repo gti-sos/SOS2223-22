@@ -75,9 +75,6 @@ function handleDbResponse(err, jobs, res) {
 
 
 
-    
-
-
 
 app.post(BASE_API_URL + "/jobs-companies-innovation-stats", (request, response) => {
     const newStat = request.body;
