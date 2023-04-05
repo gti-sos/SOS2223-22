@@ -23,7 +23,6 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
     res.redirect("https://documenter.getpostman.com/view/14969056/2s93JzN1Yu");
 });
 
-
 //GET loadInitial Data
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res)=>{
     dbAcb.insert(acb.datos_ACB, (err, data) => {
@@ -227,10 +226,6 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
         }
     });
 });
-
-
-
-
 
 
 
