@@ -275,9 +275,6 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/:territory/:year/:jobs_
     });
 });
 
-
-
-
 app.get(BASE_API_URL + "/jobs-companies-innovation-stats/:territory/:year/:jobs_industry/:companies_with_innovations/:temporary_employment", (req, res) => {
     const territory = req.params.territory;
     const year = parseInt(req.params.year);
