@@ -122,6 +122,7 @@ function handleDbResponseArray(err, jobs, res) {
         }
     }
 }
+
 // Función para manejar el resultado de las consultas a la base de datos
 function handleDbResponse(err, jobs, res) {
     if (err) {
@@ -395,8 +396,6 @@ app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, 
         }
     });
 });
-
-
   //PUT a lista de recursos
   app.put(BASE_API_URL + "/jobs-companies-innovation-stats",(request,response)=>{
     response.sendStatus(405, "Method not allowed");
