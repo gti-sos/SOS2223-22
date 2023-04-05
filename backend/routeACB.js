@@ -228,5 +228,4 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
 });
 
 
-
 }
