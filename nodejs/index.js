@@ -1,20 +1,18 @@
-var express = require('express');
-var bodyParser = require("body-parser");
-const backend = require('../backend/routeCGM');// GET,PUT,DELETE,POST Carlos Gata Masero
-const metodosACB = require("../backend/routeACB");// GET,PUT,DELETE,POST Antonio Carranza Barroso
+import express from "express";
+//const backend = require('../backend/routeCGM');// GET,PUT,DELETE,POST Carlos Gata Masero
+import  { loadBackendAcb } from "../backend/routeACB.js";// GET,PUT,DELETE,POST Antonio Carranza Barroso
 var app = express();
 var port = process.env.PORT || 12345;
-const BASE_API_URL = "/api/v1";
-
 app.use("/",express.static("./public"));
 
-app.use(bodyParser.json());
+app.use(express.json());
+loadBackendAcb(app);
 app.listen(port,()=>{
     console.log(`Listening in port ${port}`);
 });
 
-backend(app);
-metodosACB(app);
+//backend(app);
+
 
 
 
