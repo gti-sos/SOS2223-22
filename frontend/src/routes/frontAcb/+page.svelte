@@ -16,8 +16,6 @@
      // Agrega una variable para controlar si se debe mostrar el formulario
   let showForm = false;
 
-
-
 // Agrega un objeto para almacenar los valores del formulario
 let formData = {
   territory: "",
