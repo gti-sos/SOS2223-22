@@ -1,12 +1,17 @@
 import express from "express";
 //const backend = require('../backend/routeCGM');// GET,PUT,DELETE,POST Carlos Gata Masero
 import  { loadBackendAcb } from "../backend/routeACB.js";// GET,PUT,DELETE,POST Antonio Carranza Barroso
+import {handler} from "../frontend/build/handler.js";
 var app = express();
 var port = process.env.PORT || 12345;
-app.use("/",express.static("./public"));
+//app.use("/",express.static("./public"));
+
 
 app.use(express.json());
 loadBackendAcb(app);
+app.use(handler);
+
+
 app.listen(port,()=>{
     console.log(`Listening in port ${port}`);
 });
