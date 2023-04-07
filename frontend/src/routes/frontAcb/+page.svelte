@@ -10,6 +10,16 @@
      * @type {any[]}
      */
     let jobs = [];
+    // Obtiene el elemento body
+    var body = document.getElementsByTagName('body')[0];
+
+// Crea un nuevo elemento div
+    var messagesDiv = document.createElement('div');
+    messagesDiv.id = 'messages';
+
+// Agrega el nuevo elemento div al cuerpo del documento
+    body.appendChild(messagesDiv);
+
 
     let result = '';
     let resultStatus = '';
@@ -43,9 +53,9 @@ async function handleDelete() {
 
   if (res.ok) {
     getJobs(); // Actualizar los datos en la tabla
-    alert("Recurso eliminado correctamente");
+    showMessage("Recurso eliminado correctamente", "success");
   } else {
-    alert("Recurso no encontrado:"+deleteFormData.territory);
+    showMessage(`Recurso no encontrado: ${deleteFormData.territory}`, "error");
   }
 }
   // Agrega una variable para controlar si los campos están en modo de edición
@@ -85,6 +95,15 @@ async function handleDelete() {
         await handleUpdate(job, index);
   }
 
+    /**
+ * Muestra un mensaje en el elemento con el ID "messages".
+ * @param {string} message - El mensaje que se va a mostrar.
+ * @param {string} [type] - El tipo de mensaje, puede ser "success", "warning" o "error". Predeterminado es "success".
+ */
+function showMessage(message, type = "success") {
+  const messages = document.getElementById("messages");
+  messages.innerHTML = `<div class="message ${type}">${message}</div>`;
+}
 
 
   // Función para hacer una solicitud PUT a la API con los nuevos valores
@@ -107,7 +126,7 @@ async function handleDelete() {
       jobs[index] = job;
       return job;
     } else {
-      alert("Porfavor, rellena todos los campos");
+      showMessage("Porfavor, rellena todos los campos","error");
     }
   }
 
@@ -145,9 +164,9 @@ async function loadInitialData() {
       if (res.ok) {
         
         getJobs(); // Actualizar los datos en la tabla
-        alert("Datos cargados correctamente");
+        showMessage("Datos cargados correctamente", "success");
       } else {
-        alert('Error al cargar los datos iniciales');
+        showMessage("Error al cargar los datos iniciales", "error");
       }
     }
   
@@ -159,9 +178,9 @@ async function loadInitialData() {
       if (res.ok) {
         
         getJobs(); // Actualizar los datos en la tabla
-        alert("Recursos eliminados correctamente");
+        showMessage("Recursos eliminados correctamente", "success");
       } else {
-        alert('Error al eliminar los recursos');
+        showMessage("Error al eliminar los recursos", "error");
       }
     }
 
@@ -182,7 +201,7 @@ async function handleSubmit() {
     !(Number(temporary_employment) === temporary_employment && temporary_employment % 1 !== 0)
   
   ) {
-    alert("Por favor, complete todos los campos con los tipos de datos correctos");
+    showMessage("Por favor, complete todos los campos con los tipos de datos correctos","error");
     return;
   }
   const response = await fetch(API, {
@@ -197,10 +216,10 @@ async function handleSubmit() {
     // Actualizar los datos y ocultar el formulario
     
     getJobs();
-    alert("Recurso creado correctamente");
+    showMessage("Recurso creado correctamente", "success");
     showForm = false;
   } else {
-    alert("Error al crear el recurso. Ya existe.");
+    showMessage("Error al crear el recurso. Ya existe.", "error");
   }
 }
 
@@ -236,6 +255,28 @@ async function getJobs() {
   </script>
   
   <style>
+
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.message.success {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+.message.warning {
+  background-color: #fff9c4;
+  color: #f57f17;
+}
+
+.message.error {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
     .form-container {
     display: flex;
     justify-content: center;
