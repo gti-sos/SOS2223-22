@@ -4,7 +4,8 @@
 
     import { onMount } from 'svelte';
   
-    let API = 'https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/';//http://localhost:12345/api/v1/jobs-companies-innovation-stats/
+    let API = 'https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/';
+    //http://localhost:12345/api/v1/jobs-companies-innovation-stats/
     /**
      * @type {any[]}
      */
@@ -138,7 +139,7 @@ function toggleForm() {
 }
 // Función para cargar los datos iniciales
 async function loadInitialData() {
-      const res = await fetch(API+'loadInitialData', {
+      const res = await fetch(API+"loadInitialData", {
         method: 'GET'
       });
       if (res.ok) {
