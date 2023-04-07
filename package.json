@@ -1,16 +1,14 @@
-
 {
   "name": "sos2223-22",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
-  
+  "type": "module",
   "scripts": {
     "start": "node nodejs/index",
     "test-jobs-companies-innovation-stats": "npx newman run ./tests/backend.json",
     "test-ict-promotion-strategy-stats": "npx newman run ./tests/backend-ict-promotion-strategy-stats.json",
-    "test": "npm  run test-jobs-companies-innovation-stats && npm run test-ict-promotion-strategy-stats " 
-    
+    "test": "npm  run test-jobs-companies-innovation-stats"
   },
   "repository": {
     "type": "git",

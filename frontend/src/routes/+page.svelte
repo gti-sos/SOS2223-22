@@ -1,12 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Information</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+
+        /* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Estilos para las secciones */
+.team-members,
+.project-details {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.team-members ul,
+.project-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.team-member {
+    padding: 0.5rem 0;
+}
+
+/* Estilos para el pie de página */
+footer {
+    padding: 1rem 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ccc;
+}
+
+footer p {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -43,7 +96,7 @@
                         </ul>
                         <p><strong>Frontends:</strong></p>
                         <ul>
-                            <li>XXXXXXXXXXXXXXXXXXXXXXXXXXXX</li>
+                            <li> <li><a href="https://sos2223-22.appspot.com/frontAcb" target="_blank">Frontend Antonio </li>
                         </ul>
                         <p><strong>URLs Base:</strong></p>
                         <ul>
