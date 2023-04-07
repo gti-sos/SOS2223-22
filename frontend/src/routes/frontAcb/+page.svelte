@@ -4,7 +4,7 @@
 
     import { onMount } from 'svelte';
   
-    let API = 'https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/api/v1';//http://localhost:12345/api/v1/jobs-companies-innovation-stats/
+    let API = 'https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/';//http://localhost:12345/api/v1/jobs-companies-innovation-stats/
     /**
      * @type {any[]}
      */
