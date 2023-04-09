@@ -10,16 +10,8 @@
      * @type {any[]}
      */
     let jobs = [];
-    // Obtiene el elemento body
-    var body = document.getElementsByTagName('body')[0];
-
-// Crea un nuevo elemento div
-    var messagesDiv = document.createElement('div');
-    messagesDiv.id = 'messages';
-
-// Agrega el nuevo elemento div al cuerpo del documento
-    body.appendChild(messagesDiv);
-
+  
+// 
 
     let result = '';
     let resultStatus = '';
@@ -100,12 +92,28 @@ async function handleDelete() {
  * @param {string} message - El mensaje que se va a mostrar.
  * @param {string} [type] - El tipo de mensaje, puede ser "success", "warning" o "error". Predeterminado es "success".
  */
+/*
 function showMessage(message, type = "success") {
   const messages = document.getElementById("messages");
   messages.innerHTML = `<div class="message ${type}">${message}</div>`;
+  console.log(`Mensaje: ${message}, Tipo: ${type}`);
 }
 
+*/
+function showMessage(message, type = "success") {
+  const messages = document.getElementById("messages");
+  const messageElement = document.createElement("div");
 
+  messageElement.className = `message ${type}`;
+  messageElement.innerHTML = message;
+  messages.appendChild(messageElement);
+  console.log(`Mensaje: ${message}, Tipo: ${type}`);
+
+  // Hacer que el mensaje desaparezca después de 5 segundos (5000 milisegundos)
+  setTimeout(() => {
+    messageElement.remove();
+  }, 5000);
+}
   // Función para hacer una solicitud PUT a la API con los nuevos valores
   /**
      * @param {{ territory: any; year: any; jobs_industry: any; companies_with_innovations: any; temporary_employment: any; }} job
@@ -126,7 +134,7 @@ function showMessage(message, type = "success") {
       jobs[index] = job;
       return job;
     } else {
-      showMessage("Porfavor, rellena todos los campos","error");
+      showMessage("Porfavor, rellena todos los campos","warning");
     }
   }
 
@@ -256,23 +264,24 @@ async function getJobs() {
   
   <style>
 
-.message {
+
+ .message {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
 }
 
-.message.success {
+ .message.success {
   background-color: #c8e6c9;
   color: #2e7d32;
 }
 
-.message.warning {
+ .message.warning {
   background-color: #fff9c4;
   color: #f57f17;
 }
 
-.message.error {
+  .message.error {
   background-color: #ffcdd2;
   color: #c62828;
 }
@@ -376,6 +385,7 @@ button {
   </style>
   
   <h1 class="title">API JOBS - Antonio Carranza</h1>
+  <div id="messages" class="message"></div>
 
   {#if !showForm}
   {#if resultStatus === "200"}
