@@ -1,389 +1,391 @@
 <script>
-// @ts-nocheck
-    import { fade } from "svelte/transition";
+    // @ts-nocheck
+        import { fade } from "svelte/transition";
 
-    import { onMount } from 'svelte';
-  
-    let API = 'https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/';
-    //http://localhost:12345/api/v1/jobs-companies-innovation-stats/
-    /**
-     * @type {any[]}
-     */
-    let jobs = [];
-  
-// 
+        import { onMount } from 'svelte';
+        //*   
+        import Header from "../Header.svelte";
 
-    let result = '';
-    let resultStatus = '';
-  
-     // Agrega una variable para controlar si se debe mostrar el formulario
-  let showForm = false;
+        let API = 'http://localhost:12345/api/v1/jobs-companies-innovation-stats/';
+        //http://localhost:12345/api/v1/jobs-companies-innovation-stats/
+        /**
+         * @type {any[]}
+         */
+        let jobs = [];
+      
+    // 
 
-// Agrega un objeto para almacenar los valores del formulario
-let formData = {
-  territory: "",
-  year: "",
-  jobs_industry: "",
-  companies_with_innovations: "",
-  temporary_employment: "",
-};
+        let result = '';
+        let resultStatus = '';
+      
+        // Agrega una variable para controlar si se debe mostrar el formulario
+      let showForm = false;
 
-let showDeleteForm = false;
-
-function toggleDeleteForm() {
-  showDeleteForm = !showDeleteForm;
-}
-
-let deleteFormData = {
-  territory: "",
-};
-
-async function handleDelete() {
-  const res = await fetch(API + deleteFormData.territory, {
-    method: "DELETE",
-  });
-
-  if (res.ok) {
-    getJobs(); // Actualizar los datos en la tabla
-    showMessage("Recurso eliminado correctamente", "success");
-  } else {
-    showMessage(`Recurso no encontrado: ${deleteFormData.territory}`, "error");
-  }
-}
-  // Agrega una variable para controlar si los campos están en modo de edición
-  let editMode = false;
-
-  /**
-     * @param {{ territory: any; year: any; jobs_industry: any; companies_with_innovations: any; temporary_employment: any; }} job
-     * @param {string | number} index
-     */
-  async function handleUpdate(job, index) {
-    // Cambia el modo de edición a true
-    editMode = true;
-
-    // Crea un objeto para almacenar los nuevos valores
-    let updatedJob = {
-      territory: job.territory,
-      year: job.year,
-      jobs_industry: job.jobs_industry,
-      companies_with_innovations: job.companies_with_innovations,
-      temporary_employment: job.temporary_employment,
+    // Agrega un objeto para almacenar los valores del formulario
+    let formData = {
+      territory: "",
+      year: "",
+      jobs_industry: "",
+      companies_with_innovations: "",
+      temporary_employment: "",
     };
 
-    // Actualiza los valores de la fila correspondiente
-    updatedJob = await updateJob(updatedJob, index);
+    let showDeleteForm = false;
 
-    // Si se realizó la actualización correctamente, cambia el modo de edición a false
-    if (updatedJob) {
-      editMode = false;
+    function toggleDeleteForm() {
+      showDeleteForm = !showDeleteForm;
     }
-  }
-  /**
-     * @param {string | number} index
+
+    let deleteFormData = {
+      territory: "",
+    };
+
+    async function handleDelete() {
+      const res = await fetch(API + deleteFormData.territory, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        getJobs(); // Actualizar los datos en la tabla
+        showMessage("Recurso eliminado correctamente", "success");
+      } else {
+        showMessage(`Recurso no encontrado: ${deleteFormData.territory}`, "error");
+      }
+    }
+      // Agrega una variable para controlar si los campos están en modo de edición
+      let editMode = false;
+
+      /**
+         * @param {{ territory: any; year: any; jobs_industry: any; companies_with_innovations: any; temporary_employment: any; }} job
+         * @param {string | number} index
+         */
+      async function handleUpdate(job, index) {
+        // Cambia el modo de edición a true
+        editMode = true;
+
+        // Crea un objeto para almacenar los nuevos valores
+        let updatedJob = {
+          territory: job.territory,
+          year: job.year,
+          jobs_industry: job.jobs_industry,
+          companies_with_innovations: job.companies_with_innovations,
+          temporary_employment: job.temporary_employment,
+        };
+
+        // Actualiza los valores de la fila correspondiente
+        updatedJob = await updateJob(updatedJob, index);
+
+        // Si se realizó la actualización correctamente, cambia el modo de edición a false
+        if (updatedJob) {
+          editMode = false;
+        }
+      }
+      /**
+         * @param {string | number} index
+         */
+      async function saveRow(index) {
+          // @ts-ignore
+            const job = jobs[index];
+            await handleUpdate(job, index);
+      }
+
+        /**
+     * Muestra un mensaje en el elemento con el ID "messages".
+     * @param {string} message - El mensaje que se va a mostrar.
+     * @param {string} [type] - El tipo de mensaje, puede ser "success", "warning" o "error". Predeterminado es "success".
      */
-  async function saveRow(index) {
-      // @ts-ignore
-        const job = jobs[index];
-        await handleUpdate(job, index);
-  }
+    /*
+    function showMessage(message, type = "success") {
+      const messages = document.getElementById("messages");
+      messages.innerHTML = `<div class="message ${type}">${message}</div>`;
+      console.log(`Mensaje: ${message}, Tipo: ${type}`);
+    }
+
+    */
+    function showMessage(message, type = "success") {
+      const messages = document.getElementById("messages");
+      const messageElement = document.createElement("div");
+
+      messageElement.className = `message ${type}`;
+      messageElement.innerHTML = message;
+      messages.appendChild(messageElement);
+      console.log(`Mensaje: ${message}, Tipo: ${type}`);
+
+      // Hacer que el mensaje desaparezca después de 5 segundos (5000 milisegundos)
+      setTimeout(() => {
+        messageElement.remove();
+      }, 5000);
+    }
+      // Función para hacer una solicitud PUT a la API con los nuevos valores
+      /**
+         * @param {{ territory: any; year: any; jobs_industry: any; companies_with_innovations: any; temporary_employment: any; }} job
+         * @param {string | number} index
+         */
+      async function updateJob(job, index) {
+        const response = await fetch(API+ `${job.territory}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(job),
+        });
+
+        if (response.ok) {
+          // Actualiza los datos en la tabla
+          // @ts-ignore
+          jobs[index] = job;
+          return job;
+        } else {
+          showMessage("Porfavor, rellena todos los campos","warning");
+        }
+      }
+
+
+      /**
+         * @type {string | number | null}
+         */
+      let selectedRowIndex = null;
+
+    // ...
 
     /**
- * Muestra un mensaje en el elemento con el ID "messages".
- * @param {string} message - El mensaje que se va a mostrar.
- * @param {string} [type] - El tipo de mensaje, puede ser "success", "warning" o "error". Predeterminado es "success".
- */
-/*
-function showMessage(message, type = "success") {
-  const messages = document.getElementById("messages");
-  messages.innerHTML = `<div class="message ${type}">${message}</div>`;
-  console.log(`Mensaje: ${message}, Tipo: ${type}`);
-}
-
-*/
-function showMessage(message, type = "success") {
-  const messages = document.getElementById("messages");
-  const messageElement = document.createElement("div");
-
-  messageElement.className = `message ${type}`;
-  messageElement.innerHTML = message;
-  messages.appendChild(messageElement);
-  console.log(`Mensaje: ${message}, Tipo: ${type}`);
-
-  // Hacer que el mensaje desaparezca después de 5 segundos (5000 milisegundos)
-  setTimeout(() => {
-    messageElement.remove();
-  }, 5000);
-}
-  // Función para hacer una solicitud PUT a la API con los nuevos valores
-  /**
-     * @param {{ territory: any; year: any; jobs_industry: any; companies_with_innovations: any; temporary_employment: any; }} job
-     * @param {string | number} index
-     */
-  async function updateJob(job, index) {
-    const response = await fetch(API+ `${job.territory}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(job),
-    });
-
-    if (response.ok) {
-      // Actualiza los datos en la tabla
+         * @param {string | number | null} index
+         */
+    function editRow(index) {
+      // Desactivar la edición de la fila previamente seleccionada
+      if (selectedRowIndex !== null) {
+        // @ts-ignore
+        jobs[selectedRowIndex].editing = false;
+      }
+      // Activar la edición de la nueva fila seleccionada
+      selectedRowIndex = index;
       // @ts-ignore
-      jobs[index] = job;
-      return job;
-    } else {
-      showMessage("Porfavor, rellena todos los campos","warning");
+      jobs[selectedRowIndex].editing = true;
     }
-  }
+    // Función para manejar el clic en el botón "Crear recurso"
+    function toggleForm() {
+      showForm = !showForm;
+    }
+    // Función para cargar los datos iniciales
+    async function loadInitialData() {
+          const res = await fetch(API+"loadInitialData", {
+            method: 'GET'
+          });
+          if (res.ok) {
+            
+            getJobs(); // Actualizar los datos en la tabla
+            showMessage("Datos cargados correctamente", "success");
+          } else {
+            showMessage("Error al cargar los datos iniciales", "error");
+          }
+        }
+      
+        // Función para eliminar todos los recursos
+        async function deleteResources() {
+          const res = await fetch(API, {
+            method: 'DELETE'
+          });
+          if (res.ok) {
+            
+            getJobs(); // Actualizar los datos en la tabla
+            showMessage("Recursos eliminados correctamente", "success");
+          } else {
+            showMessage("Error al eliminar los recursos", "error");
+          }
+        }
+
+    // Función para manejar el envío del formulario
+    async function handleSubmit() {
+        const companies_with_innovations = parseFloat(formData.companies_with_innovations);
+        const temporary_employment = parseFloat(formData.temporary_employment);
+        // Validación básica antes de enviar el formulario
+      if (
+        !formData.territory ||
+        formData.year === null ||
+        formData.jobs_industry === null ||
+        formData.companies_with_innovations === null ||
+        formData.temporary_employment === null ||
+        !Number.isInteger(formData.year) ||
+        !Number.isInteger(formData.jobs_industry) ||
+        !(Number(companies_with_innovations) === companies_with_innovations && companies_with_innovations % 1 !== 0) ||
+        !(Number(temporary_employment) === temporary_employment && temporary_employment % 1 !== 0)
+      
+      ) {
+        showMessage("Por favor, complete todos los campos con los tipos de datos correctos","error");
+        return;
+      }
+      const response = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Actualizar los datos y ocultar el formulario
+        
+        getJobs();
+        showMessage("Recurso creado correctamente", "success");
+        showForm = false;
+      } else {
+        showMessage("Error al crear el recurso. Ya existe.", "error");
+      }
+    }
 
 
-  /**
-     * @type {string | number | null}
-     */
-  let selectedRowIndex = null;
-
-// ...
-
-/**
-     * @param {string | number | null} index
-     */
-function editRow(index) {
-  // Desactivar la edición de la fila previamente seleccionada
-  if (selectedRowIndex !== null) {
-    // @ts-ignore
-    jobs[selectedRowIndex].editing = false;
-  }
-  // Activar la edición de la nueva fila seleccionada
-  selectedRowIndex = index;
-  // @ts-ignore
-  jobs[selectedRowIndex].editing = true;
-}
-// Función para manejar el clic en el botón "Crear recurso"
-function toggleForm() {
-  showForm = !showForm;
-}
-// Función para cargar los datos iniciales
-async function loadInitialData() {
-      const res = await fetch(API+"loadInitialData", {
+    async function getJobs() {
+      resultStatus = result = '';
+      const res = await fetch(API, {
         method: 'GET'
       });
-      if (res.ok) {
-        
-        getJobs(); // Actualizar los datos en la tabla
-        showMessage("Datos cargados correctamente", "success");
-      } else {
-        showMessage("Error al cargar los datos iniciales", "error");
-      }
-    }
-  
-     // Función para eliminar todos los recursos
-     async function deleteResources() {
-      const res = await fetch(API, {
-        method: 'DELETE'
-      });
-      if (res.ok) {
-        
-        getJobs(); // Actualizar los datos en la tabla
-        showMessage("Recursos eliminados correctamente", "success");
-      } else {
-        showMessage("Error al eliminar los recursos", "error");
+      try {
+        const data = await res.json();
+        result = JSON.stringify(data, null, 2);
+        jobs = data;
+        if (res.ok) {
+          const status = await res.status;
+          resultStatus = status.toString();
+          if (jobs.length === 0) {
+            resultStatus = 'empty';
+          }
+        } else {
+          resultStatus = 'Error en la solicitud';
+        }
+      } catch (error) {
+        console.log(`Error parsing result:${error}`);
+        resultStatus = 'Error en la solicitud';
       }
     }
 
-// Función para manejar el envío del formulario
-async function handleSubmit() {
-    const companies_with_innovations = parseFloat(formData.companies_with_innovations);
-    const temporary_employment = parseFloat(formData.temporary_employment);
-    // Validación básica antes de enviar el formulario
-  if (
-    !formData.territory ||
-    formData.year === null ||
-    formData.jobs_industry === null ||
-    formData.companies_with_innovations === null ||
-    formData.temporary_employment === null ||
-    !Number.isInteger(formData.year) ||
-    !Number.isInteger(formData.jobs_industry) ||
-    !(Number(companies_with_innovations) === companies_with_innovations && companies_with_innovations % 1 !== 0) ||
-    !(Number(temporary_employment) === temporary_employment && temporary_employment % 1 !== 0)
+      
+        onMount(async () => {
+          getJobs();
+        });
+</script>
   
-  ) {
-    showMessage("Por favor, complete todos los campos con los tipos de datos correctos","error");
-    return;
+<style>
+  .message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
   }
-  const response = await fetch(API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
 
-  if (response.ok) {
-    // Actualizar los datos y ocultar el formulario
+  .message.success {
+    background-color: #c8e6c9;
+    color: #2e7d32;
+  }
+
+  .message.warning {
+    background-color: #fff9c4;
+    color: #f57f17;
+  }
+
+    .message.error {
+    background-color: #ffcdd2;
+    color: #c62828;
+  }
+
+      .form-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
     
-    getJobs();
-    showMessage("Recurso creado correctamente", "success");
-    showForm = false;
-  } else {
-    showMessage("Error al crear el recurso. Ya existe.", "error");
-  }
-}
-
-
-async function getJobs() {
-  resultStatus = result = '';
-  const res = await fetch(API, {
-    method: 'GET'
-  });
-  try {
-    const data = await res.json();
-    result = JSON.stringify(data, null, 2);
-    jobs = data;
-    if (res.ok) {
-      const status = await res.status;
-      resultStatus = status.toString();
-      if (jobs.length === 0) {
-        resultStatus = 'empty';
-      }
-    } else {
-      resultStatus = 'Error en la solicitud';
+    form {
+      background-color: #f2f2f2;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     }
-  } catch (error) {
-    console.log(`Error parsing result:${error}`);
-    resultStatus = 'Error en la solicitud';
-  }
-}
+    
+    form label {
+      display: block;
+      margin-bottom: 5px;
+    }
 
-  
-    onMount(async () => {
-      getJobs();
-    });
-  </script>
-  
-  <style>
+    form input {
+      width: 100%;
+      padding: 6px 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    form button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    form button:hover {
+      background-color: #45a049;
+    }
 
+  button {
+      font-size: 0.8rem; /* Hacer el texto del botón más pequeño */
+      padding: 6px 12px; /* Ajustar el tamaño del botón */
+      margin-right: 10px; /* Separar los botones entre sí */
+      background-color: #4CAF50; /* Color de fondo del botón */
+      color: white; /* Color del texto del botón */
+      border: none; /* Quitar los bordes del botón */
+      cursor: pointer; /* Cambiar el cursor al pasar el cursor sobre el botón */
+      border-radius: 4px; /* Agregar bordes redondeados al botón */
+    }
 
- .message {
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
+    button:hover {
+      background-color: #45a049; /* Cambiar el color de fondo del botón al pasar el cursor */
+    }
 
- .message.success {
-  background-color: #c8e6c9;
-  color: #2e7d32;
-}
-
- .message.warning {
-  background-color: #fff9c4;
-  color: #f57f17;
-}
-
-  .message.error {
-  background-color: #ffcdd2;
-  color: #c62828;
-}
-
-    .form-container {
-    display: flex;
-    justify-content: center;
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 10%;
+      margin-bottom: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 30px auto; /* Agregar márgenes alrededor de la tabla */
+      border: 2px solid #ccc; /* Agregar bordes a la tabla */
+    }
+    th, td {
+      text-align: left;
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold; /* Hacer que el texto de los encabezados sea negrita */
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2; /* Agregar color de fondo a las filas pares */
+    }
+    tr:hover {
+      background-color: #ddd; /* Cambiar el color de fondo de las filas al pasar el cursor */
+    }
+    .title {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 2rem;
+    color: #4CAF50;
     margin-top: 20px;
     margin-bottom: 20px;
   }
-  
-  form {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  }
-  
-  form label {
-    display: block;
-    margin-bottom: 5px;
-  }
 
-  form input {
-    width: 100%;
-    padding: 6px 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
+</style>
   
-  form button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  form button:hover {
-    background-color: #45a049;
-  }
-
-button {
-    font-size: 0.8rem; /* Hacer el texto del botón más pequeño */
-    padding: 6px 12px; /* Ajustar el tamaño del botón */
-    margin-right: 10px; /* Separar los botones entre sí */
-    background-color: #4CAF50; /* Color de fondo del botón */
-    color: white; /* Color del texto del botón */
-    border: none; /* Quitar los bordes del botón */
-    cursor: pointer; /* Cambiar el cursor al pasar el cursor sobre el botón */
-    border-radius: 4px; /* Agregar bordes redondeados al botón */
-  }
-
-  button:hover {
-    background-color: #45a049; /* Cambiar el color de fondo del botón al pasar el cursor */
-  }
-
-  .button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 10%;
-    margin-bottom: 20px;
-  }
-  table {
-    border-collapse: collapse;
-    width: 80%;
-    margin: 30px auto; /* Agregar márgenes alrededor de la tabla */
-    border: 2px solid #ccc; /* Agregar bordes a la tabla */
-  }
-  th, td {
-    text-align: left;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-  }
-  th {
-    background-color: #f2f2f2;
-    font-weight: bold; /* Hacer que el texto de los encabezados sea negrita */
-  }
-  tr:nth-child(even) {
-    background-color: #f2f2f2; /* Agregar color de fondo a las filas pares */
-  }
-  tr:hover {
-    background-color: #ddd; /* Cambiar el color de fondo de las filas al pasar el cursor */
-  }
-  .title {
-  text-align: center;
-  font-family: Arial, sans-serif;
-  font-size: 2rem;
-  color: #4CAF50;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-  </style>
-  
+  <br>
+  <Header></Header>
   <h1 class="title">API JOBS - Antonio Carranza</h1>
   <div id="messages" class="message"></div>
 

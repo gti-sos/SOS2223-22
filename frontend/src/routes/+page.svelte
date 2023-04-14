@@ -1,3 +1,6 @@
+<script>
+    import Header from "./Header.svelte";
+</script>
 
 <html lang="es">
 
@@ -9,56 +12,55 @@
     <style>
 
         /* Estilos generales */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
 
-h1, h2 {
-    color: #333;
-}
+        h1, h2 {
+            color: #333;
+        }
 
-a {
-    color: #007bff;
-    text-decoration: none;
-}
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
 
-a:hover {
-    color: #0056b3;
-}
+        a:hover {
+            color: #0056b3;
+        }
 
-/* Estilos para las secciones */
-.team-members,
-.project-details {
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f8f9fa;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+        /* Estilos para las secciones */
+        .team-members,
+        .project-details {
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-.team-members ul,
-.project-details ul {
-    list-style-type: none;
-    padding: 0;
-}
+        .team-members ul,
+        .project-details ul {
+            list-style-type: none;
+            padding: 0;
+        }
 
-.team-member {
-    padding: 0.5rem 0;
-}
+        .team-member {
+            padding: 0.5rem 0;
+        }
 
-/* Estilos para el pie de página */
-footer {
-    padding: 1rem 0;
-    background-color: #f8f9fa;
-    border-top: 1px solid #ccc;
-}
+        /* Estilos para el pie de página */
+        footer {
+            padding: 1rem 0;
+            background-color: #f8f9fa;
+            border-top: 1px solid #ccc;
+        }
 
-footer p {
-    font-size: 0.9rem;
-    color: #333;
-}
-
+        footer p {
+            font-size: 0.9rem;
+            color: #333;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -66,6 +68,8 @@ footer p {
 </head>
 
 <body>
+    <br>
+    <Header></Header>
     <div class="container">
         <header>
             <h1 class="text-center my-5">Team:</h1>
@@ -77,7 +81,7 @@ footer p {
                         <h2>Members</h2>
                         <ul>
                             <li class="team-member">Antonio Carranza Barroso (fuente: jobs-companies-innovation)</li>
-                            <li class="team-member">Carlos Gata Masero</li>
+                            <li class="team-member">Carlos Gata Masero (fuente: ict-promotion-strategy)</li>
                             <li class="team-member">Thomas Tejeda Gordon</li>
                             <li class="team-member">Rubén González Amador</li>
                         </ul>
@@ -97,10 +101,14 @@ footer p {
                         <p><strong>Frontends:</strong></p>
                         <ul>
                             <li> <li><a href="https://sos2223-22.appspot.com/frontAcb" target="_blank">Frontend Antonio </li>
+                            <li> <li><a href="http://localhost:12345/frontCgm" target="_blank">Frontend Carlos </li>
+
                         </ul>
                         <p><strong>URLs Base:</strong></p>
                         <ul>
                             <li>Antonio Carranza Barroso - <a href="https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats" target="_blank">https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats</a></li>
+                            <br>
+                            <li>Carlos Gata Masero - <a href="https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats</a></li>
                         </ul>
                     </section>
                 </div>
