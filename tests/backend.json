@@ -8,11 +8,43 @@
 	"item": [
 		{
 			"name": "GET a lista de recursos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar respuesta de /jobs-companies-innovation-stats\", function() {\r",
+							"     pm.expect([200, 404]).to.include(pm.response.code);\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');\r",
+							"\r",
+							"    const data = pm.response.json();\r",
+							"\r",
+							"    pm.test(\"Si se devuelven datos, se espera que la respuesta no sea un array vacío\", function() {\r",
+							"        if (data.length > 0) {\r",
+							"            pm.expect(data).to.not.eql([]);\r",
+							"        }\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Si no se encuentran datos, se devuelve un array vacío\", function() {\r",
+							"        if (data.error) {\r",
+							"            pm.expect(data).to.eql({error: \"No se encontraron resultados para la búsqueda\"});\r",
+							"        }\r",
+							"    });\r",
+							"\r",
+							"   \r",
+							"    \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/malaga",
+					"raw": "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -23,7 +55,7 @@
 						"api",
 						"v2",
 						"jobs-companies-innovation-stats",
-						"malaga"
+						""
 					]
 				}
 			},
@@ -31,6 +63,38 @@
 		},
 		{
 			"name": "loadInitialData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que la solicitud devuelve una respuesta HTTP 200\", function() {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar que la respuesta tiene todos los campos requeridos\", function() {\r",
+							"    var responseData = pm.response.json();\r",
+							"    pm.expect(responseData).to.be.an(\"array\");\r",
+							"    pm.expect(responseData).to.have.length.above(0);\r",
+							"    responseData.forEach(function(obj) {\r",
+							"        pm.expect(obj).to.have.property(\"territory\");\r",
+							"        pm.expect(obj).to.have.property(\"year\");\r",
+							"        pm.expect(obj).to.have.property(\"jobs_industry\");\r",
+							"        pm.expect(obj).to.have.property(\"companies_with_innovations\");\r",
+							"        pm.expect(obj).to.have.property(\"temporary_employment\");\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -54,6 +118,20 @@
 		},
 		{
 			"name": "POST a la lista de recursos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que el POST fue exitoso\", function() {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -85,6 +163,31 @@
 		},
 		{
 			"name": "DELETE de recursos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is (DELETE de recursos) 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Mensaje de delete exitoso\", function () {\r",
+							"    const responseText = pm.response.text();\r",
+							"    const numDeletedPattern = /Se han borrado (\\d+) registros correctamente/;\r",
+							"    pm.expect(responseText).to.match(numDeletedPattern);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -107,11 +210,27 @@
 		},
 		{
 			"name": "DELETE A recurso especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code DELETE (recurso especifico) is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/andalucia",
+					"raw": "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/andalucia/2008",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -122,7 +241,49 @@
 						"api",
 						"v2",
 						"jobs-companies-innovation-stats",
-						"andalucia"
+						"andalucia",
+						"2008"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT erroneo(falta campo)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que el PUT es erroneo al no tener campos esperados\", function() {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "   {\r\n     \r\n        \"year\": 2008,\r\n        \"jobs_industry\": 763030,\r\n        \"companies_with_innovations\": 0,\r\n        \"temporary_employment\": 12.653\r\n    }"
+				},
+				"url": {
+					"raw": "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/Portugal",
+					"protocol": "https",
+					"host": [
+						"sos2223-22",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"api",
+						"v2",
+						"jobs-companies-innovation-stats",
+						"Portugal"
 					]
 				}
 			},
@@ -130,15 +291,29 @@
 		},
 		{
 			"name": "PUT a recurso especifico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que el PUT es correcto\", function() {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "   {\r\n        \"territory\": \"Alemania\",\r\n        \"year\": 2008,\r\n        \"jobs_industry\": 7630300,\r\n        \"companies_with_innovations\": 0,\r\n        \"temporary_employment\": 12.653\r\n    }"
+					"raw": "{\r\n    \"territory\": \"Portugal\",\r\n    \"year\": 2023,\r\n    \"jobs_industry\": 50000,\r\n    \"companies_with_innovations\": 150.0,\r\n    \"temporary_employment\": 200.0\r\n}"
 				},
 				"url": {
-					"raw": "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/Alemania",
+					"raw": "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/Dinamarca",
 					"protocol": "https",
 					"host": [
 						"sos2223-22",
@@ -149,7 +324,7 @@
 						"api",
 						"v2",
 						"jobs-companies-innovation-stats",
-						"Alemania"
+						"Dinamarca"
 					]
 				}
 			},
@@ -157,6 +332,23 @@
 		},
 		{
 			"name": "PUT a lista de recursos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Verificar que se devuelve un error 405 cuando se hace PUT a una lista de recursos\", function() {\r",
+							"    pm.response.to.have.status(405);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Method Not Allowed\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -179,6 +371,21 @@
 		},
 		{
 			"name": "POST a un recurso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar que se devuelve un error 405 cuando se hace POST a un lista de recursos\", function() {\r",
+							"    pm.response.to.have.status(405);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Method Not Allowed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],

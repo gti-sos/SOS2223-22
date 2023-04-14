@@ -98,6 +98,7 @@ footer p {
                         </ul>
                         <p><strong>Frontends:</strong></p>
                         <ul>
+                            <li> <li><a href="http://localhost:12345/api/v2/jobs-companies-innovation-stats/frontAcb" target="_blank">Local </li>
                             <li> <li><a href="https://sos2223-22.appspot.com/frontAcb" target="_blank">Frontend Antonio </li>
                         </ul>
                         <p><strong>URLs Base:</strong></p>

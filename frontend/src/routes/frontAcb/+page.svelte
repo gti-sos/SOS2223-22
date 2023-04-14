@@ -5,8 +5,8 @@
     import { onMount } from 'svelte';
 
   
-    let API = 'https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/';
-    //http://localhost:12345/api/v1/jobs-companies-innovation-stats/
+    let API_ = 'https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/';
+    let API = 'http://localhost:12345/api/v2/jobs-companies-innovation-stats/';
     /**
      * @type {any[]}
      */
@@ -30,8 +30,8 @@
       const companiesWithInnovations = document.getElementById("companies_with_innovations").value;
       const temporaryEmployment = document.getElementById("temporary_employment").value;
 
-      let apiUrl = "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/";
-
+      //let apiUrl = "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/";
+      let apiUrl = 'http://localhost:12345/api/v2/jobs-companies-innovation-stats/';
       if (territory) {
           apiUrl += territory;
           if (year) {
@@ -305,7 +305,8 @@ async function handleSubmit() {
 async function getJobs() {
   
   resultStatus = result = '';
-  const res = await fetch(`https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
+  //const res = await fetch(`https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
+    const res = await fetch(`http://localhost:12345/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
     method: 'GET'
   });
   try {
