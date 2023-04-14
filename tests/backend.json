@@ -161,12 +161,13 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:12345/api/v2/jobs-companies-innovation-stats",
-					"protocol": "http",
+					"raw": "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"sos2223-22",
+						"appspot",
+						"com"
 					],
-					"port": "12345",
 					"path": [
 						"api",
 						"v2",
@@ -182,12 +183,13 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:12345/api/v2/jobs-companies-innovation-stats/2008",
-					"protocol": "http",
+					"raw": "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/2008",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"sos2223-22",
+						"appspot",
+						"com"
 					],
-					"port": "12345",
 					"path": [
 						"api",
 						"v2",
