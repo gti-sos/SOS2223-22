@@ -13,13 +13,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run : npm install
+      - run: cd frontend; npm install; cd ..
+      - run: cd frontend; npm run build; cd ..
       - run : npm start &
       - run: npm test  
+      
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY_JSON }}'
-
 
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'

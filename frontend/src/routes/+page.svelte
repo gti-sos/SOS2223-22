@@ -72,13 +72,13 @@
     <Header></Header>
     <div class="container">
         <header>
-            <h1 class="text-center my-5">Team:</h1>
+            <h1 class="text-center my-5">Equipo:</h1>
         </header>
         <main>
             <div class="row">
                 <div class="col-md-6">
                     <section class="team-members">
-                        <h2>Members</h2>
+                        <h2>Miembros</h2>
                         <ul>
                             <li class="team-member">Antonio Carranza Barroso (fuente: jobs-companies-innovation)</li>
                             <li class="team-member">Carlos Gata Masero (fuente: ict-promotion-strategy)</li>
@@ -89,13 +89,15 @@
                 </div>
                 <div class="col-md-6">
                     <section class="project-details">
-                        <h2>Project Details</h2>
-                        <p><strong>Project description:</strong> Our sources of information are aimed at analyzing the increase in industrial employment in Andalusia, and rate of accidents.</p>
-                        <p><strong>Repository:</strong> <a href="https://github.com/gti-sos/SOS2223-22" target="_blank">gti-sos/SOS2223-22</a></p>
+                        <h2>Detalles del Proyecto</h2>
+                        <p><strong>Descripcion del proyecto:</strong>Nuestras fuentes de información están dirigidas a analizar el incremento del empleo industrial en Andalucía, y la siniestralidad.</p>
+                        <p><strong>Repositorio:</strong> <a href="https://github.com/gti-sos/SOS2223-22" target="_blank">gti-sos/SOS2223-22</a></p>
                         <p><strong>URL:</strong> <a href="https://sos2223-22.appspot.com/" target="_blank">https://sos2223-22.appspot.com/</a></p>
-                        <p><strong>API documentation:</strong></p>
+                        <p><strong>Documentacion de APIS:</strong></p>
                         <ul>
-                            <li><a href="https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs</a> (developed by Antonio Carranza Barroso)</li>
+                            
+                            <li><a href="https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/docs</a> ( v2 - desarrollada por Antonio Carranza Barroso )</li>
+                            <li><a href="https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs</a> (v1 - desarrollada por  Antonio Carranza Barroso)</li>
                             <li><a href="https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs</a> (developed by Carlos Gata Masero)</li>
                         </ul>
                         <p><strong>Frontends:</strong></p>
