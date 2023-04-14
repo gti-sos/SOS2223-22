@@ -89,9 +89,11 @@ footer p {
                         <p><strong>Descripcion del proyecto:</strong>Nuestras fuentes de información están dirigidas a analizar el incremento del empleo industrial en Andalucía, y la siniestralidad.</p>
                         <p><strong>Repositorio:</strong> <a href="https://github.com/gti-sos/SOS2223-22" target="_blank">gti-sos/SOS2223-22</a></p>
                         <p><strong>URL:</strong> <a href="https://sos2223-22.appspot.com/" target="_blank">https://sos2223-22.appspot.com/</a></p>
-                        <p><strong>API documentation:</strong></p>
+                        <p><strong>Documentacion de APIS:</strong></p>
                         <ul>
-                            <li><a href="https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs</a> (developed by Antonio Carranza Barroso)</li>
+                            
+                            <li><a href="https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/docs</a> ( v2 - desarrollada por Antonio Carranza Barroso )</li>
+                            <li><a href="https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs</a> (v1 - desarrollada por  Antonio Carranza Barroso)</li>
                             <li><a href="https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs</a> (developed by Carlos Gata Masero)</li>
                         </ul>
                         <p><strong>Frontends:</strong></p>
@@ -100,7 +102,7 @@ footer p {
                         </ul>
                         <p><strong>URLs Base:</strong></p>
                         <ul>
-                            <li>Antonio Carranza Barroso - <a href="https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats" target="_blank">https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats</a></li>
+                            <li>Antonio Carranza Barroso v2- <a href="https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats" target="_blank">https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats</a></li>
                         </ul>
                     </section>
                 </div>

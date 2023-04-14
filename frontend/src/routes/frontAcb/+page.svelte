@@ -1,17 +1,79 @@
 <script>
 // @ts-nocheck
     import { fade } from "svelte/transition";
-
+    import "../styles.css";
     import { onMount } from 'svelte';
+
   
-    let API = 'https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/';
+    let API = 'https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/';
     //http://localhost:12345/api/v1/jobs-companies-innovation-stats/
     /**
      * @type {any[]}
      */
     let jobs = [];
-  
-// 
+    let limit = 10;
+    let offset = 0;
+
+    let filterData = {
+      territory: "",
+      year: "",
+      jobs_industry: "",
+      companies_with_innovations: "",
+      temporary_employment: "",
+    };
+    async function handleFilter(event) {
+      event.preventDefault();
+
+      const territory = document.getElementById("territory").value;
+      const year = document.getElementById("year").value;
+      const jobsIndustry = document.getElementById("jobs_industry").value;
+      const companiesWithInnovations = document.getElementById("companies_with_innovations").value;
+      const temporaryEmployment = document.getElementById("temporary_employment").value;
+
+      let apiUrl = "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/";
+
+      if (territory) {
+          apiUrl += territory;
+          if (year) {
+              apiUrl += `/${year}`;
+              if (jobsIndustry) {
+                  apiUrl += `/${jobsIndustry}`;
+                  if (companiesWithInnovations) {
+                      apiUrl += `/${companiesWithInnovations}`;
+                      if (temporaryEmployment) {
+                          apiUrl += `/${temporaryEmployment}`;
+                      }
+                  }
+              }
+          }
+    }
+
+    try {
+        const response = await fetch(apiUrl);
+        if (response.ok) {
+            const results = await response.json();
+            displayResults(results);
+        } else {
+            console.error("Error fetching data:", response.status, response.statusText);
+            showMessage("No se han encontrado recursos","error");
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+
+
+    function handlePrevPage() {
+    offset = Math.max(offset - limit, 0);
+    getJobs();
+}
+
+    function handleNextPage() {
+      offset += limit;
+      getJobs();
+    }
+
+    
 
     let result = '';
     let resultStatus = '';
@@ -28,18 +90,22 @@ let formData = {
   temporary_employment: "",
 };
 
+
 let showDeleteForm = false;
 
 function toggleDeleteForm() {
   showDeleteForm = !showDeleteForm;
+  showForm = false;
 }
 
 let deleteFormData = {
   territory: "",
+  year: "",
 };
 
+
 async function handleDelete() {
-  const res = await fetch(API + deleteFormData.territory, {
+  const res = await fetch(`${API}${deleteFormData.territory}/${deleteFormData.year}`, {
     method: "DELETE",
   });
 
@@ -47,9 +113,10 @@ async function handleDelete() {
     getJobs(); // Actualizar los datos en la tabla
     showMessage("Recurso eliminado correctamente", "success");
   } else {
-    showMessage(`Recurso no encontrado: ${deleteFormData.territory}`, "error");
+    showMessage(`Recurso no encontrado: ${deleteFormData.territory}/${deleteFormData.year}`, "error");
   }
 }
+
   // Agrega una variable para controlar si los campos están en modo de edición
   let editMode = false;
 
@@ -163,6 +230,9 @@ function editRow(index) {
 // Función para manejar el clic en el botón "Crear recurso"
 function toggleForm() {
   showForm = !showForm;
+  showDeleteForm = false;
+  
+
 }
 // Función para cargar los datos iniciales
 async function loadInitialData() {
@@ -233,8 +303,9 @@ async function handleSubmit() {
 
 
 async function getJobs() {
+  
   resultStatus = result = '';
-  const res = await fetch(API, {
+  const res = await fetch(`https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
     method: 'GET'
   });
   try {
@@ -259,144 +330,54 @@ async function getJobs() {
   
     onMount(async () => {
       getJobs();
+      
     });
+
+   
   </script>
   
-  <style>
 
-
- .message {
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-
- .message.success {
-  background-color: #c8e6c9;
-  color: #2e7d32;
-}
-
- .message.warning {
-  background-color: #fff9c4;
-  color: #f57f17;
-}
-
-  .message.error {
-  background-color: #ffcdd2;
-  color: #c62828;
-}
-
-    .form-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  form {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  }
-  
-  form label {
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  form input {
-    width: 100%;
-    padding: 6px 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  form button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  form button:hover {
-    background-color: #45a049;
-  }
-
-button {
-    font-size: 0.8rem; /* Hacer el texto del botón más pequeño */
-    padding: 6px 12px; /* Ajustar el tamaño del botón */
-    margin-right: 10px; /* Separar los botones entre sí */
-    background-color: #4CAF50; /* Color de fondo del botón */
-    color: white; /* Color del texto del botón */
-    border: none; /* Quitar los bordes del botón */
-    cursor: pointer; /* Cambiar el cursor al pasar el cursor sobre el botón */
-    border-radius: 4px; /* Agregar bordes redondeados al botón */
-  }
-
-  button:hover {
-    background-color: #45a049; /* Cambiar el color de fondo del botón al pasar el cursor */
-  }
-
-  .button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 10%;
-    margin-bottom: 20px;
-  }
-  table {
-    border-collapse: collapse;
-    width: 80%;
-    margin: 30px auto; /* Agregar márgenes alrededor de la tabla */
-    border: 2px solid #ccc; /* Agregar bordes a la tabla */
-  }
-  th, td {
-    text-align: left;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-  }
-  th {
-    background-color: #f2f2f2;
-    font-weight: bold; /* Hacer que el texto de los encabezados sea negrita */
-  }
-  tr:nth-child(even) {
-    background-color: #f2f2f2; /* Agregar color de fondo a las filas pares */
-  }
-  tr:hover {
-    background-color: #ddd; /* Cambiar el color de fondo de las filas al pasar el cursor */
-  }
-  .title {
-  text-align: center;
-  font-family: Arial, sans-serif;
-  font-size: 2rem;
-  color: #4CAF50;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-  </style>
   
   <h1 class="title">API JOBS - Antonio Carranza</h1>
   <div id="messages" class="message"></div>
+    <form id="filter-form"   on:submit={handleFilter(event)}>
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <input type="text" class="form-control" id="territory" placeholder="Territorio">
+        </div>
+        <div class="form-group col-md-2">
+          <input type="number" class="form-control" id="year" placeholder="Año">
+        </div>
+        <div class="form-group col-md-2">
+          <input type="number" class="form-control" id="jobs_industry" placeholder="Trabajos en la Industria">
+        </div>
+        <div class="form-group col-md-2">
+          <input type="number" class="form-control" id="companies_with_innovations" placeholder="Compañías con Innovaciones">
+        </div>
+        <div class="form-group col-md-2">
+          <input type="number" class="form-control" id="temporary_employment" placeholder="Empleo Temporal">
+        </div>
+        <div class="form-group col-md-2">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+      </div>
+    </form>
+    
+    
+
 
   {#if !showForm}
   {#if resultStatus === "200"}
     <table in:fade={{ duration: 300 }}>
+      
+
       <thead>
         <tr>
-          <th>Territory</th>
-          <th>Year</th>
-          <th>Jobs Industry</th>
-          <th>Companies with Innovations</th>
-          <th>Temporary Employment</th>
+          <th>Territorio</th>
+          <th>Año</th>
+          <th>Trabajos en la Industria</th>
+          <th>Compañias con Innovaciones</th>
+          <th>Empleo temporal</th>
           <th></th> <!-- Nueva columna para el botón de actualizar -->
         </tr>
       </thead>
@@ -435,21 +416,29 @@ button {
   {/if}
   {/if}
 <div class="button-container">
-<!-- Agrega el botón "Crear recurso" -->
-<button on:click={toggleForm}>Crear recurso</button>
-<button on:click={loadInitialData}>Cargar recursos</button>
-<!-- Botón "Borrar recursos" -->
-<button on:click={deleteResources}>Borrar recursos</button>
+  <button on:click={toggleForm}>Crear recurso</button>
+  <button on:click={loadInitialData}>Cargar recursos</button>
+  <!-- Botón "Borrar recursos" -->
+  <button on:click={deleteResources}>Borrar recursos</button>
 <!-- Botón "Borrar un recurso" -->
 <button on:click={toggleDeleteForm}>Borrar un recurso</button>
+<button on:click={handlePrevPage}>Anterior</button>
+<button on:click={handleNextPage}>Siguiente</button>
+
+
+
+
 </div>
-<!-- Formulario para eliminar un recurso por territorio -->
+<!-- Formulario para eliminar un recurso por territorio y año -->
 {#if showDeleteForm}
   <form on:submit|preventDefault={handleDelete}>
     <label for="delete_territory">Territorio</label>
     <input type="text" id="delete_territory" bind:value={deleteFormData.territory} required />
+    <label for="delete_year">Año</label>
+    <input type="text" id="delete_year" bind:value={deleteFormData.year} required />
     <button type="submit">Eliminar</button>
   </form>
+
 {/if}
 <!-- Agrega el formulario para enviar datos -->
 {#if showForm}

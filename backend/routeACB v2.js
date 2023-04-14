@@ -1,9 +1,10 @@
 import express from "express";
 var app = express();
 var port = process.env.PORT || 12345;
-const BASE_API_URL = "/api/v1";
+const BASE_API_URL = "/api/v2";
 import dataStore from "nedb";
 var dbAcb = new dataStore();
+
 
 var acb = [
     {
@@ -75,21 +76,177 @@ var acb = [
      jobs_industry: 88600,
      companies_with_innovations: 0,
      temporary_employment: 0
-    }
+    },
+    {
+        territory: "Lituania",
+        year: 2008,
+        jobs_industry: 32,
+        companies_with_innovations: 0,
+        temporary_employment: 41.10
+       },
+       {
+        territory: "Rumania",
+        year: 2008,
+        jobs_industry: 3221,
+        companies_with_innovations: 89,
+        temporary_employment: 21.10
+       }, 
+       {
+        territory: "Luxemburgo",
+        year: 2008,
+        jobs_industry: 21,
+        companies_with_innovations: 9,
+        temporary_employment: 21.10
+       },
+       {
+        territory: "Huelva",
+        year: 2008,
+        jobs_industry: 21111,
+        companies_with_innovations: 235,
+        temporary_employment: 2451.10
+       },
+       {
+        territory: "Cancas",
+        year: 2008,
+        jobs_industry: 4566,
+        companies_with_innovations: 21,
+        temporary_employment: 41.10
+       },
+       {
+        territory: "Portugal",
+        year: 2008,
+        jobs_industry: 999,
+        companies_with_innovations:1345,
+        temporary_employment: 35.10
+       },
+       {
+        territory: "Italia",
+        year: 2008,
+        jobs_industry: 456,
+        companies_with_innovations: 2355,
+        temporary_employment: 41.10
+       },{
+        territory: "cataluña",
+        year: 2008,
+        jobs_industry: 274832,
+        companies_with_innovations: 120,
+        temporary_employment: 38.50
+      },
+      {
+        territory: "madrid",
+        year: 2008,
+        jobs_industry: 415980,
+        companies_with_innovations: 200,
+        temporary_employment: 28.90
+      },
+      {
+        territory: "francia",
+        year: 2008,
+        jobs_industry: 4132500,
+        companies_with_innovations: 2100,
+        temporary_employment: 16.40
+      },
+      {
+        territory: "alemania",
+        year: 2008,
+        jobs_industry: 8207500,
+        companies_with_innovations: 3500,
+        temporary_employment: 11.30
+      },
+      {
+        territory: "italia",
+        year: 2008,
+        jobs_industry: 2789000,
+        companies_with_innovations: 1350,
+        temporary_employment: 14.70
+      },
+      {
+        territory: "portugal",
+        year: 2008,
+        jobs_industry: 625300,
+        companies_with_innovations: 85,
+        temporary_employment: 20.80
+      },
+      {
+        territory: "reino unido",
+        year: 2008,
+        jobs_industry: 4972300,
+        companies_with_innovations: 2400,
+        temporary_employment: 12.50
+      },{
+        territory: "galicia",
+        year: 2008,
+        jobs_industry: 157890,
+        companies_with_innovations: 55,
+        temporary_employment: 35.20
+      },
+      {
+        territory: "castilla y león",
+        year: 2008,
+        jobs_industry: 129500,
+        companies_with_innovations: 80,
+        temporary_employment: 32.40
+      },
+      {
+        territory: "países bajos",
+        year: 2008,
+        jobs_industry: 1107800,
+        companies_with_innovations: 500,
+        temporary_employment: 9.10
+      },
+      {
+        territory: "bélgica",
+        year: 2008,
+        jobs_industry: 845300,
+        companies_with_innovations: 450,
+        temporary_employment: 10.60
+      },
+      {
+        territory: "suecia",
+        year: 2008,
+        jobs_industry: 1674300,
+        companies_with_innovations: 750,
+        temporary_employment: 8.80
+      },
+      {
+        territory: "finlandia",
+        year: 2008,
+        jobs_industry: 583200,
+        companies_with_innovations: 350,
+        temporary_employment: 7.90
+      },
+      {
+        territory: "dinamarca",
+        year: 2008,
+        jobs_industry: 839500,
+        companies_with_innovations: 400,
+        temporary_employment: 9.50
+      },
+      {
+        territory: "austria",
+        year: 2008,
+        jobs_industry: 1427300,
+        companies_with_innovations: 600,
+        temporary_employment: 10.40
+      }
+
    ];
 
 
 
-function loadBackendAcb1(app){
+function loadBackendAcb(app){
     // /////////////////////////////////////////////////////////                                             ///////////////////////////////////////////////////////// 
 // ///////////////////////////////////////////////////////// DATOS Y PETICIONES ANTONIO CARRANZA BARROSO /////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////             
 app.use(express.json());                                /////////////////////////////////////////////////////////
 
-
-app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
+app.get("/api/v1" + "/jobs-companies-innovation-stats/docs", (req, res) => {
     console.log("New GET request to /jobs-companies-innovation-stats/docs");
     res.redirect("https://documenter.getpostman.com/view/14969056/2s93JzN1Yu");
+});
+app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
+    console.log("New GET request to /jobs-companies-innovation-stats/docs");
+    res.redirect("https://documenter.getpostman.com/view/14969056/2s93Xtzjuj");
 });
 
 //GET loadInitial Data
@@ -139,7 +296,6 @@ function handleDbResponse(err, jobs, res) {
     }
 }
 
-
 app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
     console.log("New GET request to /jobs-companies-innovation-stats/search");
 
@@ -147,17 +303,22 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
     const searchQuery = {};
 
     // Pagination
-    const page = parseInt(query.page) || 1;
+    const offset = parseInt(query.offset) || 0;
     const limit = parseInt(query.limit) || 10;
-    const skip = (page - 1) * limit;
 
     let queryCount = 0;
 
     for (const key in query) {
         if (query.hasOwnProperty(key)) {
             queryCount++;
-            if (key === "year") {
-                searchQuery[key] = parseInt(query[key]);
+            if (key === "year" || key === "year_min" || key === "year_max") {
+                if (key === "year") {
+                    searchQuery[key] = parseInt(query[key]);
+                } else if (key === "year_min") {
+                    searchQuery["year"] = {$gte: parseInt(query[key])};
+                } else if (key === "year_max") {
+                    searchQuery["year"] = {$lte: parseInt(query[key])};
+                }
             } else if (key === "jobs_industry") {
                 searchQuery[key] = parseInt(query[key]);
             } else if (key === "companies_with_innovations" || key === "temporary_employment") {
@@ -168,7 +329,7 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
         }
     }
 
-    dbAcb.find(searchQuery).skip(skip).limit(limit).exec((err, jobs) => {
+    dbAcb.find(searchQuery).skip(offset).limit(limit).exec((err, jobs) => {
         if (err) {
             console.log(`Error getting /jobs: ${err}`);
             res.sendStatus(500);
@@ -190,6 +351,7 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
         }
     });
 });
+
 
 app.get(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (req, res) => {
     console.log(`New GET request to /jobs-companies-innovation-stats/${req.params.territory}`);
@@ -366,6 +528,24 @@ app.delete(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (reques
     });
 });
 
+app.delete(BASE_API_URL + "/jobs-companies-innovation-stats/:territory/:year", (request, response) => {
+    const territory = request.params.territory;
+    const year = parseInt(request.params.year);
+
+    dbAcb.remove({ territory: territory, year: year }, {}, (err, numRemoved) => {
+        if (err) {
+            console.log(`Error removing data: ${err}`);
+            response.sendStatus(500);
+        } else if (numRemoved === 0) {
+            response.status(404).send({ error: "No se encontró el elemento con el territorio y año especificados" });
+        } else {
+            response.status(204).send(`El recurso con territorio ${territory} y año ${year} ha sido eliminado correctamente`);
+            console.log(`Se ha eliminado el recurso con territorio: ${territory} y año: ${year}`);
+        }
+    });
+});
+
+
 
 
 // PUT actualizar recurso existente
@@ -402,4 +582,4 @@ app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, 
 });
 
 }
-export{loadBackendAcb1};
+export{loadBackendAcb};
