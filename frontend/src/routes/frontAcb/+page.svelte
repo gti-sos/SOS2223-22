@@ -14,53 +14,7 @@
     let limit = 10;
     let offset = 0;
 
-    let filterData = {
-      territory: "",
-      year: "",
-      jobs_industry: "",
-      companies_with_innovations: "",
-      temporary_employment: "",
-    };
-    async function handleFilter(event) {
-      event.preventDefault();
-
-      const territory = document.getElementById("territory").value;
-      const year = document.getElementById("year").value;
-      const jobsIndustry = document.getElementById("jobs_industry").value;
-      const companiesWithInnovations = document.getElementById("companies_with_innovations").value;
-      const temporaryEmployment = document.getElementById("temporary_employment").value;
-
-      //let apiUrl = "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/";
-      let apiUrl = 'http://localhost:12345/api/v2/jobs-companies-innovation-stats/';
-      if (territory) {
-          apiUrl += territory;
-          if (year) {
-              apiUrl += `/${year}`;
-              if (jobsIndustry) {
-                  apiUrl += `/${jobsIndustry}`;
-                  if (companiesWithInnovations) {
-                      apiUrl += `/${companiesWithInnovations}`;
-                      if (temporaryEmployment) {
-                          apiUrl += `/${temporaryEmployment}`;
-                      }
-                  }
-              }
-          }
-    }
-
-    try {
-        const response = await fetch(apiUrl);
-        if (response.ok) {
-            const results = await response.json();
-            displayResults(results);
-        } else {
-            console.error("Error fetching data:", response.status, response.statusText);
-            showMessage("No se han encontrado recursos","error");
-        }
-    } catch (error) {
-        console.error("Error fetching data:", error);
-    }
-}
+  
 
 
     function handlePrevPage() {
@@ -341,32 +295,7 @@ async function getJobs() {
   
   <h1 class="title">API JOBS - Antonio Carranza</h1>
   <div id="messages" class="message"></div>
-    <form id="filter-form"   on:submit={handleFilter(event)}>
-      <div class="form-row">
-        <div class="form-group col-md-2">
-          <input type="text" class="form-control" id="territory" placeholder="Territorio">
-        </div>
-        <div class="form-group col-md-2">
-          <input type="number" class="form-control" id="year" placeholder="Año">
-        </div>
-        <div class="form-group col-md-2">
-          <input type="number" class="form-control" id="jobs_industry" placeholder="Trabajos en la Industria">
-        </div>
-        <div class="form-group col-md-2">
-          <input type="number" class="form-control" id="companies_with_innovations" placeholder="Compañías con Innovaciones">
-        </div>
-        <div class="form-group col-md-2">
-          <input type="number" class="form-control" id="temporary_employment" placeholder="Empleo Temporal">
-        </div>
-        <div class="form-group col-md-2">
-          <button type="submit" class="btn btn-primary">Buscar</button>
-        </div>
-      </div>
-    </form>
-    
-    
-
-
+   
   {#if !showForm}
   {#if resultStatus === "200"}
     <table in:fade={{ duration: 300 }}>
