@@ -295,9 +295,10 @@
       onMount(async () => {
         getJobs();
         
-      });
+      }); 
      
-    </script>
+    </script> 
+    
     
     <br>
     <Header></Header>
