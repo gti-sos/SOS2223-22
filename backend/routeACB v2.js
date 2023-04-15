@@ -553,11 +553,14 @@ app.put(BASE_API_URL + "/jobs-companies-innovation-stats/:territory", (request, 
     const territory = request.params.territory; // Obtener el territorio de la URL
     const updatedStat = request.body; // Obtener los nuevos datos del cuerpo de la solicitud
 
-    // Comprobar si el cuerpo de la solicitud contiene todos los campos requeridos
     if (!updatedStat.hasOwnProperty("territory") || !updatedStat.hasOwnProperty("year") || !updatedStat.hasOwnProperty("jobs_industry") || !updatedStat.hasOwnProperty("companies_with_innovations") || !updatedStat.hasOwnProperty("temporary_employment")) {
         response.status(400).send({ error: "El objeto JSON no tiene los campos esperados" });
         return;
+    } else if (typeof updatedStat.companies_with_innovations !== "number" || typeof updatedStat.temporary_employment !== "number") {
+        response.status(400).send({ error: "Los campos companies_with_innovations y temporary_employment deben ser números" });
+        return;
     }
+    
 
     if (territory !== updatedStat.territory) { // Comprobar si el "territory" de la URL es igual al "territory" del cuerpo de la solicitud
         response.status(400).send({ error: "El ID del recurso no coincide con el ID de la URL" });

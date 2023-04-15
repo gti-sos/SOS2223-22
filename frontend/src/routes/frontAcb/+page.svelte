@@ -3,13 +3,13 @@
       import { fade } from "svelte/transition";
       import "../styles.css";
       import { onMount } from 'svelte';
+      import Header from "../Header.svelte";
     
       let API_ = 'https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/';
-      let API = 'http://localhost:12345/api/v2/jobs-companies-innovation-stats';
+      let API = 'http://localhost:12345/api/v2/jobs-companies-innovation-stats/';
       /**
        * @type {any[]}
        */
-
       let jobs = [];
       let limit = 10;
       let offset = 0;
@@ -27,7 +27,8 @@
         const jobsIndustry = document.getElementById("jobs_industry").value;
         const companiesWithInnovations = document.getElementById("companies_with_innovations").value;
         const temporaryEmployment = document.getElementById("temporary_employment").value;
-        let apiUrl = "http://localhost:12345/api/v2/jobs-companies-innovation-stats/";
+        //let apiUrl = "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/";
+        let apiUrl = 'http://localhost:12345/api/v2/jobs-companies-innovation-stats/';
         if (territory) {
             apiUrl += territory;
             if (year) {
@@ -268,7 +269,8 @@
   async function getJobs() {
     
     resultStatus = result = '';
-    const res = await fetch(`http://localhost:12345/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
+    //const res = await fetch(`https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
+      const res = await fetch(`http://localhost:12345/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
       method: 'GET'
     });
     try {
@@ -297,8 +299,8 @@
      
     </script>
     
-  
-    
+    <br>
+    <Header></Header>
     <h1 class="title">API JOBS - Antonio Carranza</h1>
     <div id="messages" class="message"></div>
       <form id="filter-form"   on:submit={handleFilter(event)}>
