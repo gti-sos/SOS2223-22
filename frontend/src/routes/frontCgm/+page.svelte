@@ -6,7 +6,6 @@
   //etiquetas
   import Header from "../Header.svelte";
   //svelte
-  import { fade } from "svelte/transition";
   import { onMount } from 'svelte';
 
 
@@ -15,8 +14,11 @@
 
   //datos principales
   let datos = [];
+  let fila_update = -1;
   let result = '';
   let resultStatus = '';
+  let desplazamiento = 0;
+  let limite = 10;
 
   let new_rec = {
       territory: "",
@@ -24,16 +26,29 @@
       ict_manufacturing_industry: "",
       wholesale_trade: "",
       edition_of_computer_program: "",
+      offset: "0",
+      limit: "10"
+  };
+  
+  let new_rec2 = {
+      territory: "",
+      year: "",
+      ict_manufacturing_industry: "",
+      wholesale_trade: "",
+      edition_of_computer_program: "",
+      offset: "0",
+      limit: "10"
   };
 
-
-
-  // mostrar html
+  // datos secundarios
+  let rec_repetido = false;
+  let disabledBtn = false;
   let mostrar_load = false;
   let mostrar_create = false;
   let mostrar_delete = false;
   let mostrar_delete_all = false;
   let editar_fila = false;
+  let mostrar_busqueda = false;
 
   //onMount -> cuando refrescas la pagina
   onMount(async () => {
@@ -67,10 +82,12 @@
     mostrar_delete = false;
     mostrar_delete_all = false;
     editar_fila = false;
+    fila_update = -1;
+    disabledBtn = false;
     // Reseteamos las variables result y resultStatus a una cadena vacía
     resultStatus = result = '';
     // Enviamos una petición GET a la URL API usando fetch
-    const res = await fetch(API, {
+    const res = await fetch(API+ "?offset="+desplazamiento+"&limit="+limite, {
         method: 'GET'
     });
     
@@ -81,6 +98,7 @@
         result = JSON.stringify(data, null,2);
         // Asignamos el objeto JavaScript a la variable datos
         datos = data;
+        console.log("datos: "+datos.length);
     }catch(error){
         // Si hay un error al parsear los resultados, mostramos un mensaje de error en la consola
       console.log(`Error parseando los resultados: ${error}`);
@@ -98,10 +116,21 @@
       mostrar_delete_all = false;
   }
 
-  // crear recurso
+  // >> CREAR RECURSO
   async function create_data(){
     resultStatus = result = "";
-    const res = await fetch(API, {
+    for(let i=0;i<datos.length;i++){
+      if(datos[i].year == new_rec.year){
+        rec_repetido = true;
+      }
+    }
+    if (rec_repetido) { // 409
+      rec_repetido = false;
+      let alerta = "repetido";
+      mostrar_alerta(alerta, new_rec.year);
+    }
+    else{
+      const res = await fetch(API, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -114,31 +143,31 @@
           wholesale_trade: parseFloat(new_rec.wholesale_trade.replace(",", ".")),
           edition_of_computer_program: parseFloat(new_rec.edition_of_computer_program.replace(",", ".")),
         }),
-    });
-    console.log(new_rec.year);
-    const status = await res.status;
-    resultStatus = status;
-    if (status == 201) {
-        load_data();
-        let alerta = 'create_rec';
-        mostrar_alerta(alerta, new_rec.year);
-        
-    }else{
-        if (status == 400) {
-            let alerta = "campos_vacios";
-            mostrar_alerta(alerta);
-        }else{
-            if(status == 409){
-              console.log("esntra aqui");
-              let alerta = "repetido";
-              mostrar_alerta(alerta, new_rec.year);
-            }
-        }
+      });
+      console.log(new_rec.year);
+      const status = await res.status;
+      resultStatus = status;
+      if (status == 201) {
+          load_data();
+          let alerta = 'create_rec';
+          mostrar_alerta(alerta, new_rec.year);
+          
+      }else{
+          if (status == 400) {
+              let alerta = "campos_vacios";
+              mostrar_alerta(alerta);
+          }else{
+              if(status == 409){
+                let alerta = "repetido";
+                mostrar_alerta(alerta, new_rec.year);
+              }
+          }
+      }
     }
-
   }
 
-  //borrar un recurso especifico
+  // >> BORRAR RECURSO
+  // rec especifico
   async function delete_data(year){
     resultStatus = result = "";
       const res = await fetch(API+year, {
@@ -190,30 +219,87 @@
     }
   }
 
-  function bt_update_data(){
-    editar_fila = true;
+  // >> ACTUALIZAR RECURSO
+  function bt_update_data(dato_unico){
+    disabledBtn = true;
+    fila_update = dato_unico;
   }
   
   async function update_data(item) {
-  const res = await fetch(API+item.year, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      territory: item.territory,
-      year: item.year,
-      ict_manufacturing_industry: item.ict_manufacturing_industry,
-      wholesale_trade: item.wholesale_trade,
-      edition_of_computer_program: item.edition_of_computer_program
-    })
-  });
+    if(item.territory==="" ||item.ict_manufacturing_industry===null || item.wholesale_trade===null || item.edition_of_computer_program ===null){
+      let alerta = 'campos_vacios';
+      mostrar_alerta(alerta);
+    }else{
+      const res = await fetch(API+item.year, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        territory: item.territory,
+        year: item.year,
+        ict_manufacturing_industry: item.ict_manufacturing_industry,
+        wholesale_trade: item.wholesale_trade,
+        edition_of_computer_program: item.edition_of_computer_program
+      })
+      });
 
-  if (res.ok) {
-    await load_data();
-  }
+      if (res.ok) {
+        await load_data();
+      }
+    }
+}
+// >> BUSQUEDA RECURSOS
+function bt_busqueda(){
+  mostrar_busqueda = true;
 }
 
+async function busqueda(new_rec2){
+    let extension_URL = "?";
+    let claves = Object.keys(new_rec2);
+    let valores = Object.values(new_rec2);
+
+    for(let i=0; i<claves.length; i++){
+        let clave = claves[i];
+        let valor = valores[i];
+
+        if(valor!==null && valor.length!==0){
+            extension_URL += `${clave}=${valor}&`
+        }
+    }
+    extension_URL = extension_URL.substring(0, extension_URL.length - 1);
+    console.log("EXTENSION:" + extension_URL);
+    const res = await fetch(API + extension_URL, {method:"GET"});
+
+    if(res.ok){
+        
+        const data = await res.json();
+        result = JSON.stringify(data, null, 2); 
+        datos = data;
+
+    }else{
+        load_data();
+    }
+}
+function restablecer(){
+  mostrar_busqueda = false;
+  load_data();
+}
+
+// >> PAGINACIÓN
+async function pag_anterior(){
+    console.log("ANTERIOR->" + desplazamiento + "-" + limite);
+    desplazamiento = desplazamiento - limite;
+    load_data();
+}
+
+async function pag_siguiente(){
+    desplazamiento = desplazamiento + limite;
+    console.log(desplazamiento+ " despl");
+    load_data();
+}
+
+// >> ALERTAS
 function mostrar_alerta(a, y){
  // Mostramos la alerta
  //crear mensaje de alerta, dependiendo del tipo de mensaje que recibe
@@ -253,6 +339,11 @@ function mostrar_alerta(a, y){
    alert.setAttribute('role', 'alert');
    alert.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ya existe un recurso del año: '+y;
  }
+ if (a === 'repetido'){
+   alert.classList.add('alert', 'alert-warning', 'alert-dismissible', 'fade', 'show');
+   alert.setAttribute('role', 'alert');
+   alert.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ya existe un recurso del año: '+y;
+ }
  const container = document.querySelector('.container');
  container.insertBefore(alert, container.firstChild);
   // Ocultamos la alerta después de 3 segundos
@@ -277,6 +368,8 @@ function mostrar_alerta(a, y){
           <button type="button" on:click={load_ini_data} class="btn btn-warning"><i class="fas fa-spinner"></i> Cargar recursos iniciales</button>
           <button type="button" on:click={bt_create_data} class="btn btn-success"><i class="far fa-plus-square"></i> Crear recurso</button>
           <button type="button" on:click={bt_delete_all} class="btn btn-danger"><i class="fas fa-trash"></i> Borrar recursos</button>
+          <button type="button" on:click={bt_busqueda} class="btn btn-info"><i class="fas fa-search"></i> Buscar recursos</button>
+
       </div>
       <br>
       {#if mostrar_delete_all}
@@ -291,6 +384,7 @@ function mostrar_alerta(a, y){
       {/if}
       {#if mostrar_create}
       <div class="formulario-caja caja-create">
+          <p class="text-success"><i class="fas fa-info-circle"></i> Recuerde que el campo Year es un dato único, no se puede repetir.</p>
           <form on:submit|preventDefault={create_data}>
             <div class="form-group">
               <label for="territory">Territory:</label>
@@ -318,6 +412,23 @@ function mostrar_alerta(a, y){
           </form>
         </div>          
       {/if}
+      {#if mostrar_busqueda}
+      <div class="text-center">
+        <input type="text" bind:value={new_rec2.territory} placeholder=" Territory"> 
+        <input type="text" bind:value={new_rec2.year} placeholder="Year"> 
+        <input type="text" bind:value={new_rec2.ict_manufacturing_industry} placeholder="ict_manufacturing_industry"> 
+        <input type="text" bind:value={new_rec2.wholesale_trade} placeholder="wholesale_trade"> 
+        <input type="text" bind:value={new_rec2.edition_of_computer_program} placeholder="Edition computer program">
+        <br><br>
+        Offset: 
+        <input type="text" bind:value={new_rec2.offset} placeholder="Offset"> 
+        Limit: 
+        <input type="text" bind:value={new_rec2.limit} placeholder="Limite"> 
+        <br><br>
+        <button type="submit" on:click={busqueda(new_rec2)} class="btn btn-info"><i class="fas fa-search"></i> Buscar</button>
+        <button type="submit" on:click={restablecer} class="btn btn-dark"><i class="fas fa-times"></i> Cancelar</button>
+      </div>
+      {/if}
       <br>
       <div class="table">
           <table class="table table-striped">
@@ -325,43 +436,63 @@ function mostrar_alerta(a, y){
               <tr>
                 <th>Territory</th>
                 <th>Year</th>
-                <th>Industria manufacturera de TIC</th>
-                <th>Comercio al por mayor</th>
-                <th>Edición de programas informáticos</th>
-                <th>Editar Recurso</th>
+                <th>ICT manufacturing industry</th>
+                <th>Wholesale trade</th>
+                <th>Edition computer program</th>
+                <th>Edit resource</th>
               </tr>
             </thead>
             {#if mostrar_load}
             <tbody>
-              {#each datos as item}
-              <tr>
-                {#if editar_fila}
-                  <td><input class="w-50" type="text" bind:value={item.territory}/></td>
-                  <td>{item.year}</td>
-                  <td><input class="w-50" type="number" bind:value={item.ict_manufacturing_industry}/></td>
-                  <td><input class="w-50" type="number" bind:value={item.wholesale_trade}/></td>
-                  <td><input class="w-50" type="number" bind:value={item.edition_of_computer_program}/></td>
-                  <td>
-                    <button type="button" on:click={update_data(item)} class="btn btn-primary"><i class="fas fa-sync-alt"></i> Actualizar</button>
-                    <button type="button" on:click={load_data} class="btn btn-dark"><i class="fas fa-times"></i> Cancelar</button>
-                  </td>
-                {:else}
-                  <td>{item.territory}</td>
-                  <td>{item.year}</td>
-                  <td>{item.ict_manufacturing_industry}</td>
-                  <td>{item.wholesale_trade}</td>
-                  <td>{item.edition_of_computer_program}</td>
-                  <td>
-                    <button type="button" on:click={bt_update_data} class="btn btn-primary"><i class="fas fa-sync-alt"></i> Actualizar</button>
-                    <button type="button" on:click={delete_data(item.year)} class="btn btn-danger"><i class="fas fa-trash"></i> Borrar</button>
-                  </td>
-                {/if}
-              </tr>
-              {/each}
+              {#if datos.length === 0}
+                <td colspan="6"><p class="text-center">No existen recursos para mostrar.</p></td>
+              {:else}
+                {#each datos as item}
+                  {#if fila_update >= 0 && fila_update === item.year}
+                    <tr>
+                      <td><input class="w-50" type="text" bind:value={item.territory}/></td>
+                      <td>{item.year}</td>
+                      <td><input class="w-50" type="number" bind:value={item.ict_manufacturing_industry}/></td>
+                      <td><input class="w-50" type="number" bind:value={item.wholesale_trade}/></td>
+                      <td><input class="w-50" type="number" bind:value={item.edition_of_computer_program}/></td>
+                      <td>
+                        <button type="button" on:click={update_data(item)} class="btn btn-primary"><i class="fas fa-check"></i> Aceptar</button>
+                        <button type="button" on:click={load_data} class="btn btn-dark"><i class="fas fa-times"></i> Cancelar</button>
+                      </td>
+                    </tr>
+                  {:else}
+                    <tr>
+                      <td>{item.territory}</td>
+                      <td>{item.year}</td>
+                      <td>{item.ict_manufacturing_industry}</td>
+                      <td>{item.wholesale_trade}</td>
+                      <td>{item.edition_of_computer_program}</td>
+                      <td>
+                        <button disabled={disabledBtn} type="button" on:click={bt_update_data(item.year)} class="btn btn-primary"><i class="fas fa-sync-alt"></i> Actualizar</button>
+                        <button disabled={disabledBtn} type="button" on:click={delete_data(item.year)} class="btn btn-danger"><i class="fas fa-trash"></i> Borrar</button>
+                      </td>
+                    </tr>
+                  {/if}
+                {/each}
+              {/if}
             </tbody>
             {/if}
           </table>
       </div>
+      <div class="text-center">
+        {#if desplazamiento === 0}
+            <button type="button" class="btn btn-dark" disabled><i class="fas fa-chevron-left"></i> Anterior</button>
+        {:else}
+            <button type="button" class="btn btn-dark" on:click={pag_anterior}><i class="fas fa-chevron-left"></i> Anterior</button>
+        {/if}
+
+        {#if desplazamiento > datos.length}
+            <button type="button" class="btn btn-dark" disabled>Siguiente <i class="fas fa-chevron-right"></i></button>
+        {:else}
+            <button type="button" class="btn btn-dark" on:click={pag_siguiente}>Siguiente <i class="fas fa-chevron-right"></i></button>
+        {/if}
+    </div>
+    <br>
   </div>
 </main>
 <style>

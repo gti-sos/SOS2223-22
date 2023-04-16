@@ -68,5 +68,103 @@
         "ict_manufacturing_industry": 0.07,
         "wholesale_trade": 0.3,
         "edition_of_computer_program": 0.05
+    },
+    {
+        "territory": "spain",
+        "year": 2018,
+        "ict_manufacturing_industry": 0.05,
+        "wholesale_trade": 0.18,
+        "edition_of_computer_program": 0.01
+    },
+    {
+        "territory": "spain",
+        "year": 2019,
+        "ict_manufacturing_industry": 0.04,
+        "wholesale_trade": 0.14,
+        "edition_of_computer_program": 0.01
+    },
+    {
+        "territory": "spain",
+        "year": 2020,
+        "ict_manufacturing_industry": 0.03,
+        "wholesale_trade": 0.12,
+        "edition_of_computer_program": 0.01
+    },
+    {
+        "territory": "spain",
+        "year": 2021,
+        "ict_manufacturing_industry": 0.04,
+        "wholesale_trade": 0.1,
+        "edition_of_computer_program": 0.01
+    },
+    {
+        "territory": "spain",
+        "year": 2022,
+        "ict_manufacturing_industry": 0.04,
+        "wholesale_trade": 0.12,
+        "edition_of_computer_program": 0.02
+    },
+    {
+        "territory": "spain",
+        "year": 2023,
+        "ict_manufacturing_industry": 0.06,
+        "wholesale_trade": 0.28,
+        "edition_of_computer_program": 0.03
+    },
+    {
+        "territory": "spain",
+        "year": 2007,
+        "ict_manufacturing_industry": 0.07,
+        "wholesale_trade": 0.28,
+        "edition_of_computer_program": 0.04
+    },
+    {
+        "territory": "spain",
+        "year": 2006,
+        "ict_manufacturing_industry": 0.07,
+        "wholesale_trade": 0.28,
+        "edition_of_computer_program": 0.05
+    },
+    {
+        "territory": "spain",
+        "year": 2005,
+        "ict_manufacturing_industry": 0.07,
+        "wholesale_trade": 0.29,
+        "edition_of_computer_program": 0.05
+    },
+    {
+        "territory": "spain",
+        "year": 2004,
+        "ict_manufacturing_industry": 0.07,
+        "wholesale_trade": 0.3,
+        "edition_of_computer_program": 0.05
+    },
+    {
+        "territory": "spain",
+        "year": 2003,
+        "ict_manufacturing_industry": 0.07,
+        "wholesale_trade": 0.3,
+        "edition_of_computer_program": 0.05
+    },
+    {
+        "territory": "spain",
+        "year": 2002,
+        "ict_manufacturing_industry": 0.07,
+        "wholesale_trade": 0.3,
+        "edition_of_computer_program": 0.05
+    },
+    {
+        "territory": "spain",
+        "year": 2001,
+        "ict_manufacturing_industry": 0.07,
+        "wholesale_trade": 0.3,
+        "edition_of_computer_program": 0.05
+    },
+    {
+        "territory": "spain",
+        "year": 2000,
+        "ict_manufacturing_industry": 0.07,
+        "wholesale_trade": 0.3,
+        "edition_of_computer_program": 0.05
     }
 ]
