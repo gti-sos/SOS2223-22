@@ -1,10 +1,10 @@
-const BASE_API_URL = "/api/v1";
+const BASE_API_URL = "/api/v2";
 const cgmFilePath = 'ddbb/stats-cgm.json';
 import fs from "fs";
 import Datastore from 'nedb';
 var cgm = new Datastore();
                                         ///// DATOS Y PETICIONES CARLOS GATA MASERO \\\\\
-function loadBackendCGM_v1(app){
+function loadBackendCGM_v2(app){
 
   // app.use((req, res, next) => {
   //   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -231,4 +231,4 @@ function loadBackendCGM_v1(app){
       });
     });
 }
-export{loadBackendCGM_v1};  
+export{loadBackendCGM_v2};  

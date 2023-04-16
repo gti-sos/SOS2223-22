@@ -9,8 +9,8 @@
   import { onMount } from 'svelte';
 
 
-  let API = 'http://localhost:12345/api/v1/ict-promotion-strategy-stats/';
-  //https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/
+  //let API = 'http://localhost:12345/api/v2/ict-promotion-strategy-stats/';
+  let API = 'https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats/';
 
   //datos principales
   let datos = [];
@@ -58,7 +58,7 @@
   async function load_ini_data(){
     //si datos[] está vacio, carga los datos iniciales
     if (datos.length === 0) {
-      const res = await fetch('http://localhost:12345/api/v1/ict-promotion-strategy-stats/loadInitialData', {
+      const res = await fetch(API+'loadInitialData', {
         method: 'GET'
       });
 

@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import  { loadBackendAcb } from "../backend/routeACB v2.js";// GET,PUT,DELETE,POST Antonio Carranza Barroso
-import  {loadBackendCGM} from "../backend/routeCGM.js"; // GET,PUT,DELETE,POST Carlos Gata Masero
+import  {loadBackendCGM_v1} from "../backend/routeCGM.js"; // GET,PUT,DELETE,POST Carlos Gata Masero
+import  {loadBackendCGM_v2} from "../backend/routeCGM-v2.js"; // GET,PUT,DELETE,POST Carlos Gata Masero
 import {handler} from "../frontend/build/handler.js";
 var app = express();
 
@@ -14,7 +15,7 @@ app.use(cors({
     origin: 'http://localhost:5173'
   }));
 
-loadBackendCGM(app);
+loadBackendCGM_v2(app);
 loadBackendAcb(app);
 //app.use(loadBackendAcb1);
 app.use(handler);
