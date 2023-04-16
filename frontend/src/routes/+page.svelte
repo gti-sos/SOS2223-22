@@ -99,12 +99,14 @@
                             <li><a href="https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/docs</a> ( v2 - desarrollada por Antonio Carranza Barroso )</li>
                             <li><a href="https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs</a> (v1 - desarrollada por  Antonio Carranza Barroso)</li>
                             <li><a href="https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs</a> (developed by Carlos Gata Masero)</li>
+                            <li><a href="https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs</a> (developed by Carlos Gata Masero)</li>
+
                         </ul>
                         <p><strong>Frontends:</strong></p>
                         <ul>
                            
                             <li> <li><a href="https://sos2223-22.appspot.com/frontAcb" target="_blank">Frontend Antonio </li>
-                            <li> <li><a href="http://localhost:12345/frontCgm" target="_blank">Frontend Carlos </li>
+                            <li> <li><a href="https://sos2223-22.appspot.com/frontCgm" target="_blank">Frontend Carlos </li>
 
                         </ul>
                         <p><strong>URLs Base:</strong></p>
