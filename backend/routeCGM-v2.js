@@ -86,7 +86,7 @@ function loadBackendCGM_v2(app){
 
     // GET busqueda por values
 
-    app.get('/api/v1/ict-promotion-strategy-stats/:value/:value2?', (req, res) => {
+    app.get('/api/v2/ict-promotion-strategy-stats/:value/:value2?', (req, res) => {
       const { value, value2 } = req.params;
       console.log(value);
       const query = { $where: function() {
