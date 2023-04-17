@@ -37,7 +37,32 @@
       async function search() {
       
       try {
-        if(`${companias}` != "" && `${empleos}` !=""){
+        if(`${territory}` === "" &&  `${year}` !==""){
+            const response = await fetch(`${API}?territory=&year=${year}`);
+            if (!response.ok) {
+              setResources([]);
+              showMessage("No se han encontrado resultados","error");
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            if(Array.isArray(data) && data.length > 0){
+              setResources(data);
+              console.log("HOLA");
+            }else{
+              console.log("ADIOS");
+              setResources([data]);
+}
+
+            
+            
+            console.log(data);
+            
+            
+            
+            
+          
+      }
+        else if(`${companias}` != "" && `${empleos}` !=""){
           if(`${trabajos}` && Number.isInteger(parseInt(`${trabajos}`)) && `${year}` && Number.isInteger(parseInt(`${year}`))){
             const response = await fetch(`${API}${territory}/${year}/${trabajos}/${companias}/${empleos}`);
             if (!response.ok) {
@@ -93,6 +118,7 @@
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
+
           setResources(data);
 
         }
@@ -354,8 +380,8 @@
   async function getJobs() {
     
     resultStatus = result = '';
-    const res = await fetch(`https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
-     // const res = await fetch(`http://localhost:12345/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
+      const res = await fetch(`https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
+      //const res = await fetch(`http://localhost:12345/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
       method: 'GET'
     });
     try {
