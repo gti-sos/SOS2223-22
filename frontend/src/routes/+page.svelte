@@ -20,7 +20,6 @@
         h1, h2 {
             color: #333;
         }
-
         a {
             color: #007bff;
             text-decoration: none;
