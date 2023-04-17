@@ -96,8 +96,8 @@
                             
                             <li><a href="https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/docs</a> ( v2 - desarrollada por Antonio Carranza Barroso )</li>
                             <li><a href="https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats/docs</a> (v1 - desarrollada por  Antonio Carranza Barroso)</li>
-                            <li><a href="https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs</a> (developed by Carlos Gata Masero)</li>
-                            <li><a href="https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs</a> (developed by Carlos Gata Masero)</li>
+                            <li><a href="https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats/docs</a> (v1 - desarrollada por Carlos Gata Masero)</li>
+                            <li><a href="https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats/docs" target="_blank">https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats/docs</a> (v2 - desarrollada por Carlos Gata Masero)</li>
 
                         </ul>
                         <p><strong>Frontends:</strong></p>
@@ -111,7 +111,7 @@
                         <ul>
                             <li>Antonio Carranza Barroso - <a href="https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats" target="_blank">https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats</a></li>
                             <br>
-                            <li>Carlos Gata Masero - <a href="https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats</a></li>
+                            <li>Carlos Gata Masero - <a href="https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats</a></li>
                         </ul>
                     </section>
                 </div>

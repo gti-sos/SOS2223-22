@@ -63,8 +63,11 @@
       });
 
       if (res.ok) {
+        let alerta = 'okey';
+        mostrar_alerta(alerta);
         load_data(); // cargar tabla
         //showMessage("Datos cargados correctamente", "success");
+
       } else {
         //showMessage("Error al cargar los datos iniciales", "error");
       }  
@@ -148,9 +151,9 @@
       const status = await res.status;
       resultStatus = status;
       if (status == 201) {
+        let alerta = 'okey';
+          mostrar_alerta(alerta);
           load_data();
-          let alerta = 'create_rec';
-          mostrar_alerta(alerta, new_rec.year);
           
       }else{
           if (status == 400) {
@@ -344,6 +347,11 @@ function mostrar_alerta(a, y){
    alert.setAttribute('role', 'alert');
    alert.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ya existe un recurso del año: '+y;
  }
+ if (a === 'okey'){
+   alert.classList.add('alert', 'alert-primary', 'alert-dismissible', 'fade', 'show');
+   alert.setAttribute('role', 'alert');
+   alert.innerHTML = '<i class="fas fa-check-circle"></i> Recurso/s cargado/s correctamente ';
+ }
  const container = document.querySelector('.container');
  container.insertBefore(alert, container.firstChild);
   // Ocultamos la alerta después de 3 segundos
@@ -387,11 +395,11 @@ function mostrar_alerta(a, y){
           <p class="text-success"><i class="fas fa-info-circle"></i> Recuerde que el campo Year es un dato único, no se puede repetir.</p>
           <form on:submit|preventDefault={create_data}>
             <div class="form-group">
-              <label for="territory">Territory:</label>
+              <label for="territory">Territorio:</label>
               <input type="text" class="form-control" bind:value={new_rec.territory} name="territory" required>
             </div>
             <div class="form-group">
-              <label for="year">Year:</label>
+              <label for="year">Año:</label>
               <input type="text" class="form-control" bind:value={new_rec.year} name="year" required>
             </div>
             <div class="form-group">
@@ -414,15 +422,15 @@ function mostrar_alerta(a, y){
       {/if}
       {#if mostrar_busqueda}
       <div class="text-center">
-        <input type="text" bind:value={new_rec2.territory} placeholder=" Territory"> 
-        <input type="text" bind:value={new_rec2.year} placeholder="Year"> 
-        <input type="text" bind:value={new_rec2.ict_manufacturing_industry} placeholder="ict_manufacturing_industry"> 
-        <input type="text" bind:value={new_rec2.wholesale_trade} placeholder="wholesale_trade"> 
-        <input type="text" bind:value={new_rec2.edition_of_computer_program} placeholder="Edition computer program">
+        <input type="text" bind:value={new_rec2.territory} placeholder=" Territorio"> 
+        <input type="text" bind:value={new_rec2.year} placeholder="Año"> 
+        <input type="text" bind:value={new_rec2.ict_manufacturing_industry} placeholder="industria de fabricación de TIC"> 
+        <input type="text" bind:value={new_rec2.wholesale_trade} placeholder="Comercio al por mayor"> 
+        <input type="text" bind:value={new_rec2.edition_of_computer_program} placeholder="Programa de computadora de edición">
         <br><br>
-        Offset: 
+        Desplazamiento: 
         <input type="text" bind:value={new_rec2.offset} placeholder="Offset"> 
-        Limit: 
+        Limite: 
         <input type="text" bind:value={new_rec2.limit} placeholder="Limite"> 
         <br><br>
         <button type="submit" on:click={busqueda(new_rec2)} class="btn btn-info"><i class="fas fa-search"></i> Buscar</button>
@@ -434,12 +442,12 @@ function mostrar_alerta(a, y){
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Territory</th>
-                <th>Year</th>
-                <th>ICT manufacturing industry</th>
-                <th>Wholesale trade</th>
-                <th>Edition computer program</th>
-                <th>Edit resource</th>
+                <th>Territorio</th>
+                <th>Año</th>
+                <th>industria de fabricación de TIC</th>
+                <th>Comercio al por mayor</th>
+                <th>Programa de computadora de edición</th>
+                <th>Editar recusro</th>
               </tr>
             </thead>
             {#if mostrar_load}
