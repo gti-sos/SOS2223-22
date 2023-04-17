@@ -63,8 +63,11 @@
       });
 
       if (res.ok) {
+        let alerta = 'okey';
+        mostrar_alerta(alerta);
         load_data(); // cargar tabla
         //showMessage("Datos cargados correctamente", "success");
+
       } else {
         //showMessage("Error al cargar los datos iniciales", "error");
       }  
@@ -148,9 +151,9 @@
       const status = await res.status;
       resultStatus = status;
       if (status == 201) {
+        let alerta = 'okey';
+          mostrar_alerta(alerta);
           load_data();
-          let alerta = 'create_rec';
-          mostrar_alerta(alerta, new_rec.year);
           
       }else{
           if (status == 400) {
@@ -343,6 +346,11 @@ function mostrar_alerta(a, y){
    alert.classList.add('alert', 'alert-warning', 'alert-dismissible', 'fade', 'show');
    alert.setAttribute('role', 'alert');
    alert.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ya existe un recurso del año: '+y;
+ }
+ if (a === 'okey'){
+   alert.classList.add('alert', 'alert-primary', 'alert-dismissible', 'fade', 'show');
+   alert.setAttribute('role', 'alert');
+   alert.innerHTML = '<i class="fas fa-check-circle"></i> Recurso/s cargado/s correctamente ';
  }
  const container = document.querySelector('.container');
  container.insertBefore(alert, container.firstChild);

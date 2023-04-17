@@ -15,6 +15,7 @@ app.use(cors({
     origin: 'http://localhost:5173'
   }));
 
+loadBackendCGM_v1(app);
 loadBackendCGM_v2(app);
 loadBackendAcb(app);
 //app.use(loadBackendAcb1);
