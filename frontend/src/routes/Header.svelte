@@ -2,8 +2,8 @@
     <nav class="menu">
         <ul>
             <a href="/">Inicio</a>
-            <a href="/frontAcb">Frontend Acb</a>
-            <a href="/frontCgm">Frontend Cgm</a>
+            <a href="https://sos2223-22.appspot.com/frontAcb">Frontend Acb</a>
+            <a href="https://sos2223-22.appspot.com/frontCgm">Frontend Cgm</a>
         </ul>
     </nav>
 </main>
