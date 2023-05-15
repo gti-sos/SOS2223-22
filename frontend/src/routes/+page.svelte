@@ -109,7 +109,9 @@
                         </ul>
                         <p><strong>URLs Base:</strong></p>
                         <ul>
-                            <li>Antonio Carranza Barroso - <a href="https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats" target="_blank">https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats</a></li>
+                            <li>Antonio Carranza Barroso, API V1 - <a href="https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats" target="_blank">https://sos2223-22.appspot.com/api/v1/jobs-companies-innovation-stats</a></li>
+                            <br>
+                            <li>Antonio Carranza Barroso, API V2 - <a href="https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats" target="_blank">https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats</a></li>
                             <br>
                             <li>Carlos Gata Masero - <a href="https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats" target="_blank">https://sos2223-22.appspot.com/api/v1/ict-promotion-strategy-stats</a></li>
                         </ul>

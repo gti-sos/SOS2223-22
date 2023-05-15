@@ -4,6 +4,8 @@
             <a href="/">Inicio</a>
             <a href="https://sos2223-22.appspot.com/frontAcb">Frontend Acb</a>
             <a href="https://sos2223-22.appspot.com/frontCgm">Frontend Cgm</a>
+            <a href="https://sos2223-22.appspot.com/about">About(Videos)</a>
+
         </ul>
     </nav>
 </main>
