@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import Highcharts from 'highcharts/highstock';
 
+  // @ts-ignore
   let jobs = [];
 
   async function getJobs() {
@@ -20,11 +21,16 @@
   onMount(getJobs);
 
   function loadChartData() {
+    // @ts-ignore
     const categories = jobs.map(job => `${job.territory} (${job.year})`);
+    // @ts-ignore
     const empleosEnIndustria = jobs.map(job => job.jobs_industry);
+    // @ts-ignore
     const empresasConInnovaciones = jobs.map(job => job.companies_with_innovations);
+    // @ts-ignore
     const empleoTemporal = jobs.map(job => job.temporary_employment);
 
+    // @ts-ignore
     Highcharts.chart('container', {
       chart: {
         type: 'bar',
@@ -34,12 +40,16 @@
         text: 'Puestos De Trabajo Empleos empresas con innovaciones'
       },
       xAxis: {
+        title: {
+          text: 'Territorio (Año)'
+        },
         categories: categories
       },
       yAxis: {
         title: {
-          text: 'Territorio (Año)'
+          text: 'Valor'
         }
+        
       },
       tooltip: {
         shared: true,
