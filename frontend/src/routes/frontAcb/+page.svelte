@@ -4,6 +4,7 @@
       import "../styles.css";
       import { onMount } from 'svelte';
       import Header from "../Header.svelte";
+     
     
       let API = 'https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/';
       //let API = 'http://localhost:12345/api/v2/jobs-companies-innovation-stats/';
@@ -139,7 +140,7 @@
         const companiesWithInnovations = document.getElementById("companies_with_innovations").value;
         const temporaryEmployment = document.getElementById("temporary_employment").value;
         let apiUrl = "https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats/";
-        //let apiUrl = 'http://localhost:12345/api/v2/jobs-companies-innovation-stats/';
+       // let apiUrl = 'http://localhost:12345/api/v2/jobs-companies-innovation-stats/';
         if (territory) {
             apiUrl += territory;
             if (year) {
@@ -321,7 +322,9 @@
         if (res.ok) {
           
           getJobs(); // Actualizar los datos en la tabla
+         
           showMessage("Datos cargados correctamente", "success");
+    
         } else {
           showMessage("Error al cargar los datos iniciales", "error");
         }
@@ -381,13 +384,14 @@
     
     resultStatus = result = '';
       const res = await fetch(`https://sos2223-22.appspot.com/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
-      //const res = await fetch(`http://localhost:12345/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
+     // const res = await fetch(`http://localhost:12345/api/v2/jobs-companies-innovation-stats?offset=${offset}&limit=${limit}`, {
       method: 'GET'
     });
     try {
       const data = await res.json();
       result = JSON.stringify(data, null, 2);
       jobs = data;
+     
       if (res.ok) {
         const status = await res.status;
         resultStatus = status.toString();
