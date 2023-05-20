@@ -22,7 +22,7 @@
 
   function loadChartData() {
     // @ts-ignore
-    const categories = jobs.map(job => `(${job.territory} (${job.year}))`);
+    const categories = jobs.map(job => `${job.territory} (${job.year})`);
     // @ts-ignore
     const empleosEnIndustria = jobs.map(job => job.jobs_industry);
     // @ts-ignore
