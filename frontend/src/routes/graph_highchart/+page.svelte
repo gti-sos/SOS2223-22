@@ -22,13 +22,18 @@
 
   function loadChartData() {
     // @ts-ignore
-    const categories = jobs.map(job => `${job.territory} (${job.year})`);
-    // @ts-ignore
-    const empleosEnIndustria = jobs.map(job => job.jobs_industry);
-    // @ts-ignore
-    const empresasConInnovaciones = jobs.map(job => job.companies_with_innovations);
-    // @ts-ignore
-    const empleoTemporal = jobs.map(job => job.temporary_employment);
+    const sortedJobs = jobs.sort((a, b) => {
+      if (a.territory !== b.territory) {
+        return a.territory.localeCompare(b.territory);
+      } else {
+        return a.year - b.year;
+      }
+    });
+
+    const categories = sortedJobs.map(job => `${job.territory} (${job.year})`);
+    const empleosEnIndustria = sortedJobs.map(job => job.jobs_industry);
+    const empresasConInnovaciones = sortedJobs.map(job => job.companies_with_innovations);
+    const empleoTemporal = sortedJobs.map(job => job.temporary_employment);
 
     // @ts-ignore
     Highcharts.chart('container', {
@@ -40,16 +45,12 @@
         text: 'Puestos De Trabajo Empleos empresas con innovaciones'
       },
       xAxis: {
-        title: {
-          text: 'Territorio (Año)'
-        },
         categories: categories
       },
       yAxis: {
         title: {
-          text: 'Valor'
+          text: 'Territorio (Año)'
         }
-        
       },
       tooltip: {
         shared: true,
