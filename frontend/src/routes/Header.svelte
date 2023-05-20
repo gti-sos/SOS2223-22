@@ -3,7 +3,7 @@
         <ul>
             <a href="/">Inicio</a>
             <a href="/frontAcb">Frontend Acb</a>
-            <a href="http://localhost:12345/frontCgm">Frontend Cgm</a>
+            <a href="https://sos2223-22.appspot.com/frontCgm">Frontend Cgm</a>
             <a href="/about">About(Videos)</a>
             <a href="/integrations">Integrations (Usos y integraciones)</a>
             <a href="/analytics">Analytics</a>
