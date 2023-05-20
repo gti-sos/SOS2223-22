@@ -4,6 +4,7 @@ var port = process.env.PORT || 12345;
 const BASE_API_URL = "/api/v2";
 import dataStore from "nedb";
 var dbAcb = new dataStore();
+const portt = 3000; // Elige el puerto en el que se ejecutará tu servidor proxy
 
 
 var acb = [
@@ -21,6 +22,8 @@ var acb = [
      companies_with_innovations: "1.605",
      temporary_employment: 25.13
     },
+
+    
     {
      territory: "union europea 28",
      year: 2008,
@@ -35,6 +38,37 @@ var acb = [
      companies_with_innovations: 0,
      temporary_employment: 13.03
     },
+     {territory: 'españa', 
+     year: 2000, 
+     jobs_industry: 5955540.51, 
+     companies_with_innovations: 964.389, 
+     temporary_employment: 6.9},
+
+      
+{territory: 'españa', year: 2001, jobs_industry: 1866887.92, companies_with_innovations: 1681.607, temporary_employment: 36.13},
+
+{territory: 'españa', year: 2002, jobs_industry: 9194659.52, companies_with_innovations: 43.603, temporary_employment: 30.03},
+{territory: 'españa', year: 2003, jobs_industry: 3051773.91, companies_with_innovations: 531.177, temporary_employment: 27.4},
+{territory: 'españa', year: 2004, jobs_industry: 9301223.88, companies_with_innovations: 1524.428, temporary_employment: 1.2},
+{territory: 'españa', year: 2005, jobs_industry: 9929402.39, companies_with_innovations: 1291.103, temporary_employment: 46.35},
+{territory: 'españa', year: 2006, jobs_industry: 4382533.86, companies_with_innovations: 1384.308, temporary_employment: 44.36},
+{territory: 'españa', year: 2007, jobs_industry: 2760103, companies_with_innovations: 901.766, temporary_employment: 40.2},
+{territory: 'españa', year: 2008, jobs_industry: 109945.01, companies_with_innovations: 161.655, temporary_employment: 17.05},
+{territory: 'españa', year: 2009, jobs_industry: 3124132.9, companies_with_innovations: 1503.918, temporary_employment: 21.55},
+{territory: 'españa', year: 2010, jobs_industry: 3645837.25, companies_with_innovations: 140.568, temporary_employment: 0.58},
+{territory: 'españa', year: 2011, jobs_industry: 1782865.3, companies_with_innovations: 774.476, temporary_employment: 14.97},
+{territory: 'españa', year: 2012, jobs_industry: 1708455.22, companies_with_innovations: 1599.842, temporary_employment: 45.37},
+{territory: 'españa', year: 2013, jobs_industry: 9824335.98, companies_with_innovations: 1703.845, temporary_employment: 8.88},
+{territory: 'españa', year: 2014, jobs_industry: 5495764.51, companies_with_innovations: 349.914, temporary_employment: 13.25},
+{territory: 'españa', year: 2015, jobs_industry: 5757685.39, companies_with_innovations: 871.838, temporary_employment: 36.74},
+{territory: 'españa', year: 2016, jobs_industry: 5508138.44, companies_with_innovations: 1717.129, temporary_employment: 20.33},
+{territory: 'españa', year: 2017, jobs_industry: 4375942.26, companies_with_innovations: 1656.376, temporary_employment: 28.53}, 
+{territory: 'españa', year: 2018, jobs_industry: 5717043.63, companies_with_innovations: 828.954, temporary_employment: 25.19},
+{territory: 'españa', year: 2019, jobs_industry: 4703434.97, companies_with_innovations: 926.089, temporary_employment: 49.31},
+{territory: 'españa', year: 2020, jobs_industry: 2711264.76, companies_with_innovations: 1401.067, temporary_employment: 32.77},
+{territory: 'españa', year: 2021, jobs_industry: 2645034.16, companies_with_innovations: 222.502, temporary_employment: 7.06},
+{territory: 'españa', year: 2022, jobs_industry: 4059827.89, companies_with_innovations: 1850.767, temporary_employment: 31.48},
+{territory: 'españa', year: 2023, jobs_industry: 9743494, companies_with_innovations: 1024.099, temporary_employment: 24.66},
     {
      territory: "Belgica",
      year: 2010,
@@ -249,6 +283,23 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/docs", (req, res) => {
     res.redirect("https://documenter.getpostman.com/view/14969056/2s93Xtzjuj");
 });
 
+//PROXY
+app.get('/api/v2/localentities', async (req, res) => {
+    try {
+      const url = 'https://sos2223-13.appspot.com/api/v2/localentities';
+      const response = await fetch(url);
+      const data = await response.json();
+      res.json(data);
+      console.log("Proxy realizado correctamente!");
+    } catch (error) {
+      console.log('Error:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+  
+  app.listen(portt, () => {
+    console.log(`Proxy server is running on port ${portt}`);
+  });
 //GET loadInitial Data
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res)=>{
     dbAcb.insert(acb, (err, data) => {
@@ -257,7 +308,7 @@ app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res
             res.sendStatus(500);
         } 
         else {
-            
+        
             data.forEach((d) => delete d._id);
             res.json(data);
             console.log("New GET request /jobs-companies-innovation-stats/loadInitialData");
@@ -304,7 +355,7 @@ app.get(BASE_API_URL + "/jobs-companies-innovation-stats/", (req, res) => {
 
     // Pagination
     const offset = parseInt(query.offset) || 0;
-    const limit = parseInt(query.limit) || 10;
+    const limit = parseInt(query.limit) || 1000000;
 
     let queryCount = 0;
 

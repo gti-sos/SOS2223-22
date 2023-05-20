@@ -8,7 +8,7 @@ var app = express();
 var port = process.env.PORT || 12345;
 //app.use("/",express.static("./public"));
 import { loadBackendAcb1 } from "../backend/routeACB.js";
-console.log("B");
+
 app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:5173'

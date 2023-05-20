@@ -9,8 +9,8 @@
   import { onMount } from 'svelte';
 
 
-  //let API = 'http://localhost:12345/api/v2/ict-promotion-strategy-stats/';
-  let API = 'https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats/';
+  let API = 'http://localhost:12345/api/v2/ict-promotion-strategy-stats/';
+  //let API = 'https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats/';
 
   //datos principales
   let datos = [];
