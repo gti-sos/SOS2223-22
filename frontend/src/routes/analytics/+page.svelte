@@ -105,6 +105,7 @@
 </script>
 
 <main>
+  <br><br>
   <canvas id="myChart"></canvas>
 </main>
 
