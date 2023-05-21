@@ -79,6 +79,7 @@
                         <h2>Miembros</h2>
                         <ul>
                             <li class="team-member">Antonio Carranza Barroso (fuente: jobs-companies-innovation)</li>
+                            <li class="team-member">Video Antonio Carranza: <a href="https://www.youtube.com/watch?v=36Jb9cW7ncc" target="_blank">Video</a></li>
                             <li class="team-member">Carlos Gata Masero (fuente: ict-promotion-strategy)</li>
                             <li class="team-member">Thomas Tejeda Gordon</li>
                             <li class="team-member">Rubén González Amador</li>

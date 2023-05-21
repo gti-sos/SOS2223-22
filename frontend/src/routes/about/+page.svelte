@@ -1,8 +1,8 @@
 <script>
-    let videoId1 = "bYwr702lcAw"; // Video ID de Antonio Carranza
+    let videoId1 = "36Jb9cW7ncc"; // Video ID de Antonio Carranza
     let videoId2 = "bYwr702lcAw"; // Video ID de Carlos Gata
   </script>
-  
+
   <div class="app">
     <h1>Video de Antonio Carranza</h1>
     <div class="video-container">
