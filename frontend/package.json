@@ -13,7 +13,6 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-node": "^1.2.3",
 		"@sveltejs/kit": "^1.5.0",
-		"@types/d3": "^7.4.0",
 		"svelte": "^3.58.0",
 		"svelte-check": "^3.0.1",
 		"svelte-preprocess": "^5.0.3",
@@ -23,11 +22,13 @@
 	"type": "module",
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^6.4.0",
-		"axios": "^1.4.0",
 		"bootstrap": "^5.2.3",
 		"d3": "^7.8.4",
 		"fontawesome": "^5.6.3",
 		"highcharts": "^11.0.1",
+		"highcharts-drilldown": "^0.1.7",
+		"highcharts-more": "^0.1.7",
+		"highcharts-react-official": "^3.2.0",
 		"sveltestrap": "^5.10.0"
 	}
 }

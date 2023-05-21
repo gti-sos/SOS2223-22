@@ -32,9 +32,34 @@
         url: 'https://sos2223-22.appspot.com/graph_basket'
       },
       {
-        label: 'OpenAI',
-        url: 'https://www.openai.com'
+        label: 'HightCharts (Area)',
+        url: '/highcharts-cgm'
+      },
+      {
+        label: 'D3',
+        url: '/d3-cgm'
+      },
+      {
+        label: 'API The Simpsons',
+        url: '/api-thesimpsons'
+      },
+      {
+        label: 'API Rick & Morty',
+        url: '/api-rickmorty'
+      },
+      {
+        label: 'API Criptomonedas',
+        url: '/api-crypto'
+      },
+      {
+        label: 'Uso API SOS2223-10 (Proxy)',
+        url: '/integration-g10-proxy'
+      },
+      {
+        label: 'API Niveles NO2 Europa',
+        url: '/api-no2'
       }
+
     ];
   
     /**

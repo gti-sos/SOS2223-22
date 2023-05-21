@@ -8,14 +8,30 @@
     let selectedCharacter = null;
   
     const buscarPersonajes = async () => {
-      try {
-        const response = await fetch(`https://rickandmortyapi.com/api/character?name=${searchQuery}`);
-        const data = await response.json();
-        characters = data.results;
-      } catch (error) {
-        console.error('Error al obtener datos de la API de Rick and Morty:', error);
+  try {
+    let page = 1;
+    let allCharacters = [];
+
+    while (true) {
+      const response = await fetch(`https://rickandmortyapi.com/api/character?name=${searchQuery}&page=${page}`);
+      const data = await response.json();
+      const { results, info } = data;
+
+      allCharacters = [...allCharacters, ...results];
+
+      if (info.next) {
+        page++;
+      } else {
+        break;
       }
-    };
+    }
+
+    characters = allCharacters;
+  } catch (error) {
+    console.error('Error al obtener datos de la API de Rick and Morty:', error);
+  }
+};
+
   
     const buscar = () => {
       buscarPersonajes();

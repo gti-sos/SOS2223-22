@@ -3,6 +3,7 @@ const cgmFilePath = 'ddbb/stats-cgm.json';
 import fs from "fs";
 import Datastore from 'nedb';
 var cgm = new Datastore();
+const portt = 3001;
                                         ///// DATOS Y PETICIONES CARLOS GATA MASERO \\\\\
 function loadBackendCGM_v2(app){
 
@@ -229,6 +230,24 @@ function loadBackendCGM_v2(app){
       }
       return res.sendStatus(200);
       });
+    });
+
+    // Proxy con datos de otro grupo
+    app.get('/api/v2/economy-stats', async (req, res) => {
+      try {
+        const url = 'https://sos2223-10.appspot.com/api/v2/economy-stats';
+        const response = await fetch(url);
+        const data = await response.json();
+        res.json(data);
+        console.log("Proxy OK");
+      } catch (error) {
+        console.log('Error:', error);
+        res.status(500).send('Internal Server Error');
+      }
+    });
+    
+    app.listen(portt, () => {
+      console.log(`Proxy server is running on port ${portt}`);
     });
 }
 export{loadBackendCGM_v2};  
