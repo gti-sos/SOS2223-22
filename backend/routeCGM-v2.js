@@ -232,6 +232,7 @@ function loadBackendCGM_v2(app){
       });
     });
 
+    
     // Proxy con datos de otro grupo
     app.get('/api/v2/economy-stats', async (req, res) => {
       try {
