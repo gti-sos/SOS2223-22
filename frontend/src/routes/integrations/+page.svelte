@@ -40,24 +40,28 @@
         url: '/d3-cgm'
       },
       {
-        label: 'API The Simpsons',
+        label: 'Frases The Simpsons',
         url: '/api-thesimpsons'
       },
       {
-        label: 'API Rick & Morty',
+        label: 'Personajes Rick & Morty',
         url: '/api-rickmorty'
       },
       {
-        label: 'API Criptomonedas',
+        label: 'Gráfica precio Criptomonedas (Columnas)',
         url: '/api-crypto'
+      },
+      {
+        label: 'Niveles NO2 Europa (Puntos)',
+        url: '/api-no2'
+      },
+      {
+        label: 'Vuelos naves espaciales (Spline)',
+        url: '/api-naves'
       },
       {
         label: 'Uso API SOS2223-10 (Proxy)',
         url: '/integration-g10-proxy'
-      },
-      {
-        label: 'API Niveles NO2 Europa',
-        url: '/api-no2'
       }
 
     ];
@@ -85,7 +89,7 @@
         </ul>
       </div>
       <div class="column">
-        <h2 class="column-title">Columna 2</h2>
+        <h2 class="column-title">APIS Carlos Gata</h2>
         <ul class="links-list">
           {#each urls.slice(7) as { label, url }}
             <li class="link-item" on:click="{() => openUrl(url)}">
