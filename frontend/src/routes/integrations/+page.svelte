@@ -32,7 +32,10 @@
         url: 'https://sos2223-22.appspot.com/graph_basket'
       },
       {
-<<<<<<< HEAD
+        label: 'Generador de Usuarios',
+        url: 'https://sos2223-22.appspot.com/random_users'
+      },
+      {
         label: 'HightCharts (Area)',
         url: '/highcharts-cgm'
       },
@@ -63,10 +66,6 @@
       {
         label: 'Uso API SOS2223-10 (Proxy)',
         url: '/integration-g10-proxy'
-=======
-        label: 'Generador de Usuarios',
-        url: 'https://sos2223-22.appspot.com/random_users'
->>>>>>> f5349a17197a45e04bda8e802c6109b10345a1e1
       }
 
     ];
