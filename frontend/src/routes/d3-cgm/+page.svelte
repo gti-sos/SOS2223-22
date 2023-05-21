@@ -10,7 +10,7 @@
     // @ts-ignore
     // @ts-ignore
     let chart;
-    let API = 'http://localhost:12345/api/v2/ict-promotion-strategy-stats/';
+    let API = 'https://sos2223-22.appspot.com/api/v2/ict-promotion-strategy-stats/';
   
     onMount(async () => {
       await load_data();
