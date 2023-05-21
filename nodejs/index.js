@@ -11,7 +11,7 @@ import { loadBackendAcb1 } from "../backend/routeACB.js";
 
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: 'https://sos2223-22.appspot.com/'
   }));
 
 loadBackendCGM_v1(app);

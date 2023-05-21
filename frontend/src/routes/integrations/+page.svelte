@@ -32,6 +32,7 @@
         url: 'https://sos2223-22.appspot.com/graph_basket'
       },
       {
+<<<<<<< HEAD
         label: 'HightCharts (Area)',
         url: '/highcharts-cgm'
       },
@@ -62,6 +63,10 @@
       {
         label: 'Uso API SOS2223-10 (Proxy)',
         url: '/integration-g10-proxy'
+=======
+        label: 'Generador de Usuarios',
+        url: 'https://sos2223-22.appspot.com/random_users'
+>>>>>>> f5349a17197a45e04bda8e802c6109b10345a1e1
       }
 
     ];
@@ -80,7 +85,7 @@
       <div class="column">
         <h2 class="column-title">APIS Antonio Carranza</h2>
         <ul class="links-list">
-          {#each urls.slice(0, 7) as { label, url }}
+          {#each urls.slice(0, 8) as { label, url }}
             <li class="link-item" on:click="{() => openUrl(url)}">
               <span class="link-label">{label}</span>
               <span class="link-icon">➡️</span>
@@ -91,7 +96,7 @@
       <div class="column">
         <h2 class="column-title">APIS Carlos Gata</h2>
         <ul class="links-list">
-          {#each urls.slice(7) as { label, url }}
+          {#each urls.slice(8) as { label, url }}
             <li class="link-item" on:click="{() => openUrl(url)}">
               <span class="link-label">{label}</span>
               <span class="link-icon">➡️</span>
