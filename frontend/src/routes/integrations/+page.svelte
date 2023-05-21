@@ -32,8 +32,8 @@
         url: 'https://sos2223-22.appspot.com/graph_basket'
       },
       {
-        label: 'OpenAI',
-        url: 'https://www.openai.com'
+        label: 'Generador de Usuarios',
+        url: 'https://sos2223-22.appspot.com/random_users'
       }
     ];
   
@@ -51,7 +51,7 @@
       <div class="column">
         <h2 class="column-title">APIS Antonio Carranza</h2>
         <ul class="links-list">
-          {#each urls.slice(0, 7) as { label, url }}
+          {#each urls.slice(0, 8) as { label, url }}
             <li class="link-item" on:click="{() => openUrl(url)}">
               <span class="link-label">{label}</span>
               <span class="link-icon">➡️</span>
@@ -62,7 +62,7 @@
       <div class="column">
         <h2 class="column-title">Columna 2</h2>
         <ul class="links-list">
-          {#each urls.slice(7) as { label, url }}
+          {#each urls.slice(8) as { label, url }}
             <li class="link-item" on:click="{() => openUrl(url)}">
               <span class="link-label">{label}</span>
               <span class="link-icon">➡️</span>

@@ -7,6 +7,7 @@ var dbAcb = new dataStore();
 const portt = 3000; // Elige el puerto en el que se ejecutará tu servidor proxy
 
 
+
 var acb = [
     {
      territory: "andalucia",
@@ -300,6 +301,9 @@ app.get('/api/v2/localentities', async (req, res) => {
   app.listen(portt, () => {
     console.log(`Proxy server is running on port ${portt}`);
   });
+
+ 
+  
 //GET loadInitial Data
 app.get(BASE_API_URL+"/jobs-companies-innovation-stats/loadInitialData",(req,res)=>{
     dbAcb.insert(acb, (err, data) => {
