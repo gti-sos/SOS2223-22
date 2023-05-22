@@ -24,7 +24,6 @@
       }
     }
   </script>
-  
   <main>
     <Header></Header>
     <div class="container">
