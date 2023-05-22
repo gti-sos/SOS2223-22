@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 
 test('carga recursos iniciales', async ({ page }) => {
   await page.goto('https://sos2223-22.appspot.com/frontAcb');
-
   
   
 // Espera 2 segundos antes de hacer clic en el botón de cargar datos iniciales.
