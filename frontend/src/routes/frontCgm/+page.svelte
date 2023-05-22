@@ -432,7 +432,7 @@ function mostrar_alerta(a, y){
         Limite: 
         <input type="text" bind:value={new_rec2.limit} placeholder="Limite"> 
         <br><br>
-        <button type="submit" on:click={busqueda(new_rec2)} class="btn btn-info"><i class="fas fa-search"></i> Buscar</button>
+        <button type="submit" on:click={busqueda(new_rec2)} class="btn btn-info"><i class="fas fa-search"></i> Búsqueda</button>
         <button type="submit" on:click={restablecer} class="btn btn-dark"><i class="fas fa-times"></i> Cancelar</button>
       </div>
       {/if}
@@ -476,7 +476,7 @@ function mostrar_alerta(a, y){
                       <td>{item.edition_of_computer_program}</td>
                       <td>
                         <button disabled={disabledBtn} type="button" on:click={bt_update_data(item.year)} class="btn btn-primary"><i class="fas fa-sync-alt"></i> Actualizar</button>
-                        <button disabled={disabledBtn} type="button" on:click={delete_data(item.year)} class="btn btn-danger"><i class="fas fa-trash"></i> Borrar</button>
+                        <button disabled={disabledBtn} type="button" on:click={delete_data(item.year)} id="borrar_rec" class="btn btn-danger"><i class="fas fa-trash"></i> Borrar</button>
                       </td>
                     </tr>
                   {/if}
